@@ -8,7 +8,8 @@
                 :connect-cached)
   (:export :connection-settings
            :db
-           :with-connection))
+           :with-connection
+           :with-transaction))
 (in-package :fullstackwiki.db)
 
 (defun connection-settings (&optional (db :maindb))
@@ -20,3 +21,8 @@
 (defmacro with-connection (conn &body body)
   `(let ((*connection* ,conn))
      ,@body))
+
+(defmacro with-transaction (conn &body body)
+  `(let ((*connection* ,conn))
+     (cl-dbi:with-transaction *connection*
+       ,@body)))

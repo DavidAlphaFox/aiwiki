@@ -20,7 +20,10 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-  `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
+    `(:databases ((:maindb :postgres
+                           :database-name "fswikidb"
+                           :username "fswiki"
+                           :password "fswikipass"))))
 
 (defconfig |development|
   '())
