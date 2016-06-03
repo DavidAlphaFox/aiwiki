@@ -1,0 +1,11 @@
+{% extends "layouts/default.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<form action="/register" method="POST">
+  <p>Username: <input type="text" name="username" /> </p>
+  <p>email: <input type="text" name="email" /> </p>
+  <p>Password: <input type="password" name="password" /></p>
+  <p>Confirm Password: <input type="password" name="password2" /></p>
+  <input type="submit" value="Register" />
+</form>
+{% endblock %}

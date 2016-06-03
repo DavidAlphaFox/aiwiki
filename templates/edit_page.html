@@ -1,0 +1,11 @@
+{% extends "layouts/default.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<h3>{{title}}</h3>
+
+<form action="/page_edit/{{title}}" method="POST">
+  <textarea name="content" rows="10" cols="50">{{content}}</textarea>
+  <br />
+  <input type="submit" value="Save" />
+</form>
+{% endblock %}

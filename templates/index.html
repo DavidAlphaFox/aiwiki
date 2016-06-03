@@ -1,7 +1,8 @@
 {% extends "layouts/default.html" %}
-{% block title %}Welcome to Caveman2{% endblock %}
+{% block title %}Welcome to Full Stack Wiki{% endblock %}
 {% block content %}
-<div id="main">
-  Welcome to <a href="http://8arrow.org/caveman/">Caveman2</a>!
-</div>
+  <h3>Pages:</h3>
+  {% for page in pages %}
+  <p><a href="/page/{{ page.title }}">{{ page.title }}</a></p>
+  {% endfor %}
 {% endblock %}

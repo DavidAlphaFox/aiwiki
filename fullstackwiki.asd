@@ -24,11 +24,15 @@
                :datafly
                :sxql
                ;; Password hashing
-               :cl-pass)
+               :cl-pass
+               ;; Markdown
+               :3bmd
+               :3bmd-ext-wiki-links
+               )
   :components ((:module "src"
                 :components
-                ((:file "main" :depends-on ("config" "view" "db"))
-                 (:file "web" :depends-on ("view"))
+                ((:file "main" :depends-on ("config" "view" "db" "model"))
+                 (:file "web" :depends-on ("view" "model"))
                  (:file "view" :depends-on ("config"))
                  (:file "db" :depends-on ("config"))
                  (:file "model" :depends-on ("db")) ;; app model

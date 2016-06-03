@@ -1,0 +1,12 @@
+{% extends "layouts/default.html" %}
+{% block title %}Add a page{% endblock %}
+{% block content %}
+<h3>Add page</h3>
+
+<form action="/add_page" method="POST">
+  <p>Title: <input type="text" name="title" /> </p>
+  <textarea name="content" rows="10" cols="50">{{content}}</textarea>
+  <br />
+  <input type="submit" value="Save" />
+</form>
+{% endblock %}

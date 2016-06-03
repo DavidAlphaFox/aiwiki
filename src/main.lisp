@@ -5,6 +5,8 @@
                 :config)
   (:import-from :clack
                 :clackup)
+  (:import-from :fullstackwiki.model
+                :create-tables)
   (:export :start
            :stop))
 (in-package :fullstackwiki)
@@ -21,6 +23,7 @@
       (restart-server ()
         :report "Restart the server"
         (stop))))
+  (create-tables)
   (setf *handler*
         (apply #'clackup *appfile-path* args)))
 

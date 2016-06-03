@@ -1,0 +1,16 @@
+{% extends "layouts/default.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<h3>{{title}}:</h3>
+<p>
+  <a href="/page_edit/{{title}}">edit this page</a>,
+  {% if version-count %}
+  view previous versions:
+  {% for i in version-count %}
+  <a href="/page/{{title}}/{{i}}">Version -{{i}}</a>
+  {% endfor %}
+  {% endif %}
+</p>
+<p>{{content|safe}}</p>
+<p>Last modified: {{date | date }} {{date | time}}</p>
+{% endblock %}

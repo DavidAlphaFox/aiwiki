@@ -18,6 +18,7 @@
            :authenticate-user
            :add-page
            :get-latest-page
+           :get-latest-pages-titles
            :get-latest-pages-by-user
            :get-sorted-pages
            :count-pages
@@ -85,7 +86,7 @@ Example:
   "Create page table if it doesn't exist yet."
   (with-connection (db)
     (execute
-     (create-table (:page if-not-exists t)
+     (create-table (:page :if-not-exists t)
          ((id :type 'serial :primary-key t)
           (title :type 'text :not-null t)
           (author-id :type 'integer :not-null t)
@@ -119,6 +120,15 @@ Example:
        (from :page)
        (where (:and (:= :title title)
                     (:= :latest "true")))))))
+
+(defun get-latest-pages-titles ()
+  "Get the titles of latest versions of pages"
+  (with-connection (db)
+    (retrieve-all
+     (select :title
+       (from :page)
+       (where (:= :latest "true"))
+       (order-by (:desc :date))))))
 
 (defun get-latest-pages-by-user (username)
   "Get the latest versions of all pages by USERNAME."
