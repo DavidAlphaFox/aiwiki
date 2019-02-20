@@ -157,7 +157,7 @@
 (defroute ("/page_edit/:title" :method :post) (&key title)
   (must-be-logged-in
     (add-page title (logged-in-p) (get-request-parameter "content"))
-    (redirect (concatenate 'string "/page/" title))))
+    (redirect (concatenate 'string "/page/" (quri:url-encode title)))))
 
 ;;
 ;; Error pages

@@ -12,17 +12,19 @@
                :caveman2
                :envy
                :cl-ppcre
+							 :quri
                :uiop
-
+							 :woo
                ;; for @route annotation
                :cl-syntax-annot
+
 
                ;; HTML Template
                :djula
 
                ;; for DB
                :datafly
-               :sxql
+							 :sxql
                ;; Password hashing
                :cl-pass
                ;; Markdown

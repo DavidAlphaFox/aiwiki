@@ -24,8 +24,8 @@
         :report "Restart the server"
         (stop))))
   (create-tables)
-  (setf *handler*
-        (apply #'clackup *appfile-path* args)))
+  (setf *handler* (clackup *appfile-path* :server :woo)
+        ))
 
 (defun stop ()
   (prog1

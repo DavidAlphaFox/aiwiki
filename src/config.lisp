@@ -22,9 +22,10 @@
 (defconfig :common
     `(:debug t
       :databases ((:maindb :postgres
-                           :database-name "fswikidb"
-                           :username "fswiki"
-                           :password "fswikipass"))))
+                   :database-name "fswikidb"
+                   :username "postgres"
+                   :host "127.0.0.1"
+                   ))))
 
 (defconfig |development|
   '())
