@@ -2,9 +2,9 @@
 
 (in-package :cl-user)
 
-(defpackage fullstackwiki.model
+(defpackage aiwiki.model
   (:use :cl :sxql)
-  (:import-from :fullstackwiki.db
+  (:import-from :aiwiki.db
                 :db
                 :with-connection
                 :with-transaction) 
@@ -24,7 +24,7 @@
            :count-pages
            :nth-page-revision))
 
-(in-package :fullstackwiki.model)
+(in-package :aiwiki.model)
 
 ;;; User model
 
@@ -163,7 +163,7 @@ Example:
   "Get the nth version of a page, sorted by its DATE."
   (nth n (get-sorted-pages title)))
 
-;;; 
+;;; 创建表
 
 (defun create-tables ()
   "Create all tables, if they don't exist already."

@@ -1,14 +1,14 @@
 (in-package :cl-user)
-(defpackage fullstackwiki-test-asd
+(defpackage aiwiki-test-asd
   (:use :cl :asdf))
-(in-package :fullstackwiki-test-asd)
+(in-package :aiwiki-test-asd)
 
-(defsystem fullstackwiki-test
-  :author "Pavel"
+(defsystem aiwiki-test
+  :author "David.Gao"
   :license "MIT"
-  :depends-on (:fullstackwiki
+  :depends-on (:aiwiki
                :prove)
   :components ((:module "t"
                 :components
-                ((:file "fullstackwiki"))))
+                ((:file "aiwiki"))))
   :perform (load-op :after (op c) (asdf:clear-system c)))

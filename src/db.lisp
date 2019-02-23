@@ -1,7 +1,7 @@
 (in-package :cl-user)
-(defpackage fullstackwiki.db
+(defpackage aiwiki.db
   (:use :cl)
-  (:import-from :fullstackwiki.config
+  (:import-from :aiwiki.config
                 :config)
   (:import-from :datafly
                 :*connection*
@@ -10,7 +10,7 @@
            :db
            :with-connection
            :with-transaction))
-(in-package :fullstackwiki.db)
+(in-package :aiwiki.db)
 
 (defun connection-settings (&optional (db :maindb))
   (cdr (assoc db (config :databases))))

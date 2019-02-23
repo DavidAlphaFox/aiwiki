@@ -1,11 +1,11 @@
 (in-package :cl-user)
-(defpackage fullstackwiki-asd
+(defpackage aiwiki-asd
   (:use :cl :asdf))
-(in-package :fullstackwiki-asd)
+(in-package :aiwiki-asd)
 
-(defsystem fullstackwiki
+(defsystem aiwiki
   :version "0.1"
-  :author "Pavel"
+  :author "David.Gao"
   :license "MIT"
   :depends-on (:clack
                :lack
@@ -40,4 +40,4 @@
                  (:file "model" :depends-on ("db")) ;; app model
                  (:file "config"))))
   :description ""
-  :in-order-to ((test-op (load-op fullstackwiki-test))))
+  :in-order-to ((test-op (load-op aiwiki-test))))

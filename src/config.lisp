@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage fullstackwiki.config
+(defpackage aiwiki.config
   (:use :cl)
   (:import-from :envy
                 :config-env-var
@@ -11,11 +11,11 @@
            :appenv
            :developmentp
            :productionp))
-(in-package :fullstackwiki.config)
+(in-package :aiwiki.config)
 
 (setf (config-env-var) "APP_ENV")
 
-(defparameter *application-root*   (asdf:system-source-directory :fullstackwiki))
+(defparameter *application-root*   (asdf:system-source-directory :aiwiki))
 (defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 

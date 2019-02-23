@@ -1,7 +1,7 @@
 (in-package :cl-user)
-(defpackage fullstackwiki.view
+(defpackage aiwiki.view
   (:use :cl)
-  (:import-from :fullstackwiki.config
+  (:import-from :aiwiki.config
                 :*template-directory*)
   (:import-from :caveman2
                 :*response*
@@ -15,7 +15,7 @@
                 :encode-json)
   (:export :render
            :render-json))
-(in-package :fullstackwiki.view)
+(in-package :aiwiki.view)
 
 (djula:add-template-directory *template-directory*)
 
@@ -38,9 +38,9 @@
 ;;
 ;; Execute package definition
 
-(defpackage fullstackwiki.djula
+(defpackage aiwiki.djula
   (:use :cl)
-  (:import-from :fullstackwiki.config
+  (:import-from :aiwiki.config
                 :config
                 :appenv
                 :developmentp
@@ -48,4 +48,4 @@
   (:import-from :caveman2
                 :url-for))
 
-(setf djula:*djula-execute-package* (find-package :fullstackwiki.djula))
+(setf djula:*djula-execute-package* (find-package :aiwiki.djula))

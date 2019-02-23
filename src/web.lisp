@@ -1,15 +1,15 @@
 (in-package :cl-user)
-(defpackage fullstackwiki.web
+(defpackage aiwiki.web
   (:use :cl
         :caveman2
-        :fullstackwiki.config
-        :fullstackwiki.view
-        :fullstackwiki.db
-        :fullstackwiki.model
+        :aiwiki.config
+        :aiwiki.view
+        :aiwiki.db
+        :aiwiki.model
         :datafly
         :sxql)
   (:export :*web*))
-(in-package :fullstackwiki.web)
+(in-package :aiwiki.web)
 
 ;; for @route annotation
 (syntax:use-syntax :annot)

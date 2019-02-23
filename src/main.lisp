@@ -23,7 +23,6 @@
       (restart-server ()
         :report "Restart the server"
         (stop))))
-  (create-tables)
   (setf *handler* (clackup *appfile-path* :server :woo)
         ))
 
