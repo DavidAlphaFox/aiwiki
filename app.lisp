@@ -1,23 +1,24 @@
-(ql:quickload :fullstackwiki)
+(ql:quickload :aiwiki)
 
-(defpackage fullstackwiki.app
+(defpackage aiwiki.app
   (:use :cl)
   (:import-from :lack.builder
                 :builder)
   (:import-from :ppcre
                 :scan
                 :regex-replace)
-  (:import-from :fullstackwiki.web
+  (:import-from :aiwiki.web
                 :*web*)
-  (:import-from :fullstackwiki.config
+  (:import-from :aiwiki.config
                 :config
                 :productionp
                 :*static-directory*))
-(in-package :fullstackwiki.app)
+(in-package :aiwiki.app)
 
 (builder
  (:static
   :path (lambda (path)
+          ;; images,css,js,robot.txt,favicon.ico 就使用当前路径
           (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
               path
               nil))
@@ -34,6 +35,6 @@
      nil
      (lambda (app)
        (lambda (env)
-         (let ((datafly:*trace-sql* t))
+         (let ((datafly:*trace-sql* t)) ;; 如果非生产环境提供sql的追踪
            (funcall app env)))))
  *web*)

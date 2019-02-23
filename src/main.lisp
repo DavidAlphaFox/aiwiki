@@ -1,18 +1,18 @@
 (in-package :cl-user)
-(defpackage fullstackwiki
+(defpackage aiwiki
   (:use :cl)
-  (:import-from :fullstackwiki.config
+  (:import-from :aiwiki.config
                 :config)
   (:import-from :clack
                 :clackup)
-  (:import-from :fullstackwiki.model
+  (:import-from :aiwiki.model
                 :create-tables)
   (:export :start
            :stop))
-(in-package :fullstackwiki)
+(in-package :aiwiki)
 
 (defvar *appfile-path*
-  (asdf:system-relative-pathname :fullstackwiki #P"app.lisp"))
+  (asdf:system-relative-pathname :aiwiki #P"app.lisp"))
 
 (defvar *handler* nil)
 
