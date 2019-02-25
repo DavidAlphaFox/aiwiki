@@ -3,12 +3,14 @@
 {% block content %}
 <h3>{{title}}:</h3>
 <p>
-  <a href="/page_edit/{{title}}">edit this page</a>,
-  {% if version-count %}
-  view previous versions:
-  {% for i in version-count %}
-  <a href="/page/{{title}}/{{i}}">Version -{{i}}</a>
-  {% endfor %}
+  {% if username %}
+    <a href="/page_edit/{{title}}">edit this page</a>,
+    {% if version-count %}
+      view previous versions:
+      {% for i in version-count %}
+        <a href="/page/{{title}}/{{i}}">Version -{{i}}</a>
+      {% endfor %}
+    {% endif %}
   {% endif %}
 </p>
 <div class="page">
