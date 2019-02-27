@@ -33,11 +33,13 @@
                )
   :components ((:module "src"
                 :components
-                ((:file "main" :depends-on ("config" "view" "db" "model"))
-                 (:file "web" :depends-on ("view" "model"))
-                 (:file "view" :depends-on ("config"))
-                 (:file "db" :depends-on ("config"))
-                 (:file "model" :depends-on ("db")) ;; app model
-                 (:file "config"))))
+                        ((:module "base"
+                          :components
+                                  ((:file "config")
+                                   (:file "view" :depends-on ("config"))
+                                   (:file "db" :depends-on ("config"))))
+                         (:file "main" :depends-on ("base" "model"))
+                         (:file "web" :depends-on ("base" "model"))
+                         (:file "model" :depends-on ("base")) )))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))
