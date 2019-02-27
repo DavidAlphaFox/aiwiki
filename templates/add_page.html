@@ -4,9 +4,13 @@
 <h3>Add page</h3>
 
 <form action="/add_page" method="POST">
-  <p>Title: <input type="text" name="title" /> </p>
-  <textarea name="content" rows="10" cols="50">{{content}}</textarea>
+    <p>Title: <input type="text" name="title" /> </p>
+    <!--   <textarea name="content" rows="10" cols="50">{{content}}</textarea> -->
+    <textarea name="content" contentEditable id="editor">{{content}}</textarea>
   <br />
   <input type="submit" value="Save" />
 </form>
+<script type="text/javascript">
+ MarkdownIME.Enhance(MarkdownIME.Scan(window));
+</script>
 {% endblock %}

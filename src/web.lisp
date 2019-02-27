@@ -151,8 +151,9 @@
 
 (defroute "/page_edit/:title" (&key title)
   (must-be-logged-in
-    (render #P"edit_page.html" (list* :username (logged-in-p)
-                                      (get-latest-page title)))))
+    (let ((page (get-latest-page title)))
+      (render #P"edit_page.html" (list* :username (logged-in-p)
+                                        (parse-markdown-page page))))))
 
 (defroute ("/page_edit/:title" :method :post) (&key title)
   (must-be-logged-in
