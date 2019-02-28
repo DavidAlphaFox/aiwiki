@@ -32,14 +32,23 @@
                :3bmd-ext-wiki-links
                )
   :components ((:module "src"
+                :serial t
                 :components
                         ((:module "base"
                           :components
-                                  ((:file "config")
-                                   (:file "view" :depends-on ("config"))
-                                   (:file "db" :depends-on ("config"))))
+                          ((:file "config")
+                           (:file "view" :depends-on ("config"))
+                           (:file "db" :depends-on ("config"))
+                           ))
+                         (:module "model"
+                          :depends-on ("base")
+                          :components
+                          ((:file "user")
+                           (:file "page")
+                           (:file "package" :depends-on ("user" "page"))
+                           ))
                          (:file "main" :depends-on ("base" "model"))
-                         (:file "web" :depends-on ("base" "model"))
-                         (:file "model" :depends-on ("base")) )))
+                         (:file "web" :depends-on ("base" "model")))
+                        ))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))

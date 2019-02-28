@@ -2,83 +2,29 @@
 
 (in-package :cl-user)
 
-(defpackage aiwiki.model
+(defpackage aiwiki.model.page
   (:use :cl :sxql)
-  (:import-from :aiwiki.db
-                :db
-                :with-connection
-                :with-transaction) 
-  (:import-from :datafly
-                :execute
-                :retrieve-all
-                :retrieve-one)
-  (:export :create-tables
-           :find-user
-           :add-user
-           :authenticate-user
-           :add-page
-           :get-latest-page
-           :get-latest-pages-titles
-           :get-latest-pages-by-user
-           :get-sorted-pages
-           :count-pages
-           :nth-page-revision))
+  (:import-from
+   :aiwiki.db
+   :db
+   :with-connection
+   :with-transaction) 
+  (:import-from
+   :datafly
+   :execute
+   :retrieve-all
+   :retrieve-one)
+  (:export
+   :create-page-table
+   :add-page
+   :get-latest-page
+   :get-latest-pages-titles
+   :get-latest-pages-by-user
+   :get-sorted-pages
+   :count-pages
+   :nth-page-revision))
 
-(in-package :aiwiki.model)
-
-;;; User model
-
-(defun create-user-table ()
-  "Create user table if it doesn't exist yet."
-  (with-connection (db)
-    (execute
-     (create-table (:user :if-not-exists t)
-         ((id :type 'serial :primary-key t)
-          (username :type 'text :not-null t :unique t)
-          (email :type 'text :not-null t :unique t)
-          (password :type 'text :not-null t))))))
-
-(defun add-user (username email password)
-  "add user record to database."
-  (with-connection (db)
-    (execute
-     (insert-into :user
-       (set= :username username
-             :email email
-             :password (cl-pass:hash password))))))
-
-(defun find-user-by-username (username)
-  "lookup user record by username."
-  (with-connection (db)
-    (retrieve-one
-     (select :*
-       (from :user)
-       (where (:= :username username))))))
-
-(defun find-user-by-email (email)
-  "lookup user record by email."
-  (with-connection (db)
-    (retrieve-one
-     (select :* (from :user)
-             (where (:= :email email))))))
-
-(defun find-user (username-or-email)
-  "lookup user record by username or email."
-  (or (find-user-by-username username-or-email)
-      (find-user-by-email username-or-email)))
-
-(defun authenticate-user (username-or-email password)
-  "Lookup user record and validate password. Returns two values:
-   1st value, was password correct T or NIL
-   2nd value, was user found, T or NIL
-Example:
-   (VALUES NIL NIL) -> user not found
-   (VALUES NIL T) -> user found, but wrong password
-   (VALUES T T) -> password correct"
-  (let ((password-hash (getf (find-user username-or-email) :password)))
-    (if password-hash 
-        (values (cl-pass:check-password password password-hash) t)
-        (values nil nil))))
+(in-package :aiwiki.model.page)
 
 ;;; Page model
 
@@ -163,9 +109,4 @@ Example:
   "Get the nth version of a page, sorted by its DATE."
   (nth n (get-sorted-pages title)))
 
-;;; 创建表
 
-(defun create-tables ()
-  "Create all tables, if they don't exist already."
-  (create-user-table)
-  (create-page-table))
