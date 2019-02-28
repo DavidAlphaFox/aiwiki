@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
+    </head>
+    <body>
+        <div id="main">
+            {% if username %}
+            Welcome {{username}}! <a href="/logout">Log out</a>
+            {% else %}
+            <a href="/login">Please log in</a> or <a href="/register">register</a>.
+            {% endif %}
+            <p><a href="/add_page">Add a new page</a></p>
+            <p><a href="/">Go back home</a>
+                {% if messages %}
+                <div id="messages">
+                    {% for message in messages %}
+                    <p> {{message}} </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
