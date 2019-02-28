@@ -4,9 +4,7 @@
 <h3>{{title}}</h3>
 
 <form action="/page_edit/{{title}}" method="POST">
-    <textarea name="content">
-        <div contentEditable="true" id="editor">{{content|safe}}</div>
-    </textarea>
+    <div contentEditable="true" id="editor">{{content|safe}}</div>
     <br />
     <input type="submit" value="Save" />
 </form>

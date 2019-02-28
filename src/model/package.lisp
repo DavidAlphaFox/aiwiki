@@ -1,7 +1,10 @@
 (in-package :cl-user)
 
 (defpackage aiwiki.model
-  (:use :cl :aiwiki.model.user :aiwiki.model.page)
+  (:use
+   :cl
+   :aiwiki.model.user
+   :aiwiki.model.page)
   (:export
    :create-tables
    :find-user
