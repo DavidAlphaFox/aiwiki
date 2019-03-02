@@ -57,9 +57,11 @@
 ;; wiki
 
 (defmethod 3bmd-wiki:process-wiki-link ((wiki (eql :fsw)) normalized-target formatted-target args stream)
-  (if args
-   (format stream "<a href=\"/page/~a/~{~a~}\">~a</a>" formatted-target args formatted-target)
-   (format stream "<a href=\"/page/~a\">~a</a>" formatted-target formatted-target)))
+  (let (encode-target (quri:url-encode title))
+    (if args
+      (format stream "<a href=\"/page/~a/~{~a~}\">~a</a>" encode-target args formatted-target)
+      (format stream "<a href=\"/page/~a\">~a</a>" encode-target formatted-target))
+    ))
 
 (defun parse-markdown-page (page)
   (let* ((3bmd-wiki:*wiki-links* t)
