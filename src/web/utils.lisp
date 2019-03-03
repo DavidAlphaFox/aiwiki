@@ -3,6 +3,7 @@
   (:use
    :cl
    :caveman2
+   :aiwiki.view
    :datafly
    :sxql)
   (:export

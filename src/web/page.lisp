@@ -19,12 +19,13 @@
 
 (in-package aiwiki.web.page)
 
-(defun get-edit-page(title)
+(defun get-edit-page (title)
   (must-be-logged-in
-   (let ((page (get-latest-page title)))
-     (render #P"edit_page.html" (list* :username (logged-in-p)
-                                       (parse-markdown-page page))))))
-(defun post-edit-page(title)
+    (let ((page (get-latest-page title)))
+      (render #P"edit_page.html" (list* :username (logged-in-p)
+                                        (parse-markdown-page page))))))
+
+(defun post-edit-page (title)
   (must-be-logged-in
    (add-page title (logged-in-p) (get-request-parameter "content"))
    (redirect (concatenate 'string "/page/" (quri:url-encode title)))))
