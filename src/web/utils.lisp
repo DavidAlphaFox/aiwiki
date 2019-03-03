@@ -1,18 +1,19 @@
 (in-package :cl-user)
 (defpackage aiwiki.web.utils
-  (:use :cl
-        :caveman2
-        :datafly
-        :sxql)
+  (:use
+   :cl
+   :caveman2
+   :datafly
+   :sxql)
   (:export
    :get-request-parameter
    :login
    :logout
    :logged-in-p
-   :must-be-logged-out))
+   :must-be-logged-out
+   :must-be-logged-in
+   :parse-markdown-page))
 (in-package :aiwiki.web.utils)
-
-;; for @route annotation
 
 
 
@@ -65,7 +66,5 @@
                     (3bmd:parse-string-and-print-to-stream (getf page :content) out))))
     (list* :content content page)))
 
-;;
-;; Routing rules
 
 

@@ -3,6 +3,7 @@
 (defpackage aiwiki.web
   (:use
    :cl
+   :caveman2
    :aiwiki.web.user
    :aiwiki.web.page)
   (:export
@@ -18,48 +19,22 @@
 (syntax:use-syntax :annot)
 
 (defroute "/" ()
-  (render #P"index.html" (list :username (logged-in-p)
-                               :pages (get-latest-pages-titles))))
+  (get-index))
 
 (defroute "/login" ()
-  (must-be-logged-out (render #P"login.html")))
+  (get-login))
 
 (defroute ("/login" :method :post) ()
-  (must-be-logged-out
-    (multiple-value-bind (password-correct username-found)
-        (authenticate-user (get-request-parameter "username")
-                           (get-request-parameter "password"))
-      (cond (password-correct (progn (login (get-request-parameter "username"))
-                                     (redirect "/")))
-            ((not username-found) (render #P "login.html" (list :messages '("Wrong username or email"))))
-            (t (render #P "login.html" (list :messages '("Wrong password!"))))))))
+  (post-login))
 
 (defroute "/logout" ()
-  (setf (gethash :username *session*) nil)
-  (redirect "/"))
+  (get-logout))
 
 (defroute "/register" ()
-  (must-be-logged-out (render #P "register.html")))
+  (get-register))
 
 (defroute ("/register" :method :post) ()
-  (must-be-logged-out
-    (let ((username (get-request-parameter "username"))
-          (email (get-request-parameter "email"))
-          (password (get-request-parameter "password"))
-          (password2 (get-request-parameter "password2")))
-      (cond ((find-user username)
-             (render #P "register.html" (list :username (logged-in-p)
-                                              :messages '("username already registered"))))
-            ((find-user email)
-             (render #P "register.html" (list :username (logged-in-p)
-                                              :messages '("email already registered"))))
-            ((not (string= password password2))
-             (render #P "register.html" (list :username (logged-in-p)
-                                              :messages '("Passwords do not match"))))
-            (t (add-user username email password)
-               (login username)
-               (redirect "/"))))))
-
+  (post-register))
 ;; pages
 
 (defroute "/page/:title" (&key title)

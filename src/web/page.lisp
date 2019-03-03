@@ -1,8 +1,7 @@
 (in-package :cl-user)
-(defpackage aiwiki.web
+(defpackage aiwiki.web.page
   (:use
    :cl
-   :caveman2
    :aiwiki.config
    :aiwiki.view
    :aiwiki.db
@@ -17,6 +16,8 @@
    :get-add-page
    :get-version-page
    :get-page))
+
+(in-package aiwiki.web.page)
 
 (defun get-edit-page(title)
   (must-be-logged-in

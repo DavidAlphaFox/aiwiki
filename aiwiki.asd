@@ -47,8 +47,15 @@
                            (:file "page")
                            (:file "package" :depends-on ("user" "page"))
                            ))
-                         (:file "main" :depends-on ("base" "model"))
-                         (:file "web" :depends-on ("base" "model")))
-                        ))
+                         (:module "web"
+                          :depends-on ("base" "model")
+                          :components
+                          ((:file "utils")
+                           (:file "user")
+                           (:file "page")
+                           (:file "package" :depends-on ("user" "page"))
+                           ))
+                         (:file "main" :depends-on ("base" "model" "web"))
+                        )))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))
