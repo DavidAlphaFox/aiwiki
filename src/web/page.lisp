@@ -2,6 +2,7 @@
 (defpackage aiwiki.web.page
   (:use
    :cl
+   :caveman2
    :aiwiki.config
    :aiwiki.view
    :aiwiki.db
