@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
   <title>{% block title %}{% endblock %}</title>
   <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
 </head>
 <body>
-    <nav>
+    <header>
+        <a href="/" >TTalk.im</a>
+    </header>
+    <aside>
         {% block sidebar %} {% endblock %}
-    </nav>
+    </aside>
   <div id="main">
   {% if messages %}
   <div id="messages">
