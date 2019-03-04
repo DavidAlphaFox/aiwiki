@@ -8,7 +8,7 @@
    :aiwiki.db
    :db
    :with-connection
-   :with-transaction) 
+   :with-transaction)
   (:import-from
    :datafly
    :execute
@@ -99,7 +99,7 @@
   "Count the number of versions a page has."
   (with-connection (db)
     (getf (retrieve-one
-           (select (:title (:count :*))
+           (select (:title (:count :id))
              (from :page)
              (where (:= :title title))
              (group-by :title)))
@@ -108,5 +108,3 @@
 (defun nth-page-revision (title n)
   "Get the nth version of a page, sorted by its DATE."
   (nth n (get-sorted-pages title)))
-
-
