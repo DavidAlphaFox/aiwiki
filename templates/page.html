@@ -9,17 +9,19 @@
     <ul>
     {% for i in version-count %}
         <li> <a href="/page/{{title}}/{{i}}">Version -{{i}}</a> </li>
-    {% endfor %}
+        {% endfor %}
     </ul>
     {% endif %}
     {% endif %}
 </p>
 {% endblock %}
 {% block content %}
+<article class="container">
 
-<div class="page">
-    <h1>{{title}}</h1>
-<p>{{content|safe}}</p>
-<p>Last modified: {{date | date }} {{date | time}}</p>
+        <h1 class="title is-1">{{title}}</h1>
+        <p class="subtitle is-6">更新于{{date | date }} {{date | time}}</p>
+        <div class="content">{{content|safe}}</div>
+
+</article>
 {% endblock %}
-</div>
+

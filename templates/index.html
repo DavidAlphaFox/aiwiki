@@ -1,10 +1,14 @@
 {% extends "layouts/default.html" %}
 {% block title %}Welcome to AI Wiki{% endblock %}
 {% block sidebar %}
-
+<p class="menu-label">
+    文章
+</p>
+<ul class="menu-list">
   {% for page in pages %}
-  <p><a href="/page/{{ page.title }}">{{ page.title }}</a></p>
+  <li><a href="/page/{{ page.title }}">{{ page.title }}</a></li>
   {% endfor %}
+</ul>
 
 {% endblock %}
 
