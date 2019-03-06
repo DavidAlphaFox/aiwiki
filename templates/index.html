@@ -10,11 +10,13 @@
                         <p class="card-header-title">文章列表</p>
                     </div>
                     <div class="card-content">
-                        <ul>
+                        <div class="menu">
+                        <ul class="menu-list">
                             {% for page in pages %}
                             <li><a href="/page/{{ page.title }}">{{ page.title }}</a></li>
                             {% endfor %}
                         </ul>
+                        </div>
                     </div>
                 </div>
             </div>
