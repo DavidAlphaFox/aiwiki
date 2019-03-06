@@ -23,7 +23,7 @@
       (restart-server ()
         :report "Restart the server"
         (stop))))
-  (setf *handler* (clackup *appfile-path* :server :woo)
+  (setf *handler* (clackup *appfile-path*)
         ))
 
 (defun stop ()
