@@ -5,24 +5,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" integrity="sha256-8B1OaG0zT7uYA572S2xOxWACq9NXYPQ+U5kHPV1bJN4=" crossorigin="anonymous" />
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <!--    <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css"> -->
 </head>
 <body>
-    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-primary has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="/">TTalkIM</a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
         </div>
     </nav>
-    <aside class="menu">
-        {% block sidebar %} {% endblock %}
-    </aside>
-    <div id="main" class="container">
+    <div class="container">
+    {% block sidebar %} {% endblock %}
+    </div>
+    <div class="container">
         {% if messages %}
         <div id="messages" class="notification">
             {% for message in messages %}
@@ -31,6 +25,8 @@
         </div>
         {% endif %}
     </div>
-    {% block content %}{% endblock %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

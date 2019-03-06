@@ -1,14 +1,26 @@
 {% extends "layouts/default.html" %}
 {% block title %}Welcome to AI Wiki{% endblock %}
 {% block sidebar %}
-<p class="menu-label">
-    文章
-</p>
-<ul class="menu-list">
-  {% for page in pages %}
-  <li><a href="/page/{{ page.title }}">{{ page.title }}</a></li>
-  {% endfor %}
-</ul>
+<div class="session">
+    <div class="container">
+        <div class="tile">
+            <div class="tile is-2 is-vertical is-parent">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title">文章列表</p>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            {% for page in pages %}
+                            <li><a href="/page/{{ page.title }}">{{ page.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
