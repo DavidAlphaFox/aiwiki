@@ -81,7 +81,7 @@
   (with-connection (db)
     (retrieve-all
      (select (:page.id :title :username :content :date :latest)
-       (from :page :user)
+       (fr3om :page :user)
        (where (:and (:= :user.id :author-id)
                     (:= :user.username username)
                     (:= :latest "true")))))))
