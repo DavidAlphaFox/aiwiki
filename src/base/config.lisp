@@ -22,8 +22,8 @@
 (defconfig :common
     `(:debug t
       :databases ((:maindb :postgres
-                   :database-name "fswikidb"
-                   :username "postgres"
+                   :database-name "ttalk"
+                   :username "david"
                    :host "127.0.0.1"
                    ))))
 
