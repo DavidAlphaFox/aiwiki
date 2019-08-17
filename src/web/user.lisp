@@ -7,6 +7,7 @@
    :aiwiki.view
    :aiwiki.db
    :aiwiki.model
+   :aiwiki.model.tag
    :aiwiki.web.utils
    :datafly
    :sxql)
@@ -22,9 +23,20 @@
 ;;
 ;; Routing rules
 
+(defun gen-tag-link (tag)
+  (let ((id (getf tag :id))
+        (title (getf tag :title)))
+    (list :title title
+          :url (format nil "/tags/~S.html?id=~d" (quri:url-encode title) id))
+    ))
+(defun gen-tags (tags)
+  (loop for tag in tags
+        collect (gen-tag-link tag)))
+
 (defun get-index ()
-  (render #P"index.html" (list :username (logged-in-p)
-                               :pages (get-latest-pages-titles))))
+  (let ((tags (all-tags)))
+    (render #P"index.html"
+            (list :tags (gen-tags tags)))))
 
 (defun get-login ()
   (must-be-logged-out (render #P"login.html")))

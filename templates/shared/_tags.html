@@ -1,0 +1,16 @@
+{% block sidebar %}
+<div class="panel">
+  <p class="panel-heading">
+    文章分类
+  </p>
+  {% for tag in tags %}
+  <a class="panel-block" href="{{ tag.url }}">
+    <span class="panel-icon">
+      <i class="fas fa-book" aria-hidden="true"></i>
+    </span>
+    {{tag.title}}
+  </a>
+  {% endfor %}
+</div>
+
+{% endblock %}

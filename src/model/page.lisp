@@ -32,7 +32,7 @@
   "Create page table if it doesn't exist yet."
   (with-connection (db)
     (execute
-     (create-table (:page :if-not-exists t)
+     (create-table (:pages :if-not-exists t)
          ((id :type 'serial :primary-key t)
           (title :type 'text :not-null t)
           (author-id :type 'integer :not-null t)
@@ -45,13 +45,13 @@
   "Add page to database. Mark it as \"latest: true\", mark previous \"latest: false\"."
   (with-transaction (db)
     (execute
-     (update :page
+     (update :pages
        (set= :latest "false")
        (where (:and
                (:= :title title)
                (:= :latest "true")))))
     (execute
-     (insert-into :page
+     (insert-into :pages
        (set= :title title
              :author-id (getf (find-user author) :id)
              :content content
@@ -63,7 +63,7 @@
   (with-connection (db)
     (retrieve-one
      (select :*
-       (from :page)
+       (from :pages)
        (where (:and (:= :title title)
                     (:= :latest "true")))))))
 
@@ -72,7 +72,7 @@
   (with-connection (db)
     (retrieve-all
      (select :title
-       (from :page)
+       (from :pages)
        (where (:= :latest "true"))
        (order-by (:desc :date))))))
 
@@ -80,8 +80,8 @@
   "Get the latest versions of all pages by USERNAME."
   (with-connection (db)
     (retrieve-all
-     (select (:page.id :title :username :content :date :latest)
-       (fr3om :page :user)
+     (select (:pages.id :title :username :content :date :latest)
+       (fr3om :pages :user)
        (where (:and (:= :user.id :author-id)
                     (:= :user.username username)
                     (:= :latest "true")))))))
@@ -91,7 +91,7 @@
   (with-connection (db)
     (retrieve-all
      (select :*
-       (from :page)
+       (from :pages)
        (where (:= :title title))
        (order-by (:desc :date))))))
 
@@ -100,7 +100,7 @@
   (with-connection (db)
     (getf (retrieve-one
            (select (:title (:count :id))
-             (from :page)
+             (from :pages)
              (where (:= :title title))
              (group-by :title)))
           :count)))

@@ -4,7 +4,8 @@
   (:use
    :cl
    :aiwiki.model.user
-   :aiwiki.model.page)
+   :aiwiki.model.page
+   :aiwiki.model.tag)
   (:export
    :create-tables
    :find-user
@@ -21,6 +22,7 @@
 
 (defun create-tables ()
   "Create all tables, if they don't exist already."
+  (create-tag-table)
   (create-user-table)
   (create-page-table))
 
