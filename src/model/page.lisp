@@ -17,12 +17,7 @@
   (:export
    :create-page-table
    :add-page
-   :get-latest-page
-   :get-latest-pages-titles
-   :get-latest-pages-by-user
-   :get-sorted-pages
-   :count-pages
-   :nth-page-revision))
+   :get-page))
 
 (in-package :aiwiki.model.page)
 
@@ -34,77 +29,26 @@
     (execute
      (create-table (:pages :if-not-exists t)
          ((id :type 'serial :primary-key t)
-          (title :type 'text :not-null t)
-          (author-id :type 'integer :not-null t)
+          (title :type 'text :not-null t :unique t)
+          (brief :type 'text :not-null t)
           (content :type 'text :not-null t)
-          (date :type 'timestamp :not-null t)
-          (latest :type 'boolean :not-null t)) ;; is this the latest version of the page
-       (foreign-key '(:author-id) :references '(:user :id))))))
+          (published :type 'boolean :default 'false)
+          (date :type 'timestamp :not-null t))))))
 
-(defun add-page (title author content)
-  "Add page to database. Mark it as \"latest: true\", mark previous \"latest: false\"."
+(defun add-page (title brief content published)
   (with-transaction (db)
-    (execute
-     (update :pages
-       (set= :latest "false")
-       (where (:and
-               (:= :title title)
-               (:= :latest "true")))))
     (execute
      (insert-into :pages
        (set= :title title
-             :author-id (getf (find-user author) :id)
+             :brief brief
              :content content
-             :date (local-time:now)
-             :latest "true")))))
+             :published published
+             :date (local-time:now))))))
 
-(defun get-latest-page (title)
-  "Get the latest version of a page by TITLE."
+
+(defun get-page (title)
   (with-connection (db)
     (retrieve-one
      (select :*
        (from :pages)
-       (where (:and (:= :title title)
-                    (:= :latest "true")))))))
-
-(defun get-latest-pages-titles ()
-  "Get the titles of latest versions of pages"
-  (with-connection (db)
-    (retrieve-all
-     (select :title
-       (from :pages)
-       (where (:= :latest "true"))
-       (order-by (:desc :date))))))
-
-(defun get-latest-pages-by-user (username)
-  "Get the latest versions of all pages by USERNAME."
-  (with-connection (db)
-    (retrieve-all
-     (select (:pages.id :title :username :content :date :latest)
-       (fr3om :pages :user)
-       (where (:and (:= :user.id :author-id)
-                    (:= :user.username username)
-                    (:= :latest "true")))))))
-
-(defun get-sorted-pages (title)
-  "Get all versions of a page by TITLE, sorted by it's timestamp in descending order, newest first."
-  (with-connection (db)
-    (retrieve-all
-     (select :*
-       (from :pages)
-       (where (:= :title title))
-       (order-by (:desc :date))))))
-
-(defun count-pages (title)
-  "Count the number of versions a page has."
-  (with-connection (db)
-    (getf (retrieve-one
-           (select (:title (:count :id))
-             (from :pages)
-             (where (:= :title title))
-             (group-by :title)))
-          :count)))
-
-(defun nth-page-revision (title n)
-  "Get the nth version of a page, sorted by its DATE."
-  (nth n (get-sorted-pages title)))
+       (where (:= :title title))))))
