@@ -43,7 +43,8 @@
              :brief brief
              :content content
              :published published
-             :date (local-time:now))))))
+             :date (local-time:now))
+       (returning :id)))))
 
 
 (defun get-page (title)
