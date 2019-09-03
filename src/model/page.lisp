@@ -17,7 +17,9 @@
   (:export
    :create-page-table
    :add-page
-   :get-page))
+   :get-page
+   :pages-with-brief
+   ))
 
 (in-package :aiwiki.model.page)
 
@@ -53,3 +55,12 @@
      (select :*
        (from :pages)
        (where (:= :title title))))))
+
+(defun pages-with-brief (pageIndex pageSize)
+  (let ( (offset (* (- pageIdex 1) pageSize)))
+    (with-connection (db)
+      (retrieve-all
+       (select (:id :title :breif)
+               (from :pages)
+               (offset offset)
+               (limit pageSize))))))
