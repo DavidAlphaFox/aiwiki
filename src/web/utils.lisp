@@ -8,7 +8,7 @@
    :sxql)
   (:export
    :get-request-parameter
-   :get-request-parameter-with-default
+   :request-parameter-with-default
    :login
    :logout
    :logged-in-p
@@ -22,7 +22,7 @@
 ;;
 ;; Utils
 
-(defun get-request-parameter-with-default (parameter defaultValue)
+(defun request-parameter-with-default (parameter defaultValue)
   (let ((matched (assoc parameter (request-parameters *request*) :test #'string=)))
     (cond ((= matched nil) defaultValue)
           (t (cdr matched)))))
@@ -30,6 +30,8 @@
 (defun get-request-parameter (parameter)
   "Get a parameter from the request body"
   (cdr (assoc parameter (request-parameters *request*) :test #'string=)))
+
+
 
 (defun login (username)
   "Log a user in"
