@@ -34,7 +34,7 @@
           (title :type 'text :not-null t :unique t)
           (brief :type 'text :not-null t)
           (content :type 'text :not-null t)
-          (published :type 'boolean :default 'false)
+          (published :type 'boolean :not-null t :default 'false)
           (date :type 'timestamp :not-null t))))))
 
 (defun add-page (title brief content published)
@@ -57,10 +57,10 @@
        (where (:= :title title))))))
 
 (defun pages-with-brief (pageIndex pageSize)
-  (let ( (offset (* (- pageIdex 1) pageSize)))
+  (let ( (offset (* (- pageIndex 1) pageSize)))
     (with-connection (db)
       (retrieve-all
-       (select (:id :title :breif)
+       (select (:id :title :brief)
                (from :pages)
                (offset offset)
                (limit pageSize))))))
