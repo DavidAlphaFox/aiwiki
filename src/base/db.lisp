@@ -3,13 +3,23 @@
   (:use :cl)
   (:import-from :aiwiki.config
                 :config)
-  (:import-from :datafly
-                :*connection*
-                :connect-cached)
-  (:export :connection-settings
-           :db
-           :with-connection
-           :with-transaction))
+  (:import-from
+   :datafly
+   :*connection*
+   :connect-cached
+   :retrieve-all
+   :retrieve-one
+   :execute)
+  (:export
+   :connection-settings
+   :db
+   :with-connection
+   :with-transaction
+   :fetch-one
+   :fetch-all
+   :execute-transaction
+   ))
+
 (in-package :aiwiki.db)
 
 (defun connection-settings (&optional (db :maindb))
@@ -26,3 +36,17 @@
   `(let ((*connection* ,conn))
      (cl-dbi:with-transaction *connection*
        ,@body)))
+
+(defmacro fetch-one (conn &body body)
+  `(with-transaction ,conn
+     (retrieve-one ,@body)))
+(defmacro fetch-all (conn &body body)
+  `(with-transaction ,conn
+     (retrieve-all ,@body)))
+
+(defmacro execute-transaction (conn &body body)
+  (let ((g (gensym)))
+    (defparameter g nil)
+    `(with-transaction ,conn
+       (setf ,g (execute ,@body)))
+    g))

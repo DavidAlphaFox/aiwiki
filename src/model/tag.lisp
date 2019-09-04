@@ -6,13 +6,12 @@
   (:import-from
    :aiwiki.db
    :db
-   :with-connection
-   :with-transaction)
+   :fetch-all
+   :execute-transaction
+   )
   (:import-from
    :datafly
-   :execute
-   :retrieve-all
-   :retrieve-one)
+   :execute)
   (:export
    :create-tag-table
    :add-tag
@@ -31,15 +30,14 @@
           (title :type 'text :not-null t :unique t))))))
 
 (defun add-tag (title)
-  (with-transaction (db)
-    (execute
-     (insert-into :tags
-       (set= :title title)
-       ))))
+  (execute-transaction
+   (db)
+   (insert-into :tags
+     (set= :title title)
+     (returning :id))))
 
 (defun all-tags ()
-  (with-transaction (db)
-    (retrieve-all
-     (select (:id :title)
-       (from :tags)
-       ))))
+  (fetch-all
+      (db)
+    (select (:id :title)
+      (from :tags))))
