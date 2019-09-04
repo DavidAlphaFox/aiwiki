@@ -22,7 +22,6 @@
 
 (defun create-tables ()
   "Create all tables, if they don't exist already."
-  (create-tag-table)
   (create-user-table)
   (create-page-table))
 

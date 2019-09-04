@@ -45,8 +45,5 @@
      (retrieve-all ,@body)))
 
 (defmacro execute-transaction (conn &body body)
-  (let ((g (gensym)))
-    (defparameter g nil)
-    `(with-transaction ,conn
-       (setf ,g (execute ,@body)))
-    g))
+  `(with-transaction ,conn
+     (execute ,@body)))
