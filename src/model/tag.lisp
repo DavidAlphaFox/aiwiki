@@ -7,8 +7,7 @@
    :aiwiki.db
    :db
    :fetch-all
-   :fetch-one
-   )
+   :fetch-one)
   (:export
    :add-tag
    :all-tags))
