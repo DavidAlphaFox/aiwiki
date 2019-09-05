@@ -19,7 +19,7 @@ CREATE UNIQUE INDEX tags_title_key ON tags(title);
 CREATE TABLE IF NOT EXISTS page_tags(
   id BIGSERIAL PRIMARY KEY,
   page_id BIGINT,
-  tag_id BIGINT,
+  tag_id BIGINT
 );
 
 CREATE UNIQUE INDEX page_tag_key on page_tags(page_id,tag_id);
