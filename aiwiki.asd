@@ -43,11 +43,9 @@
                          (:module "model"
                           :depends-on ("base")
                           :components
-                          ((:file "user")
-                           (:file "page")
-                           (:file "tag")
-                           (:file "package" :depends-on ("user" "page" "tag"))
-                           ))
+                          ((:file "page")
+                           (:file "link")
+                           (:file "tag")))
                          (:module "web"
                           :depends-on ("base" "model")
                           :components

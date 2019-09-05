@@ -11,7 +11,7 @@
    :fetch-all)
   (:export
    :page-by-title
-   :pages-with-brief
+   :pages-with-intro
    :total-pages
    ))
 
@@ -25,16 +25,16 @@
        (from :pages)
        (where (:= :title title)))))
 
-(defun pages-with-brief (pageIndex pageSize)
-  (let ( (offset (* (- pageIndex 1) pageSize)))
-    (with-connection (db)
-      (retrieve-all
-       (select (:id :title :brief)
-               (from :pages)
-               (offset offset)
-               (limit pageSize))))))
+(defun pages-with-intro (pageIndex pageSize)
+  (let ( (pageOffset (* (- pageIndex 1) pageSize)))
+    (fetch-all (db)
+      (select (:id :title :intro)
+        (from :pages)
+        (offset pageOffset)
+        (limit pageSize)))))
 
 (defun total-pages ()
-  (select
-   (:as (:count :id) :total)
-   (from :pages)))
+  (fetch-one (db)
+    (select
+        (:as (:count :id) :total)
+      (from :pages))))
