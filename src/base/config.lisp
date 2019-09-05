@@ -37,6 +37,8 @@
   '())
 ;; #. reader macro 可以让我们在
 ;; 编译阶段直接执行，而不是等到运行期间
+;; 编译的时候直接将(package-name *package*)替换成 aiwiki.config
+;; 如果放到运行时，就会根据所在的*package*进行动态的获取
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))
 
