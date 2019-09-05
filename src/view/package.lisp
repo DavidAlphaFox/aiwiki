@@ -1,15 +1,14 @@
 (in-package :cl-user)
 
-(defpackage aiwiki.web
+(defpackage aiwiki.view
   (:use
    :cl
    :caveman2
-   :aiwiki.web.user
-   :aiwiki.web.page)
+   :aiwiki.view.index)
   (:export
-   :*web*
-   ))
-(in-package aiwiki.web)
+   :*web*))
+
+(in-package aiwiki.view)
 ;;
 ;; Application
 
@@ -18,44 +17,7 @@
 (clear-routing-rules *web*)
 (syntax:use-syntax :annot)
 
-(defroute "/" ()
-  (get-index))
-
-(defroute "/login" ()
-  (get-login))
-
-(defroute ("/login" :method :post) ()
-  (post-login))
-
-(defroute "/logout" ()
-  (get-logout))
-
-(defroute "/register" ()
-  (get-register))
-
-(defroute ("/register" :method :post) ()
-  (post-register))
-;; pages
-
-(defroute "/page/:title" (&key title)
-  (get-page title))
-
-(defroute "/page/:title/:number" (&key title number)
-  (get-version-page title number))
-
-(defroute "/add_page" ()
-  (get-add-page))
-
-(defroute ("/add_page" :method :post) ()
-  (post-add-page))
-
-
-(defroute "/page_edit/:title" (&key title)
-  (get-edit-page title))
-
-(defroute ("/page_edit/:title" :method :post) (&key title)
-  (post-edit-page title))
-
+(defroute "/" () (action-index))
 ;;
 ;; Error pages
 

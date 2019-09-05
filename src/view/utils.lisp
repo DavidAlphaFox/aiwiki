@@ -1,23 +1,15 @@
 (in-package :cl-user)
-(defpackage aiwiki.web.utils
+(defpackage aiwiki.view.utils
   (:use
    :cl
    :caveman2
-   :aiwiki.view
-   :datafly
-   :sxql)
+   :aiwiki.base.view)
   (:export
    :get-request-parameter
    :request-parameter-with-default
-   :login
-   :logout
-   :logged-in-p
-   :must-be-logged-out
-   :must-be-logged-in
    :parse-markdown-page))
-(in-package :aiwiki.web.utils)
 
-
+(in-package :aiwiki.view.utils)
 
 ;;
 ;; Utils
@@ -30,34 +22,6 @@
 (defun get-request-parameter (parameter)
   "Get a parameter from the request body"
   (cdr (assoc parameter (request-parameters *request*) :test #'string=)))
-
-
-
-(defun login (username)
-  "Log a user in"
-  (setf (gethash :username *session*) username))
-
-(defun logout ()
-  "Log a user out"
-  (setf (gethash :username *session*) nil))
-
-(defun logged-in-p ()
-  "Check if a user is currently logged in, return the username"
-  (gethash :username *session*))
-
-(defmacro must-be-logged-out (&body body)
-  "If user is logged in, return a rendered HTML page with an error message, else elavuate body"
-  `(if (logged-in-p)
-       (render #P "error.html" (list :username (logged-in-p)
-                                     :messages '("You are already logged in. Please log out first")))
-       (progn ,@body)))
-
-(defmacro must-be-logged-in (&body body)
-  "If user isn't logged in, return a rendered HTML page with an error message, else evaluate body"
-  `(if (logged-in-p)
-       (progn ,@body)
-       (render #P "error.html" (list :username (logged-in-p)
-                                     :messages '("You must be logged in to do that")))))
 
 ;; wiki
 

@@ -1,12 +1,13 @@
 (in-package :cl-user)
+
 (defpackage aiwiki
   (:use :cl)
-  (:import-from :aiwiki.config
-                :config)
-  (:import-from :clack
-                :clackup)
-  (:import-from :aiwiki.model
-                :create-tables)
+  (:import-from
+   :aiwiki.base.config
+   :config)
+  (:import-from
+   :clack
+   :clackup)
   (:export :start
            :stop))
 (in-package :aiwiki)

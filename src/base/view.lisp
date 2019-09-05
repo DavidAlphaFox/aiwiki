@@ -1,21 +1,29 @@
 (in-package :cl-user)
-(defpackage aiwiki.view
+(defpackage aiwiki.base.view
   (:use :cl)
-  (:import-from :aiwiki.config
-                :*template-directory*)
-  (:import-from :caveman2
-                :*response*
-                :response-headers)
-  (:import-from :djula
-                :add-template-directory
-                :compile-template*
-                :render-template*
-                :*djula-execute-package*)
-  (:import-from :datafly
-                :encode-json)
-  (:export :render
-           :render-json))
-(in-package :aiwiki.view)
+  (:import-from
+   :aiwiki.base.config
+   :*template-directory*)
+  (:import-from
+   :caveman2
+   :*response*
+   :response-headers)
+  (:import-from
+   :djula
+   :add-template-directory
+   :compile-template*
+   :render-template*
+   :*djula-execute-package*)
+  (:import-from
+   :datafly
+   :encode-json)
+  (:export
+   :render
+   :render-json))
+
+(in-package :aiwiki.base.view)
+
+(setf djula:*djula-execute-package* (find-package :aiwiki.base.view))
 
 (djula:add-template-directory *template-directory*)
 
@@ -33,19 +41,3 @@
 (defun render-json (object)
   (setf (getf (response-headers *response*) :content-type) "application/json")
   (encode-json object))
-
-
-;;
-;; Execute package definition
-
-(defpackage aiwiki.djula
-  (:use :cl)
-  (:import-from :aiwiki.config
-                :config
-                :appenv
-                :developmentp
-                :productionp)
-  (:import-from :caveman2
-                :url-for))
-
-(setf djula:*djula-execute-package* (find-package :aiwiki.djula))

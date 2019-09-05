@@ -3,7 +3,7 @@
 (defpackage aiwiki.model.link
   (:use :cl :sxql)
   (:import-from
-   :aiwiki.db
+   :aiwiki.base.db
    :db
    :fetch-one
    :fetch-all)
@@ -14,6 +14,7 @@
    ))
 
 (in-package :aiwiki.model.link)
+
 (defun add-link (title url summary)
   (fetch-one (db)
     (insert-into :links

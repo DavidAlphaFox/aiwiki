@@ -47,9 +47,8 @@
                   :depends-on ("base" "model")
                   :components
                   ((:file "utils")
-                   (:file "user")
-                   (:file "page")
-                   (:file "package" :depends-on ("user" "page"))
+                   (:file "index")
+                   (:file "package" :depends-on ("index" "utils"))
                    ))
                  (:file "main" :depends-on ("base" "model" "view"))
                  )))

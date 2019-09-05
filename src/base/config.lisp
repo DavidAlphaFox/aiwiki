@@ -1,17 +1,20 @@
 (in-package :cl-user)
-(defpackage aiwiki.config
+(defpackage aiwiki.base.config
   (:use :cl)
-  (:import-from :envy
-                :config-env-var
-                :defconfig)
-  (:export :config
-           :*application-root*
-           :*static-directory*
-           :*template-directory*
-           :appenv
-           :developmentp
-           :productionp))
-(in-package :aiwiki.config)
+  (:import-from
+   :envy
+   :config-env-var
+   :defconfig)
+  (:export
+   :config
+   :*application-root*
+   :*static-directory*
+   :*template-directory*
+   :appenv
+   :developmentp
+   :productionp))
+
+(in-package :aiwiki.base.config)
 
 (setf (config-env-var) "APP_ENV")
 

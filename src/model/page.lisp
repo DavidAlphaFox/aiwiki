@@ -5,7 +5,7 @@
 (defpackage aiwiki.model.page
   (:use :cl :sxql)
   (:import-from
-   :aiwiki.db
+   :aiwiki.base.db
    :db
    :fetch-one
    :fetch-all)

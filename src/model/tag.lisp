@@ -4,7 +4,7 @@
 (defpackage aiwiki.model.tag
   (:use :cl :sxql)
   (:import-from
-   :aiwiki.db
+   :aiwiki.base.db
    :db
    :fetch-all
    :fetch-one)

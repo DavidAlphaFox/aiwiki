@@ -1,8 +1,8 @@
 (in-package :cl-user)
-(defpackage aiwiki.db
+(defpackage aiwiki.base.db
   (:use :cl)
   (:import-from
-   :aiwiki.config
+   :aiwiki.base.config
    :config)
   (:import-from
    :datafly
@@ -21,7 +21,7 @@
    :execute-transaction
    ))
 
-(in-package :aiwiki.db)
+(in-package :aiwiki.base.db)
 
 (defun connection-settings (&optional (db :maindb))
   (cdr (assoc db (config :databases))))
