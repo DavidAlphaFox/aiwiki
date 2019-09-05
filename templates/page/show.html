@@ -1,0 +1,22 @@
+{% extends "layouts/default.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="section">
+  <div class="container">
+    <div class="tile">
+      <div class="tile is-8 is-vertical is-parent">
+        <div class="box">
+          <div class="media">
+            <article class="media-content">
+              <h1 class="title is-1">{{title}}</h1>
+              <p class="subtitle is-6">更新于{{published_at | date }} {{published_at | time}}</p>
+              <div class="content">{{content|safe}}</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

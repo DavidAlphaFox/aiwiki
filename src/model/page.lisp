@@ -11,8 +11,10 @@
    :fetch-all)
   (:export
    :page-by-title
+   :page-by-id
    :pages-with-intro
    :total-pages
+   :add-page
    ))
 
 (in-package :aiwiki.model.page)
@@ -24,6 +26,22 @@
      (select :*
        (from :pages)
        (where (:= :title title)))))
+
+(defun page-by-id (id)
+  (fetch-one (db)
+    (select :*
+      (from :pages)
+      (where (:= :id id)))))
+
+(defun add-page (title intro content)
+  (fetch-one (db)
+    (insert-into :pages
+      (set=
+       :title title
+       :intro intro
+       :content content)
+      (returning :id))))
+
 
 (defun pages-with-intro (pageIndex pageSize)
   (let ( (pageOffset (* (- pageIndex 1) pageSize)))

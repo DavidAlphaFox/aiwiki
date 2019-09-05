@@ -3,8 +3,7 @@
 (defpackage aiwiki.view
   (:use
    :cl
-   :caveman2
-   :aiwiki.view.index)
+   :caveman2)
   (:export
    :*web*))
 
@@ -17,7 +16,8 @@
 (clear-routing-rules *web*)
 (syntax:use-syntax :annot)
 
-(defroute "/" () (action-index))
+(defroute "/" () (aiwiki.view.index:action-index))
+(defroute "/page/:id/:title" (&key id title) (aiwiki.view.page:action-show id title))
 ;;
 ;; Error pages
 
