@@ -35,12 +35,13 @@
 
 (defconfig |test|
   '())
-
+;; #. reader macro 可以让我们在
+;; 编译阶段直接执行，而不是等到运行期间
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))
 
 (defun appenv ()
-  (uiop:getenv (config-env-var #.(package-name *package*))))
+  (uiop:getenv #.(config-env-var (package-name *package*))))
 
 (defun developmentp ()
   (string= (appenv) "development"))

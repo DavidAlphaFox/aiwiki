@@ -12,19 +12,16 @@
                :caveman2
                :envy
                :cl-ppcre
-							 :quri
+               :quri
                :uiop
-							 :woo
+               :woo
                ;; for @route annotation
                :cl-syntax-annot
-
-
                ;; HTML Template
                :djula
-
                ;; for DB
                :datafly
-							 :sxql
+               :sxql
                ;; Password hashing
                :cl-pass
                ;; Markdown
@@ -34,27 +31,27 @@
   :components ((:module "src"
                 :serial t
                 :components
-                        ((:module "base"
-                          :components
-                          ((:file "config")
-                           (:file "view" :depends-on ("config"))
-                           (:file "db" :depends-on ("config"))
-                           ))
-                         (:module "model"
-                          :depends-on ("base")
-                          :components
-                          ((:file "page")
-                           (:file "link")
-                           (:file "tag")))
-                         (:module "web"
-                          :depends-on ("base" "model")
-                          :components
-                          ((:file "utils")
-                           (:file "user")
-                           (:file "page")
-                           (:file "package" :depends-on ("user" "page"))
-                           ))
-                         (:file "main" :depends-on ("base" "model" "web"))
-                        )))
+                ((:module "base"
+                  :components
+                  ((:file "config")
+                   (:file "view" :depends-on ("config"))
+                   (:file "db" :depends-on ("config"))
+                   ))
+                 (:module "model"
+                  :depends-on ("base")
+                  :components
+                  ((:file "page")
+                   (:file "link")
+                   (:file "tag")))
+                 (:module "view"
+                  :depends-on ("base" "model")
+                  :components
+                  ((:file "utils")
+                   (:file "user")
+                   (:file "page")
+                   (:file "package" :depends-on ("user" "page"))
+                   ))
+                 (:file "main" :depends-on ("base" "model" "view"))
+                 )))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))

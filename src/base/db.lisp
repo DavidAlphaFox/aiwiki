@@ -1,8 +1,9 @@
 (in-package :cl-user)
 (defpackage aiwiki.db
   (:use :cl)
-  (:import-from :aiwiki.config
-                :config)
+  (:import-from
+   :aiwiki.config
+   :config)
   (:import-from
    :datafly
    :*connection*

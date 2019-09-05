@@ -9,6 +9,8 @@
    :fetch-all)
   (:export
    :add-link
+   :fetch-links
+   :total-links
    ))
 
 (in-package :aiwiki.model.link)
@@ -19,7 +21,7 @@
             :url url
             :summary summary
             )
-      (return :id))))
+      (returning :id))))
 
 (defun fetch-links (pageIndex pageSize)
   (let ( (pageOffset (* (- pageIndex 1) pageSize)))
