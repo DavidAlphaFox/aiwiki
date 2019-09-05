@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS pages (
   intro TEXT,
   content TEXT,
   published BOOLEAN DEFAULT false,
-  published_date TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'UTC')
+  published_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'UTC')
 );
 CREATE UNIQUE INDEX pages_title_key ON pages(title);
 
@@ -23,3 +23,13 @@ CREATE TABLE IF NOT EXISTS page_tags(
 );
 
 CREATE UNIQUE INDEX page_tag_key on page_tags(page_id,tag_id);
+
+CREATE TABLE IF NOT EXISTS links (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  summary TEXT,
+  url TEXT,
+  published_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'UTC')
+);
+
+CREATE UNIQUE INDEX links_title_key on links(title);

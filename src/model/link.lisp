@@ -20,4 +20,17 @@
             :summary summary
             )
       (return :id))))
-(defun)
+
+(defun fetch-links (pageIndex pageSize)
+  (let ( (pageOffset (* (- pageIndex 1) pageSize)))
+    (fetch-all (db)
+      (select (:id :title :url :summary)
+        (from :links)
+        (offset pageOffset)
+        (limit pageSize)))))
+
+(defun total-links ()
+  (fetch-one (db)
+    (select
+        (:as (:count :id) :total)
+      (from :links))))
