@@ -5,8 +5,8 @@
    :caveman2
    :aiwiki.base.view)
   (:export
-   :get-request-parameter
-   :request-parameter-with-default
+   :fetch-request-parameter
+   :fetch-request-parameter-with-default
    :parse-markdown-page))
 
 (in-package :aiwiki.view.utils)
@@ -14,12 +14,12 @@
 ;;
 ;; Utils
 
-(defun request-parameter-with-default (parameter defaultValue)
+(defun fetch-request-parameter-with-default (parameter defaultValue)
   (let ((matched (assoc parameter (request-parameters *request*) :test #'string=)))
-    (cond ((= matched nil) defaultValue)
+    (cond ((equal matched nil) defaultValue)
           (t (cdr matched)))))
 
-(defun get-request-parameter (parameter)
+(defun fetch-request-parameter (parameter)
   "Get a parameter from the request body"
   (cdr (assoc parameter (request-parameters *request*) :test #'string=)))
 
