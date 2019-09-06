@@ -3,7 +3,7 @@
   (:use
    :cl
    :caveman2
-   :aiwiki.base.view
+   :aiwiki.utils.view
    :aiwiki.utils.request
    :aiwiki.model.tag
    :aiwiki.model.page)
@@ -49,5 +49,5 @@
 (defun action-index ()
   (let ((tags (load-tags))
          (pages (load-pages)))
-    (render #P"index.html"
+    (render-view #P"index.html"
             (list :pages pages :tags tags))))

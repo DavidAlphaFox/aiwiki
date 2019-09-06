@@ -3,7 +3,7 @@
   (:use
    :cl
    :caveman2
-   :aiwiki.base.view
+   :aiwiki.utils.view
    :aiwiki.utils.markdown
    :aiwiki.model.page)
   (:export
@@ -16,4 +16,4 @@
 
 (defun action-show (id title)
   (let ((page (page-by-id id)))
-    (render #P"page/show.html" (parse-page page))))
+    (render-view #P"page/show.html" (parse-page page) )))

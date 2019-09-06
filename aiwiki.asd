@@ -43,12 +43,14 @@
                   :components
                   ((:file "page")
                    (:file "link")
-                   (:file "tag")))
+                   (:file "tag")
+                   (:file "site")))
                  (:module "utils"
                   :depends-on ("base")
                   :components
                   ((:file "request")
-                   (:file "markdown")))
+                   (:file "markdown")
+                   (:file "view")))
                  (:module "view"
                   :depends-on ("base" "model" "utils")
                   :components
