@@ -3,17 +3,13 @@
 {% block content %}
 <div class="section">
   <div class="container">
-    <div class="tile">
-      <div class="tile is-8 is-vertical is-parent">
-        <div class="box">
-          <div class="media">
-            <article class="media-content">
-              <h1 class="title is-1">{{title}}</h1>
-              <p class="subtitle is-6">更新于{{published-at | date }} {{published-at | time}}</p>
-              <div class="content">{{content|safe}}</div>
-            </article>
-          </div>
-        </div>
+    <div class="tile is-ancestor">
+      <div class="tile is-8 is-vertical">
+        <h1 class="title is-1">{{title}}</h1>
+        <br/>
+        <p class="subtitle is-6"><span>发布于：</span>{{published-at | date }}</p>
+        <br/>
+        <div class="content">{{content|safe}}</div>
       </div>
     </div>
   </div>

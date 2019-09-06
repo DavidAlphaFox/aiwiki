@@ -6,19 +6,15 @@
 {% block content %}
 <section class="section">
   {% for page in pages %}
-  <a class="box" href="{{ page.url  }}">
+  <a class="box" href="{{ page.url }}" target="_blank">
     <article class="media">
       <div class="media-content">
         <div class="content">
           <p>
-            <h1><strong>{{ page.title  }}</strong></h1>
-            <h2> {{ page.intro }} </h2>
+            <strong>{{ page.title  }}</strong>
+            <br>
+            {{ page.intro }}
           </p>
-        </div>
-        <div class="tags are-medium">
-          <span class="tag is-normal">Normal</span>
-          <span class="tag is-normal">Normal</span>
-          <span class="tag is-normal">Normal</span>
         </div>
       </div>
     </article>

@@ -27,6 +27,7 @@
                ;; Markdown
                :3bmd
                :3bmd-ext-wiki-links
+               :3bmd-ext-code-blocks
                )
   :components ((:module "src"
                 :serial t
