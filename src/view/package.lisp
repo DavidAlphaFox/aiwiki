@@ -23,6 +23,6 @@
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app))
-  (merge-pathnames #P"_errors/404.html"
+  (merge-pathnames #P"errors/404.html"
                    *template-directory*))
 

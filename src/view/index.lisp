@@ -4,7 +4,7 @@
    :cl
    :caveman2
    :aiwiki.base.view
-   :aiwiki.view.utils
+   :aiwiki.utils.request
    :aiwiki.model.tag
    :aiwiki.model.page)
   (:export
@@ -36,8 +36,8 @@
 
 
 (defun load-pages ()
-  (let ((pageIndex (fetch-request-parameter-with-default "pageIndex" "1"))
-        (pageSize (fetch-request-parameter-with-default "pageSize" "10")))
+  (let ((pageIndex (fetch-parameter-with-default "pageIndex" "1"))
+        (pageSize (fetch-parameter-with-default "pageSize" "10")))
     (gen-pages (pages-with-intro
                 (parse-integer pageIndex)
                 (parse-integer pageSize)))))

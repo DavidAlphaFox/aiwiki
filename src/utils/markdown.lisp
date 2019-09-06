@@ -1,27 +1,11 @@
 (in-package :cl-user)
-(defpackage aiwiki.view.utils
+(defpackage aiwiki.utils.markdown
   (:use
-   :cl
-   :caveman2
-   :aiwiki.base.view)
+   :cl)
   (:export
-   :fetch-request-parameter
-   :fetch-request-parameter-with-default
-   :parse-markdown-page))
+   :parse-page))
 
-(in-package :aiwiki.view.utils)
-
-;;
-;; Utils
-
-(defun fetch-request-parameter-with-default (parameter defaultValue)
-  (let ((matched (assoc parameter (request-parameters *request*) :test #'string=)))
-    (cond ((equal matched nil) defaultValue)
-          (t (cdr matched)))))
-
-(defun fetch-request-parameter (parameter)
-  "Get a parameter from the request body"
-  (cdr (assoc parameter (request-parameters *request*) :test #'string=)))
+(in-package :aiwiki.utils.markdown)
 
 ;; wiki
 
@@ -32,12 +16,9 @@
       (format stream "<a href=\"/page/~a\">~a</a>" encode-target formatted-target))
     ))
 
-(defun parse-markdown-page (page)
+(defun parse-page (page)
   (let* ((3bmd-wiki:*wiki-links* t)
          (3bmd-wiki:*wiki-processor* :fsw)
          (content (with-output-to-string (out)
                     (3bmd:parse-string-and-print-to-stream (getf page :content) out))))
     (list* :content content page)))
-
-
-

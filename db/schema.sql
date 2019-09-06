@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS tags (
   enabled BOOLEAN DEFAULT true
 );
 CREATE UNIQUE INDEX tags_title_key ON tags(title);
-
+s
 CREATE TABLE IF NOT EXISTS page_tags(
   id BIGSERIAL PRIMARY KEY,
   page_id BIGINT,
@@ -33,3 +33,30 @@ CREATE TABLE IF NOT EXISTS links (
 );
 
 CREATE UNIQUE INDEX links_title_key on links(title);
+/*
+  utm_source ttalk.im
+  utm_campaign Tech Talk
+  utm_medium website
+*/
+CREATE TABLE IF NOT EXISTS site (
+  id int,
+  utm_source VARCHAR(255),
+  utm_campaign VARCHAR(255),
+  utm_medium VARCHAR(255),
+  brand VARCHAR(255),
+  intro VARCHAR(255),
+  header TEXT,
+  footer TEXT
+);
+INSERT INTO site (id,utm_source, utm_campaign, utm_medium, brand, intro, header, footer)
+VALUES ( 1,
+       'ttalk.im',
+       'Tech Talk',
+       'website',
+       'Tech Talk',
+       '',
+       '',
+       '<div class="content has-text-centered">
+         <p><strong>Tech Talk</strong> by <a href="https://github.com/DavidAlphaFox">David Gao</a></p>
+        </div>'
+);

@@ -44,15 +44,19 @@
                   ((:file "page")
                    (:file "link")
                    (:file "tag")))
-                 (:module "view"
-                  :depends-on ("base" "model")
+                 (:module "utils"
+                  :depends-on ("base")
                   :components
-                  ((:file "utils")
-                   (:file "index")
+                  ((:file "request")
+                   (:file "markdown")))
+                 (:module "view"
+                  :depends-on ("base" "model" "utils")
+                  :components
+                  ((:file "index")
                    (:file "page")
-                   (:file "package" :depends-on ("index" "page" "utils"))
+                   (:file "package" :depends-on ("index" "page"))
                    ))
-                 (:file "main" :depends-on ("base" "model" "view"))
+                 (:file "main" :depends-on ("base" "model" "utils" "view"))
                  )))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))
