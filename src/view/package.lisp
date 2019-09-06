@@ -16,8 +16,8 @@
 (clear-routing-rules *web*)
 (syntax:use-syntax :annot)
 
-(defroute "/" () (aiwiki.view.index:action-index))
-(defroute "/page/:id/:title" (&key id title) (aiwiki.view.page:action-show id title))
+(defroute ("/" :method :GET) () (aiwiki.view.index:action-index))
+(defroute ("/page/:id/:title" :method :GET) (&key id title) (aiwiki.view.page:action-show id title))
 ;;
 ;; Error pages
 
