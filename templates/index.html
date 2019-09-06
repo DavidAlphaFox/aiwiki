@@ -4,7 +4,7 @@
 
 {% block title %}Welcome to AI Wiki{% endblock %}
 {% block content %}
-<section class="section">
+
   {% for page in pages %}
   <a class="box" href="{{ page.url }}" target="_blank">
     <article class="media">
@@ -21,7 +21,7 @@
   </a>
 
   {% endfor %}
-</section>
+
 {% if pages %}
 <section class="section">
   {% block pagination %}
