@@ -16,6 +16,7 @@
 
 (in-package :aiwiki.base.config)
 
+
 (setf (config-env-var) "APP_ENV")
 
 (defparameter *application-root*   (asdf:system-source-directory :aiwiki))
@@ -38,6 +39,7 @@
 
 (defconfig |test|
   '())
+
 ;; #. reader macro 可以让我们在
 ;; 编译阶段直接执行，而不是等到运行期间
 ;; 编译的时候直接将(package-name *package*)替换成 aiwiki.config
@@ -46,7 +48,7 @@
   (envy:config #.(package-name *package*) key))
 
 (defun appenv ()
-  (uiop:getenv #.(config-env-var (package-name *package*))))
+  (uiop:getenv (config-env-var #.(package-name *package*))))
 
 (defun developmentp ()
   (string= (appenv) "development"))
