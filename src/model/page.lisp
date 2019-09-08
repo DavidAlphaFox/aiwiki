@@ -43,16 +43,15 @@
       (returning :id))))
 
 
-(defun pages-with-intro (pageIndex pageSize)
-  (let ( (pageOffset (* (- pageIndex 1) pageSize)))
+(defun pages-with-intro (page-index page-size)
+  (let ( (page-offset (* (- page-index 1) page-size)))
     (fetch-all (db)
       (select (:id :title :intro)
         (from :pages)
-        (offset pageOffset)
-        (limit pageSize)))))
+        (offset page-offset)
+        (limit page-size)))))
 
 (defun total-pages ()
   (fetch-one (db)
-    (select
-        (:as (:count :id) :total)
+    (select ((:as (:count :id) :total))
       (from :pages))))

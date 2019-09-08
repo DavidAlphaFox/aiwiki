@@ -34,6 +34,6 @@
   :path #'static-path
   :root *static-directory*)
  (if (productionp) nil :accesslog)
- (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
+;; (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
  :session (if (productionp) nil #'wrap-trace-sql)
  *web*)

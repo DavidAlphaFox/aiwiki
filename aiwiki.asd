@@ -50,6 +50,7 @@
                   :components
                   ((:file "request")
                    (:file "markdown")
+                   (:file "pagination")
                    (:file "view")))
                  (:module "view"
                   :depends-on ("base" "model" "utils")

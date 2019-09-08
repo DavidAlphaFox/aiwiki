@@ -2,11 +2,14 @@
 (defpackage aiwiki.view.index
   (:use
    :cl
-   :caveman2
    :aiwiki.utils.view
    :aiwiki.utils.request
+   :aiwiki.utils.pagination
    :aiwiki.model.tag
    :aiwiki.model.page)
+  (:import-from
+   :caveman2
+   :throw-code)
   (:export
    :action-index))
 
@@ -15,39 +18,38 @@
 ;;
 ;; Routing rules
 
-(defun gen-tags (tags)
-  (loop for tag in tags
-        collect (list
-                 :title (getf tag :title)
-                 :url (format nil "/tag/~d/~a.html"
-                              (getf tag :id)
-                              (quri:url-encode (getf tag :title)))
-                 )))
 
-(defun gen-pages (pages)
-  (loop for page in pages
+(defun load-pages (page-index page-size)
+  (let ((pages (pages-with-intro page-index page-size)))
+    (loop for page in pages
         collect (list
                  :title (getf page :title)
                  :intro (getf page :intro)
                  :url (format nil "/page/~d/~a.html"
                               (getf page :id)
-                              (quri:url-encode (getf page :title))
+                              (quri:url-encode (getf page :title)))
                  ))))
-
-
-(defun load-pages ()
-  (let ((pageIndex (fetch-parameter-with-default "pageIndex" "1"))
-        (pageSize (fetch-parameter-with-default "pageSize" "10")))
-    (gen-pages (pages-with-intro
-                (parse-integer pageIndex)
-                (parse-integer pageSize)))))
 
 (defun load-tags ()
   (let ((tags (all-tags)))
-    (gen-tags tags)))
+      (loop for tag in tags
+        collect (list
+                 :title (getf tag :title)
+                 :url (format nil "/tag/~d/~a.html"
+                              (getf tag :id)
+                              (quri:url-encode (getf tag :title)))
+                 ))))
+
+
 
 (defun action-index ()
-  (let ((tags (load-tags))
-         (pages (load-pages)))
-    (render-view #P"index.html"
-            (list :pages pages :tags tags))))
+  (handler-case
+      (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
+             (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
+             (total (getf (total-pages) :total))
+             (tags (load-tags))
+             (pages (load-pages page-index page-size))
+             (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=10")))
+        (render-view #P"index.html"
+                     (list :pages pages :tags tags :pagers pagination))))
+  (error (c) (throw-code 500)))
