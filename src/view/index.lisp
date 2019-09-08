@@ -44,6 +44,7 @@
 
 (defun action-index ()
   (handler-case
+      (progn
       (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
              (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
              (total (getf (total-pages) :total))
@@ -51,5 +52,7 @@
              (pages (load-pages page-index page-size))
              (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=10")))
         (render-view #P"index.html"
-                     (list :pages pages :tags tags :pagers pagination))))
-  (error (c) (throw-code 500)))
+                     (list :pages pages :tags tags :pagers pagination)))))
+  (error (c)
+         (format t "We caught a condition.~&")
+         (throw-code 500)))

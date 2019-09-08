@@ -7,10 +7,12 @@
   (:import-from
    :datafly
    :*connection*
-   :connect-cached
    :retrieve-all
    :retrieve-one
    :execute)
+  (:import-from
+   :cl-dbi
+   :connect-cached)
   (:export
    :connection-settings
    :db

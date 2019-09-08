@@ -16,7 +16,10 @@
    :aiwiki.base.config
    :config
    :productionp
-   :*static-directory*))
+   :*static-directory*)
+  (:import-from
+   :caveman2
+   :throw-code))
 (in-package :aiwiki.app)
 
 (defun static-path (path)
@@ -29,11 +32,12 @@
          (let ((datafly:*trace-sql* t)) ;; 如果非生产环境提供sql的追踪
            (funcall app env))))
 
+;; (if (productionp) nil :accesslog)
+;; `(:backtrace :result-on-error ,(lambda (c) (throw-code 500)))
+;; (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
+;; :session (if (productionp) nil #'wrap-trace-sql)
 (builder
  (:static
   :path #'static-path
   :root *static-directory*)
- (if (productionp) nil :accesslog)
-;; (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
- :session (if (productionp) nil #'wrap-trace-sql)
  *web*)
