@@ -33,11 +33,12 @@
            (funcall app env))))
 
 ;; (if (productionp) nil :accesslog)
-;; `(:backtrace :result-on-error ,(lambda (c) (throw-code 500)))
-;; (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
-;; :session (if (productionp) nil #'wrap-trace-sql)
+
+
 (builder
  (:static
   :path #'static-path
   :root *static-directory*)
+ (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
+ :session (if (productionp) nil #'wrap-trace-sql)
  *web*)
