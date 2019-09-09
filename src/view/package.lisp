@@ -22,7 +22,9 @@
 
 (defmacro with-uncaught-handler (&body body)
   `(handler-case ,@body
-     (t (c) (throw-code 500))))
+     (t (c)
+       (format t "~a~&" c)
+       (throw-code 500))))
 
 (defmacro with-response-format (formatter response-list)
   (let ((cond-response-list

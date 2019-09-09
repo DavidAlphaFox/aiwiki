@@ -22,6 +22,8 @@
                ;; for DB
                :datafly
                :sxql
+               :cl-dbi
+               :dbd-postgres
                ;; Password hashing
                :cl-pass
                ;; Markdown
