@@ -39,6 +39,7 @@
   (with-uncaught-handler (aiwiki.view.index:index-html)))
 
 (defroute ("/pages.json" :method :GET) () (aiwiki.view.page:index-json))
+(defroute ("/pages/create.json" :method :POST) () (aiwiki.view.page:create-json))
 (defroute ("/pages/:id/:title.:formatter" :method :GET) (&key id title formatter)
   (with-uncaught-handler
     (with-response-format formatter

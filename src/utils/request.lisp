@@ -20,4 +20,3 @@
 (defun fetch-parameter (parameter)
   "Get a parameter from the request body"
   (cdr (assoc parameter (request-parameters *request*) :test #'string=)))
-
