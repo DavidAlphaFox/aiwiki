@@ -7,13 +7,18 @@
    :aiwiki.utils.markdown
    :aiwiki.model.page)
   (:export
-   :action-show))
+   :show-html
+   :show-json))
 
 (in-package :aiwiki.view.page)
 
 ;;
 ;; Routing rules
 
-(defun action-show (id title)
+(defun show-html (id title)
   (let ((page (page-by-id id)))
     (render-view #P"page/show.html" (parse-page page))))
+
+(defun show-json (id title)
+  (let ((page (page-by-id id)))
+    (render-json page)))
