@@ -21,7 +21,7 @@
 ;;(syntax:use-syntax :annot)
 
 (defmacro with-uncaught-handler (&body body)
-  `(handler-case (progn ,@body)
+  `(handler-case ,@body
      (t (c) (throw-code 500))))
 
 (defmacro with-response-format (formatter response-list)
@@ -30,11 +30,11 @@
                 on response-list
                 by #'cddr
                 collect `((string-equal (string ,expect-formatter) ,formatter) ,express))))
-       `(cond ,@cond-response-list)))
+    `(cond ,@cond-response-list
+           (t (caveman2:throw-code 500)))))
 
 (defroute ("/" :method :GET) ()
- ;; (with-uncaught-handler
-    (aiwiki.view.index:action-index))
+  (with-uncaught-handler (aiwiki.view.index:index-html)))
 
 (defroute ("/pages/:id/:title.:formatter" :method :GET) (&key id title formatter)
   (with-uncaught-handler

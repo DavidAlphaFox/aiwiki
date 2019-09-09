@@ -24,7 +24,8 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-    `(:databases ((:maindb :postgres
+    `(:debug t
+      :databases ((:maindb :postgres
                    :database-name "ttalk"
                    :username "david"
                    :host "127.0.0.1"
