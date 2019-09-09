@@ -21,6 +21,7 @@
    :fetch-one
    :fetch-all
    :execute-transaction
+   :fetch-pagination
    ))
 
 (in-package :aiwiki.base.db)
@@ -50,3 +51,12 @@
 (defmacro execute-transaction (conn &body body)
   `(with-transaction ,conn
      (execute ,@body)))
+
+(defmacro fetch-pagination (ptable pcols pindex psize)
+  (let ((poffset (gensym)))
+    `(let ((,poffset (* (- ,pindex 1) ,psize)))
+       (fetch-all (db)
+         (sxql:select ,pcols
+           (sxql:from ,ptable)
+           (sxql:offset ,poffset)
+           (sxql:limit ,psize))))))

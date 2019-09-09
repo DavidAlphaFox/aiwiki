@@ -8,11 +8,13 @@
    :aiwiki.base.db
    :db
    :fetch-one
-   :fetch-all)
+   :fetch-all
+   :fetch-pagination)
   (:export
    :page-by-title
    :page-by-id
    :pages-with-intro
+   :pages-only-title
    :total-pages
    :add-page
    ))
@@ -42,16 +44,14 @@
        :content content)
       (returning :id))))
 
-
-(defun pages-with-intro (page-index page-size)
-  (let ( (page-offset (* (- page-index 1) page-size)))
-    (fetch-all (db)
-      (select (:id :title :intro)
-        (from :pages)
-        (offset page-offset)
-        (limit page-size)))))
-
 (defun total-pages ()
   (fetch-one (db)
     (select ((:as (:count :id) :total))
       (from :pages))))
+
+
+(defun pages-with-intro (page-index page-size)
+  (fetch-pagination :pages '(:id :title :intro) page-index page-size))
+
+(defun pages-only-title (page-index page-size)
+  (fetch-pagination :pages '(:id :title) page-index page-size))
