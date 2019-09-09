@@ -16,4 +16,4 @@
 
 (defun action-show (id title)
   (let ((page (page-by-id id)))
-    (render-view #P"page/show.html" (parse-page page) )))
+    (render-view #P"page/show.html" (parse-page page))))

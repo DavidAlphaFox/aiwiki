@@ -22,23 +22,19 @@
    :throw-code))
 (in-package :aiwiki.app)
 
-(defun static-path (path)
-  (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
-      path
-      nil))
-
-(defun wrap-trace-sql (app)
-  (lambda (env)
-         (let ((datafly:*trace-sql* t)) ;; 如果非生产环境提供sql的追踪
-           (funcall app env))))
-
-;; (if (productionp) nil :accesslog)
-
 
 (builder
  (:static
-  :path #'static-path
+  :path(lambda (path)
+         (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
+             path
+             nil))
   :root *static-directory*)
+ (if (productionp) nil :accesslog)
  (if (getf (config) :error-log) `(:backtrace :output ,(getf (config) :error-log)) nil)
- :session (if (productionp) nil #'wrap-trace-sql)
+ :session (if (productionp) nil
+              (lambda (app)
+                (lambda (env)
+                  (let ((datafly:*trace-sql* t)) ;; 如果非生产环境提供sql的追踪
+                    (funcall app env)))))
  *web*)

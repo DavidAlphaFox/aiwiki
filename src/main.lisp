@@ -24,7 +24,7 @@
       (restart-server ()
         :report "Restart the server"
         (stop))))
-  (setf *handler* (apply #'clackup *appfile-path* (list* :use-default-middlewares nil args))))
+  (setf *handler* (apply #'clackup *appfile-path* args)))
 
 (defun stop ()
   (prog1

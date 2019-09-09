@@ -20,13 +20,16 @@
 (clear-routing-rules *web*)
 ;;(syntax:use-syntax :annot)
 
-(defmacro with-exception-handler (&body body)
-  `(handler-case ,@body
+(defmacro with-uncaught-handler (&body body)
+  `(handler-case (progn ,@body)
      (t (c) (throw-code 500))))
 
 
-(defroute ("/" :method :GET) () (with-exception-handler (aiwiki.view.index:action-index)))
-(defroute ("/page/:id/:title" :method :GET) (&key id title) (aiwiki.view.page:action-show id title))
+(defroute ("/" :method :GET) ()
+  (with-uncaught-handler
+      (aiwiki.view.index:action-index)
+    ))
+(defroute ("/page/:id/:title.html" :method :GET) (&key id title) (aiwiki.view.page:action-show id title))
 
 ;;
 ;; Error pages
