@@ -26,11 +26,11 @@
     (render-json (list* :pages pages total) )))
 
 (defun create-json ()
-  (let* ((title (fetch-parameter "title"))
-         (intro (fetch-parameter "intro"))
-         (content (fetch-parameter "content"))
-         (result (add-page title intro content)))
-    (render-json result)))
+  (let* ((body (fetch-json-body))
+         (title (assoc "title" body))
+         (intro (assoc "intro" body))
+         (content (assoc "content" body)))
+    (render-json body)))
 
 (defun show-html (id title)
   (let ((page (page-by-id id)))

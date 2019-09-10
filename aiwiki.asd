@@ -15,6 +15,7 @@
                :quri
                :uiop
                :woo
+               :flexi-streams
                ;; for @route annotation
                :cl-syntax-annot
                ;; HTML Template
