@@ -49,10 +49,12 @@
 ;; Error pages
 (defmethod on-exception ((app <web>) (code (eql 500)))
   (declare (ignore app code))
+  (setf (getf (response-headers *response*) :content-type) "text/html")
   (merge-pathnames #P"errors/500.html"
                    aiwiki.base.config:*template-directory*))
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app code))
+  (setf (getf (response-headers *response*) :content-type) "text/html")
   (merge-pathnames #P"errors/404.html"
                    aiwiki.base.config:*template-directory*))

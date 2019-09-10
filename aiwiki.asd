@@ -21,6 +21,7 @@
                :djula
                ;; for DB
                :datafly
+               :cl-json
                :sxql
                :cl-dbi
                :dbd-postgres
