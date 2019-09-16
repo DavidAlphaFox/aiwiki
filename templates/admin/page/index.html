@@ -1,0 +1,15 @@
+
+{% extends "layouts/admin.html" %}
+
+{% block content %}
+{% for page in pages %}
+
+{% endfor %}
+{% if pages %}
+<section class="section">
+  {% block pagination %}
+  {{ block.super  }}
+  {% endblock %}
+</section>
+{% endif %}
+{% endblock %}

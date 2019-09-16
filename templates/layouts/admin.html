@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
-    </head>
-    <body>
-        <div id="main">
-            {% if username %}
-            Welcome {{username}}! <a href="/logout">Log out</a>
-            {% else %}
-            <a href="/login">Please log in</a> or <a href="/register">register</a>.
-            {% endif %}
-            <p><a href="/add_page">Add a new page</a></p>
-            <p><a href="/">Go back home</a>
-                {% if messages %}
-                <div id="messages">
-                    {% for message in messages %}
-                    <p> {{message}} </p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                {% block content %}{% endblock %}
-        </div>
-    </body>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>管理后台</title>
+  <link href="https://cdn.bootcss.com/bulma/0.7.5/css/bulma.min.css" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+  <nav class="navbar is-primary has-shadow" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">{{site.brand}}</a>
+    </div>
+  </nav>
+  <div class="section">
+    <div class="columns">
+      <div class="column is-one-fifth">
+        {% block sidebar %} {% endblock %}
+      </div>
+      <div class="column">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    {{site.footer | safe}}
+  </footer>
+</body>
 </html>

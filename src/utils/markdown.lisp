@@ -21,4 +21,4 @@
          (3bmd-wiki:*wiki-processor* :fsw)
          (content (with-output-to-string (out)
                     (3bmd:parse-string-and-print-to-stream (getf page :content) out))))
-    (list* :content content page)))
+    (list* :rendered-content content page)))

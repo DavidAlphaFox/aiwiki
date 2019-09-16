@@ -61,7 +61,8 @@
                   :components
                   ((:file "index")
                    (:file "page")
-                   (:file "package" :depends-on ("index" "page"))
+                   (:file "page-admin")
+                   (:file "package" :depends-on ("index" "page" "page-admin"))
                    ))
                  (:file "main" :depends-on ("base" "model" "utils" "view"))
                  )))
