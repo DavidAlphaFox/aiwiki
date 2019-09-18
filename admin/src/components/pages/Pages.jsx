@@ -1,7 +1,7 @@
 import React from 'react';
 import * as R from 'ramda';
 import * as RxOp from 'rxjs/operators';
-
+import { Link } from 'react-router-dom';
 import {
   getPages,
 } from '../../common/api';
@@ -55,6 +55,7 @@ function Pages() {
     <tr key={R.prop('id', item)}>
       <td className="has-text-centered">{R.prop('id', item)}</td>
       <td className="has-text-centered">{R.prop('title', item)} </td>
+      <td className="has-text-centered"><Link to={`/admin/pages/${R.prop('id', item)}`}> 编辑 </Link> </td>
     </tr>
   ));
   return (
@@ -66,6 +67,7 @@ function Pages() {
               <tr>
                 <th className="has-text-centered">文章ID</th>
                 <th className="has-text-centered">文章标题</th>
+                <th className="has-text-centered">操作</th>
               </tr>
             </thead>
             <tbody>
