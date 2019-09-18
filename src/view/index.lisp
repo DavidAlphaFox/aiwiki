@@ -45,4 +45,4 @@
          (pages (load-pages page-index page-size))
          (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=10")))
     (render-view #P"index.html"
-                 (list :pages pages :tags tags :pagers pagination))))
+                 (list :index t :pages pages :tags tags :pagers pagination))))

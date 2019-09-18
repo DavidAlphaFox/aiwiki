@@ -15,6 +15,7 @@
     </div>
   </nav>
   <div class="section">
+    {% if index %}
     <div class="columns">
       <div class="column">
         {% block content %}{% endblock %}
@@ -23,6 +24,13 @@
         {% block sidebar %} {% endblock %}
       </div>
     </div>
+    {% else %}
+    <div class="columns is-centered">
+        <div class="column is-three-quarters">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    {% endif %}
   </div>
   <footer class="footer">
     {{site.footer | safe}}

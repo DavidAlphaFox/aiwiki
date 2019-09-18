@@ -48,6 +48,8 @@
 
 (defroute ("/admin/pages/:id" :method :GET) (&key id title)
   (with-uncaught-handler (aiwiki.view.page-admin:show-html id title)))
+(defroute ("/admin/pages/:id" :method :POST) (&key id title)
+  (with-uncaught-handler (aiwiki.view.page-admin:show-html id title)))
 
 ;; Error pages
 (defmethod on-exception ((app <web>) (code (eql 500)))
