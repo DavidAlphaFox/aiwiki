@@ -23,6 +23,7 @@
                ;; for DB
                :datafly
                :cl-json
+               :jose
                :sxql
                :cl-dbi
                :dbd-postgres
