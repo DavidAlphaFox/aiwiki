@@ -8,7 +8,7 @@
    :aiwiki.model.tag
    :aiwiki.model.page)
   (:export
-   :index-html))
+   :index))
 
 (in-package :aiwiki.view.index)
 
@@ -37,7 +37,7 @@
 
 
 
-(defun index-html ()
+(defun index ()
   (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
          (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
          (total (getf (total-pages) :total))

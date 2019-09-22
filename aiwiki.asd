@@ -61,11 +61,13 @@
                   :depends-on ("base" "model" "utils")
                   :components
                   ((:file "index")
-                   (:file "page")
-                   (:file "page-admin")
-                   (:file "package" :depends-on ("index" "page" "page-admin"))
-                   ))
-                 (:file "main" :depends-on ("base" "model" "utils" "view"))
+                   (:file "page")))
+                 (:module "api"
+                  :depends-on ("base" "model" "utils")
+                  :components
+                  ((:file "page")))
+                 (:file "app" :depends-on ("view" "api"))
+                 (:file "main" :depends-on ("app"))
                  )))
   :description ""
   :in-order-to ((test-op (load-op aiwiki-test))))

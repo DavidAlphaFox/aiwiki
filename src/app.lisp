@@ -1,6 +1,6 @@
 (in-package :cl-user)
 
-(defpackage aiwiki.view
+(defpackage aiwiki.app
   (:use
    :cl
    :caveman2)
@@ -11,7 +11,7 @@
   (:export
    :*web*))
 
-(in-package aiwiki.view)
+(in-package aiwiki.app)
 ;;
 ;; Application
 
@@ -34,22 +34,20 @@
                 collect `((string-equal (string ,expect-formatter) ,formatter) ,express))))
     `(cond ,@cond-response-list
            (t (caveman2:throw-code 500)))))
+;; api
+(defroute ("/api/pages.json" :method :GET) () (aiwiki.api.page:index))
+(defroute ("/api/pages/:id.json" :method :GET) (&key id) (aiwiki.api.page:show id))
 
-(defroute ("/" :method :GET) ()
-  (with-uncaught-handler (aiwiki.view.index:index-html)))
+;; pages
 
-(defroute ("/api/pages.json" :method :GET) () (aiwiki.view.page:index-json))
-(defroute ("/pages/create.json" :method :POST) () (aiwiki.view.page:create-json))
 (defroute ("/pages/:id/:title.:formatter" :method :GET) (&key id title formatter)
   (with-uncaught-handler
     (with-response-format formatter
-      (:json (aiwiki.view.page:show-json id title)
-       :html (aiwiki.view.page:show-html id title)))))
+      (:html (aiwiki.view.page:show id title)))))
 
-(defroute ("/admin/pages/:id" :method :GET) (&key id title)
-  (with-uncaught-handler (aiwiki.view.page-admin:show-html id title)))
-(defroute ("/admin/pages/:id" :method :POST) (&key id title)
-  (with-uncaught-handler (aiwiki.view.page-admin:show-html id title)))
+(defroute ("/" :method :GET) () (with-uncaught-handler (aiwiki.view.index:index)))
+
+
 
 ;; Error pages
 (defmethod on-exception ((app <web>) (code (eql 500)))

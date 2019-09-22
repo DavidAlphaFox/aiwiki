@@ -1,3 +1,4 @@
+
 (in-package :cl-user)
 
 (defpackage aiwiki
@@ -18,10 +19,12 @@
    :scan
    :regex-replace)
   (:import-from
-   :aiwiki.view
+   :aiwiki.app
    :*web*)
-  (:export :start
-           :stop))
+  (:export
+   :start
+   :stop))
+
 (in-package :aiwiki)
 
 ;;(defvar *appfile-path*
