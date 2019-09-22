@@ -2,10 +2,11 @@ import React from 'react';
 import * as R from 'ramda';
 import * as RxOp from 'rxjs/operators';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   genHandleRemoteData,
+  genHandlePagerAction,
 } from '../../actions/pagesAction';
 
 import {
@@ -20,12 +21,15 @@ import {
   getPages,
 } from '../../common/api';
 
+import {
+  Pager,
+} from '../pager';
 
 const propsPath = [
-  ['pages','pageIndex'],
+  ['pages', 'pageIndex'],
   ['pages', 'pageSize'],
   ['pages', 'total'],
-  ['pages','pages'],
+  ['pages', 'pages'],
 ];
 
 function Pages() {
@@ -35,12 +39,15 @@ function Pages() {
     pageSize,
     total,
     pages,
-  ] = reduxSelect(useSelector,propsPath);
+  ] = reduxSelect(useSelector, propsPath);
+
   const handleRemoteData = genHandleRemoteData(dispatch);
+  const handlePager = genHandlePagerAction(dispatch);
 
   const requestParams = useObservable(event$ => event$.pipe(
     RxOp.map(([pageIndex, pageSize]) => ({ pageIndex, pageSize }))
   ), [1, 10], [pageIndex, pageSize]);
+
   React.useEffect(() => {
     if (requestParams === null) return;
     getPages(requestParams).subscribe(res => handleRemoteData(res))
@@ -55,7 +62,7 @@ function Pages() {
   return (
     <div className="section">
       <div className="columns is-centered">
-        <div className="column is-half">
+        <div className="column">
           <table className="table is-bordered is-fullwidth">
             <thead>
               <tr>
@@ -70,7 +77,20 @@ function Pages() {
           </table>
         </div>
       </div>
+      <div className="columns is-centered">
+        <div className="column">
+          <Pager
+            total={total}
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            goPrev={() => handlePager(-1)}
+            goNext={() => handlePager(1)}
+          />
+        </div>
+ 
+      </div>
     </div>
+
   );
 }
 
