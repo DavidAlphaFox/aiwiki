@@ -2,51 +2,45 @@ import React from 'react';
 import * as R from 'ramda';
 import * as RxOp from 'rxjs/operators';
 import { Link } from 'react-router-dom';
-import {
-  getPages,
-} from '../../common/api';
+import { useSelector, useDispatch} from 'react-redux';
 
 import {
-  actionReducer,
+  genHandleRemoteData,
+} from '../../actions/pagesAction';
+
+import {
+  reduxSelect
 } from '../../common/functional';
 
 import {
   useObservable,
-} from '../../common/hooks';
+} from '../../common/hooks'
 
-const initialState = {
-  pageIndex: 1,
-  pageSize: 10,
-  total: 0,
-  pages: [],
-};
+import {
+  getPages,
+} from '../../common/api';
 
-const canGoNext = state => {
-  const total = R.prop('total', state);
-  const fetched = R.prop('pageIndex', state) * R.prop('pageSize', state);
-  return (fetched < total);
-};
 
-const canGoPrev = state => {
-  const pageIndex = R.prop('pageIndex', state);
-  return pageIndex <= 1;
-};
-
-const genHandleRemoteData = R.curry((dispatch, data) => dispatch(R.mergeLeft(
-  R.pick(['total', 'pages'], data)
-)));
-
-const genHandlePagerAction = R.curry((dispatch, incr) => dispatch(
-  R.over(R.lensProp('pageIndex'), s => s + incr)
-));
+const propsPath = [
+  ['pages','pageIndex'],
+  ['pages', 'pageSize'],
+  ['pages', 'total'],
+  ['pages','pages'],
+];
 
 function Pages() {
-  const [state, dispatch] = React.useReducer(actionReducer, initialState);
+  const dispatch = useDispatch();
+  const [
+    pageIndex,
+    pageSize,
+    total,
+    pages,
+  ] = reduxSelect(useSelector,propsPath);
   const handleRemoteData = genHandleRemoteData(dispatch);
-  const handlePagerAction = genHandlePagerAction(dispatch);
+
   const requestParams = useObservable(event$ => event$.pipe(
     RxOp.map(([pageIndex, pageSize]) => ({ pageIndex, pageSize }))
-  ), [1, 10], [state.pageIndex, state.pageSize]);
+  ), [1, 10], [pageIndex, pageSize]);
   React.useEffect(() => {
     if (requestParams === null) return;
     getPages(requestParams).subscribe(res => handleRemoteData(res))
@@ -71,7 +65,7 @@ function Pages() {
               </tr>
             </thead>
             <tbody>
-              {renderTable(state.pages)}
+              {renderTable(pages)}
             </tbody>
           </table>
         </div>
