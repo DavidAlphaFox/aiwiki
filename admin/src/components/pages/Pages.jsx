@@ -52,6 +52,7 @@ function Pages() {
     if (requestParams === null) return;
     getPages(requestParams).subscribe(res => handleRemoteData(res))
   }, [requestParams]);
+
   const renderTable = R.map((item) => (
     <tr key={R.prop('id', item)}>
       <td className="has-text-centered">{R.prop('id', item)}</td>
