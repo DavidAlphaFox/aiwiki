@@ -9,6 +9,7 @@
    :db
    :fetch-one
    :fetch-all
+   :execute-transaction
    :fetch-pagination)
   (:export
    :page-by-title
@@ -43,8 +44,16 @@
        :intro intro
        :content content)
       (returning :id))))
+
 (defun update-page (id title intro content publish)
-  )
+  (execute-transaction (db)
+    (update :pages
+      (set= :title title)
+      (set= :intro intro)
+      (set= :content content)
+      (set= :publish publish)
+      (where (:= :id id)))))
+
 (defun total-pages ()
   (fetch-one (db)
     (select ((:as (:count :id) :total))
