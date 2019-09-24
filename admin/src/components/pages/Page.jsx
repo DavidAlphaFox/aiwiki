@@ -27,6 +27,9 @@ const genHandleRemoteData = R.curry((dispatch, data) => dispatch(
     R.set(R.lensProp('loading'), false)
   )));
 const genStartLoading = dispatch => () => dispatch(R.set(R.lensProp('loading'), true));
+const genHandleField = R.curry((dispatch,field,data) => dispatch(
+  R.set(R.lensPath(['page',field]), data)
+));
 
 function Page(props) {
   const {
@@ -36,6 +39,8 @@ function Page(props) {
 
   const handleRemoteData = genHandleRemoteData(dispatch);
   const startLoading = genStartLoading(dispatch);
+  const handleField = genHandleField(dispatch);
+  console.log(state.page);
   React.useEffect(() => {
     if (params === null || params === undefined) return;
     startLoading();
@@ -56,13 +61,25 @@ function Page(props) {
         <div className="field">
           <label className="label">文章标题</label>
           <div className="control">
-            <input className="input" type="text" placeholder="文章标题" value={page.title} />
+            <input
+              className="input"
+              type="text"
+              placeholder="文章标题"
+              onChange={e => handleField('title',e.target.value) }
+              value={page.title}
+            />
           </div>
         </div>
         <div className="field">
           <label className="label">文章简介</label>
           <div className="control">
-            <textarea rows="3" className="textarea" type="text" placeholder="文章简介" value={page.intro} />
+            <textarea
+              rows="3"
+              className="textarea"
+              type="text"
+              placeholder="文章简介"
+              onChange={e => handleField('intro',e.target.value)}
+              value={page.intro} />
           </div>
         </div>
         <div className="field" >
@@ -79,7 +96,7 @@ function Page(props) {
                 link: true, // 链接
                 code: true, // 代码块p
               }}
-              onChange={(val) => val}
+              onChange={val => handleField('content',val)}
               value={page.content}
             />
           </div>
@@ -87,7 +104,11 @@ function Page(props) {
         <div className="filed ">
           <div className="control">
             <label className="checkbox">
-              <input type="checkbox" value={page.published} />
+              <input
+                type="checkbox"
+                onChange={e => handleField('published',e.currentTarget.checked)}
+                value={page.published}
+              />
               发布
             </label>
           </div>
@@ -98,7 +119,7 @@ function Page(props) {
 
   return (
     <div>
-      <nav className="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <nav className="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
         <div className="navbar-menu">
           <Link className="navbar-item" to="/admin/pages" >
             返回总览
