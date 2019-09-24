@@ -2,6 +2,7 @@ import React from 'react';
 import * as R from 'ramda';
 import { Link } from 'react-router-dom';
 import Editor from 'for-editor';
+
 import {
   actionReducer,
 } from '../../common/functional';
@@ -9,6 +10,8 @@ import {
 import {
   getPage,
 } from '../../common/api';
+
+import './Page.scss';
 
 const initialState = {
   page: {
@@ -84,7 +87,7 @@ function Page(props) {
         </div>
         <div className="field" >
           <label className="label">文章内容</label>
-          <div className="control">
+          <div className="control markdown">
             <Editor
               toolbar={{
                 preview: true,
@@ -107,7 +110,7 @@ function Page(props) {
               <input
                 type="checkbox"
                 onChange={e => handleField('published',e.currentTarget.checked)}
-                value={page.published}
+                value={page.published ? true : false}
               />
               发布
             </label>

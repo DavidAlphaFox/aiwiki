@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+textarea {
+  resize: none
+}
+.markdown pre {
+  font-size: inherit;
+}
