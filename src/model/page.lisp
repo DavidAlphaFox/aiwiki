@@ -43,7 +43,8 @@
        :intro intro
        :content content)
       (returning :id))))
-
+(defun update-page (id title intro content publish)
+  )
 (defun total-pages ()
   (fetch-one (db)
     (select ((:as (:count :id) :total))

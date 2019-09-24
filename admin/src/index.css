@@ -12,9 +12,3 @@ code {
     monospace;
 }
 
-textarea {
-  resize: none
-}
-.markdown pre {
-  font-size: inherit;
-}
