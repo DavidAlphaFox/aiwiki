@@ -24,3 +24,20 @@
 (defun show (id)
   (let ((page (page-by-id id)))
     (render-json page)))
+
+(defun create ()
+  (let* ((body (fetch-json-body))
+         (title (assoc "title" body))
+         (intro (assoc "intro" body))
+         (content (assoc "content" body)))
+    (render-json body)))
+
+
+(defun update ()
+  (let* ((body (fetch-json-body))
+         (id (assoc "id" body))
+         (title (assoc "title" body))
+         (intro (assoc "intro" body))
+         (content (assoc "content" body)))
+
+  ))
