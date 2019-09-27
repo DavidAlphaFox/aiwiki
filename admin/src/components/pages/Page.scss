@@ -1,6 +1,12 @@
-textarea {
-  resize: none
+
+markdown .textarea {
+  resize: none;
 }
+
+.markdown textarea {
+  resize: none;
+}
+
 .markdown pre {
   font-size: inherit;
 }

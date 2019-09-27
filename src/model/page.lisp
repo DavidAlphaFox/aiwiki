@@ -10,7 +10,8 @@
    :fetch-one
    :fetch-all
    :execute-transaction
-   :fetch-pagination)
+   :fetch-pagination
+   :to-db-boolean)
   (:export
    :page-by-title
    :page-by-id
@@ -18,6 +19,7 @@
    :pages-only-title
    :total-pages
    :add-page
+   :update-page
    ))
 
 (in-package :aiwiki.model.page)
@@ -45,13 +47,13 @@
        :content content)
       (returning :id))))
 
-(defun update-page (id title intro content publish)
+(defun update-page (id title intro content published)
   (execute-transaction (db)
     (update :pages
-      (set= :title title)
-      (set= :intro intro)
-      (set= :content content)
-      (set= :publish publish)
+      (set= :title title
+            :intro intro
+            :content content
+            :published (to-db-boolean published))
       (where (:= :id id)))))
 
 (defun total-pages ()

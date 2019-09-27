@@ -20,5 +20,7 @@
   (let* ((3bmd-wiki:*wiki-links* t)
          (3bmd-wiki:*wiki-processor* :fsw)
          (content (with-output-to-string (out)
-                    (3bmd:parse-string-and-print-to-stream (getf page :content) out))))
+                    (let ((3bmd-code-blocks:*code-blocks* t)
+                          (3bmd:*smart-quotes* t))
+                      (3bmd:parse-string-and-print-to-stream (getf page :content) out)))))
     (list* :rendered-content content page)))

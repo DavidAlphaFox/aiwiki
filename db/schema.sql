@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS pages (
   id BIGSERIAL PRIMARY KEY,
-  title VARCHAR(255),
+  title VARCHAR(255) NOT NULL,
   intro TEXT,
   content TEXT,
   published BOOLEAN DEFAULT false,

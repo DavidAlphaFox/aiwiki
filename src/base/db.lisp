@@ -22,6 +22,7 @@
    :fetch-all
    :execute-transaction
    :fetch-pagination
+   :to-db-boolean
    ))
 
 (in-package :aiwiki.base.db)
@@ -60,3 +61,6 @@
            (sxql:from ,ptable)
            (sxql:offset ,poffset)
            (sxql:limit ,psize))))))
+
+(defun to-db-boolean (v)
+  (if (eq t v) "true" "false"))

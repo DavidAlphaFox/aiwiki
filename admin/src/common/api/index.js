@@ -5,6 +5,7 @@ import {
 import {
   getPages,
   getPage,
+  updatePage,
 } from './pageApi';
 
 export {
@@ -12,4 +13,5 @@ export {
   doRequest,
   getPages,
   getPage,
+  updatePage,
 };

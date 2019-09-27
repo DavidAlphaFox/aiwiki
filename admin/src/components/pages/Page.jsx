@@ -9,6 +9,7 @@ import {
 
 import {
   getPage,
+  updatePage,
 } from '../../common/api';
 
 import './Page.scss';
@@ -21,18 +22,24 @@ const initialState = {
     published: false,
     content: '',
   },
+  commited: null,
   loading: false,
 };
 
+const pageLens = R.lensProp('page');
+const loadingLens = R.lensProp('loading');
+const commitedLens = R.lensProp('commited');
+
 const genHandleRemoteData = R.curry((dispatch, data) => dispatch(
   R.pipe(
-    R.set(R.lensProp('page'), data),
-    R.set(R.lensProp('loading'), false)
+    R.set(pageLens, data),
+    R.set(loadingLens, false)
   )));
-const genStartLoading = dispatch => () => dispatch(R.set(R.lensProp('loading'), true));
+const genStartLoading = dispatch => () => dispatch(R.set(loadingLens, true));
 const genHandleField = R.curry((dispatch,field,data) => dispatch(
   R.set(R.lensPath(['page',field]), data)
 ));
+const genHandleCommit = dispatch => () => dispatch(s => R.set(commitedLens,R.view(pageLens,s),s));
 
 function Page(props) {
   const {
@@ -43,13 +50,47 @@ function Page(props) {
   const handleRemoteData = genHandleRemoteData(dispatch);
   const startLoading = genStartLoading(dispatch);
   const handleField = genHandleField(dispatch);
-  console.log(state.page);
+  const handleCommit = genHandleCommit(dispatch);
   React.useEffect(() => {
     if (params === null || params === undefined) return;
     startLoading();
     getPage(params.id).subscribe(res => handleRemoteData(res));
   }, [params]);
-
+  React.useEffect(() => {
+    const commited = R.view(commitedLens,state);
+    if(commited === null) return;
+    startLoading();
+    updatePage(commited.id,commited).subscribe(res => handleRemoteData(res));
+  },[state.commited])
+  const renderNav = () => {
+    const {
+      loading,
+      page,
+    } = state;
+    if (loading) {
+       return null;
+    }
+    return (
+      <div className="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <button
+              className="button is-primary"
+              onClick={e => handleCommit()}
+            >
+              { page.published ? '保存更改' : '存为草稿'}
+            </button>
+            <button
+              className="button is-light"
+              onClick={e => handleField('published', !page.published)}
+            >
+              { page.published ? '取消发布' : '发布'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
   const renderPage = () => {
     const {
       loading,
@@ -75,7 +116,7 @@ function Page(props) {
         </div>
         <div className="field">
           <label className="label">文章简介</label>
-          <div className="control">
+          <div className="control markdown">
             <textarea
               rows="3"
               className="textarea"
@@ -104,18 +145,6 @@ function Page(props) {
             />
           </div>
         </div>
-        <div className="filed ">
-          <div className="control">
-            <label className="checkbox">
-              <input
-                type="checkbox"
-                onChange={e => handleField('published',e.currentTarget.checked)}
-                value={page.published ? true : false}
-              />
-              发布
-            </label>
-          </div>
-        </div>
       </div>
     );
   };
@@ -124,9 +153,10 @@ function Page(props) {
     <div>
       <nav className="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
         <div className="navbar-menu">
-          <Link className="navbar-item" to="/admin/pages" >
-            返回总览
-        </Link>
+          <div className="navbar-start">
+            <Link className="navbar-item" to="/admin/pages" > 返回总览 </Link>
+          </div>
+          {renderNav()}
         </div>
       </nav>
       <div className="section">

@@ -37,6 +37,7 @@
 ;; api
 (defroute ("/api/pages.json" :method :GET) () (aiwiki.api.page:index))
 (defroute ("/api/pages/:id.json" :method :GET) (&key id) (aiwiki.api.page:show id))
+(defroute ("/api/pages/:id.json" :method :POST) (&key id) (aiwiki.api.page:update id))
 
 ;; pages
 
