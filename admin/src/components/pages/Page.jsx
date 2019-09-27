@@ -12,6 +12,10 @@ import {
   updatePage,
 } from '../../common/api';
 
+import {
+  Navbar,
+} from '../nav';
+
 import './Page.scss';
 
 const initialState = {
@@ -151,14 +155,12 @@ function Page(props) {
 
   return (
     <div>
-      <nav className="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
-        <div className="navbar-menu">
-          <div className="navbar-start">
-            <Link className="navbar-item" to="/admin/pages" > 返回总览 </Link>
-          </div>
-          {renderNav()}
+      <Navbar>
+        <div className="navbar-start">
+          <Link className="navbar-item" to="/admin/pages" > 返回总览 </Link>
         </div>
-      </nav>
+        {renderNav()}
+      </Navbar>
       <div className="section">
         {renderPage()}
       </div>

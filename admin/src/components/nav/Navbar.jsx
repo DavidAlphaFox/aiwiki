@@ -1,10 +1,22 @@
-import Rect from 'react';
+import React from 'react';
+import clsx from 'clsx';
 
 function Navbar(props) {
-  const { children: childrenProp, className } = props;
+  const {
+    children: childrenProp,
+    shadow = true,
+    fixed = true,
+  } = props;
   const children = React.Children.toArray(childrenProp);
   return (
-    <nav className="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav
+      className={clsx("navbar", {
+        'has-shadow': shadow,
+        'is-fixed-top': fixed,
+      })}
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-menu">
         {children}
       </div>

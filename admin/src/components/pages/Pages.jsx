@@ -22,6 +22,11 @@ import {
 } from '../../common/api';
 
 import {
+  Navbar,
+  AdminAction,
+} from '../nav';
+
+import {
   Pager,
 } from '../pager';
 
@@ -61,6 +66,10 @@ function Pages() {
     </tr>
   ));
   return (
+    <div>
+      <Navbar fixed={false}>
+        <AdminAction  />
+      </Navbar>
     <div className="section">
       <div className="columns is-centered">
         <div className="column">
@@ -88,10 +97,9 @@ function Pages() {
             goNext={() => handlePager(1)}
           />
         </div>
- 
       </div>
     </div>
-
+    </div>
   );
 }
 
