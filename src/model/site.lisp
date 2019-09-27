@@ -16,7 +16,7 @@
 
 (defun fetch-site ()
   (fetch-one (db)
-             (select (:brand :intro :header :footer)
+             (select (:brand :intro :keywords :header :footer)
                      (from :site))))
 (defun fetch-utm ()
   (fetch-one (db)

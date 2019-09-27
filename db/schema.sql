@@ -45,16 +45,18 @@ CREATE TABLE IF NOT EXISTS site (
   utm_medium VARCHAR(255),
   brand VARCHAR(255),
   intro VARCHAR(255),
+  keywords VARCHAR(255),
   header TEXT,
   footer TEXT
 );
-INSERT INTO site (id,utm_source, utm_campaign, utm_medium, brand, intro, header, footer)
+INSERT INTO site (id,utm_source, utm_campaign, utm_medium, brand, intro,keywords, header, footer)
 VALUES ( 1,
        'ttalk.im',
        'Tech Talk',
        'website',
        'Tech Talk',
        '',
+       '这是一个在全栈工程师的博客,Teach Talk,ttalk,ttalk.im',
        '',
        '<div class="content has-text-centered">
          <p><strong>Tech Talk</strong> by <a href="https://github.com/DavidAlphaFox">David Gao</a></p>
