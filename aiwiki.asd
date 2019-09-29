@@ -51,6 +51,7 @@
                   ((:file "page")
                    (:file "link")
                    (:file "tag")
+                   (:file "user")
                    (:file "site")))
                  (:module "utils"
                   :depends-on ("base")

@@ -66,6 +66,6 @@ VALUES ( 1,
 CREATE TABLE IF NOT EXISTS users (
  id BIGSERIAL PRIMARY KEY,
  username VARCHAR(255) NOT NULL,
- password VARCHAR(255) NOT NULL,
+ password VARCHAR(255) NOT NULL
 );
 CREATE UNIQUE INDEX users_username_key on users(username);

@@ -28,4 +28,4 @@
      (insert-into :users
        (set= :username username
              :password (cl-pass:hash password))
-       (returing :id))))
+       (returning :id))))
