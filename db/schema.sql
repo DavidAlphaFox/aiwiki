@@ -39,7 +39,7 @@ CREATE UNIQUE INDEX links_title_key on links(title);
   utm_medium website
 */
 CREATE TABLE IF NOT EXISTS site (
-  id int,
+  id int PRIMARY KEY,
   utm_source VARCHAR(255),
   utm_campaign VARCHAR(255),
   utm_medium VARCHAR(255),
@@ -62,3 +62,10 @@ VALUES ( 1,
          <p><strong>Tech Talk</strong> by <a href="https://github.com/DavidAlphaFox">David Gao</a></p>
         </div>'
 );
+
+CREATE TABLE IF NOT EXISTS users (
+ id BIGSERIAL PRIMARY KEY,
+ username VARCHAR(255) NOT NULL,
+ password VARCHAR(255) NOT NULL,
+);
+CREATE UNIQUE INDEX users_username_key on users(username);

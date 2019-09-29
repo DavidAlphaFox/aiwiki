@@ -55,6 +55,7 @@
                   :depends-on ("base")
                   :components
                   ((:file "request")
+                   (:file "auth")
                    (:file "markdown")
                    (:file "pagination")
                    (:file "view")))
