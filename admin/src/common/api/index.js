@@ -2,6 +2,11 @@ import {
   defaultPipe,
   doRequest,
 } from './remoteApi';
+
+import {
+  login,
+} from './authApi';
+
 import {
   getPages,
   getPage,
@@ -11,6 +16,7 @@ import {
 export {
   defaultPipe,
   doRequest,
+  login,
   getPages,
   getPage,
   updatePage,
