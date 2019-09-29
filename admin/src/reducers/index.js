@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-  genActionTypeReducer
+  genActionTypeReducer,
 } from '../common/functional';
 
 import {
@@ -8,8 +8,14 @@ import {
   pagesInitialState,
 } from '../actions/pagesAction';
 
+import {
+  authActionType,
+  authInitialState,
+} from '../actions/authAction';
+
 const pagesReducer = genActionTypeReducer(pagesActionType, pagesInitialState);
-console.log(pagesReducer);
+const authReducer = genActionTypeReducer(authActionType, authInitialState);
 export default combineReducers({
   pages: pagesReducer,
+  auth: authReducer,
 });
