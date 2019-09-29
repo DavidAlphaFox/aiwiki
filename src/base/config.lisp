@@ -25,6 +25,7 @@
 
 (defconfig :common
     `(:debug t
+      :secret "my$ecret"
       :databases ((:maindb :postgres
                    :database-name "ttalk"
                    :username "david"

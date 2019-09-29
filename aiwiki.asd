@@ -23,11 +23,12 @@
                ;; for DB
                :datafly
                :cl-json
-               :jose
                :sxql
                :cl-dbi
                :dbd-postgres
                ;; Password hashing
+               :ironclad
+               :jose
                :cl-pass
                ;; Markdown
                :esrap

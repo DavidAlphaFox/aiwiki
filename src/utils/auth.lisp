@@ -3,25 +3,56 @@
   (:use
    :cl
    :caveman2)
+  (:import-from
+   :aiwiki.base.config
+   :config)
   (:export
    :must-be-logged-out
    :must-be-looged-in
    :authenticate-user
+   :gen-token
+   :get-claim
+   :login
+   :logout
    ))
 
 (in-package :aiwiki.utils.auth)
 
+
+(defun timestamp () (local-time:timestamp-to-unix (local-time:now)))
+
+(defun jose-secret ()
+  (ironclad:ascii-string-to-byte-array (config :secret)))
+
+(defun jose-expired ()
+  (let ((now (timestamp)))
+    (+ now 28800)))
+
+(defun gen-token (username)
+  (let* ((expired (jose-expired))
+         (claim `(("username" . ,username)
+                  ("expired" . ,expired)))
+         (secret (jose-secret))
+         (token (jose:encode :hs256 secret claim)))
+    token ))
+
+(defun get-claim (token)
+  (let* ((secret (jose-secret))
+         (now (timestamp))
+         (claim (jose:decode :hs256 secret token))
+         (expired (cdr (assoc "expired" claim :test #'string=)))
+         (diff (- now expired)))
+    diff))
+
 (defun logged-in-p ()
-  "Check if a user is currently logged in, return the username"
-  (gethash :username *session*))
+  (gethash :token *session*))
 
 (defun login (username)
-  "Log a user in"
-  (setf (gethash :username *session*) username))
+  (let ((token (gen-token username)))
+    (setf (gethash :token *session*) token)))
 
 (defun logout ()
-  "Log a user out"
-  (setf (gethash :username *session*) nil))
+  (setf (gethash :token *session*) nil))
 
 (defmacro must-be-logged-out (&body body)
   "If user is logged in, return a rendered HTML page with an error message, else elavuate body"
