@@ -28,6 +28,10 @@ const passwordLens = R.lensPath(['form','password']);
 const username = R.view(usernameLens);
 const password = R.view(passwordLens);
 
+const genStartLoading = dispatch => () => dispatch(R.set(loadingLens, true));
+const genHandleField = R.curry((dispatch,field,data) => dispatch(
+  R.set(R.lensPath(['form',field]), data)
+));
 
 function Login(props) {
   const { from } = props.location.state || { from: { pathname: "/admin/index" } };
@@ -35,9 +39,12 @@ function Login(props) {
     error,
     isAuthenticated,
   ] = reduxSelect(useSelector,propsPath);
-  const globalDispatcher = useDispatch();
-  const [state, localDispatcher] = React.useReducer(actionReducer,initialState);
-  
+  const globalDispatch = useDispatch();
+  const [state, localDispatch] = React.useReducer(actionReducer,initialState);
+  const startLoading = genStartLoading(localDispatch);
+  const handleField = genHandleField(localDispatch);
+  const handleCommit = () => console.log(state);
+
   if (isAuthenticated) return <Redirect to={from} />;
   return (
     <div className="section">
@@ -48,6 +55,7 @@ function Login(props) {
             <div className="control has-icons-left has-icons-right">
               <input
                 value={username(state)}
+                onChange={e => handleField('username',e.target.value)}
                 className={clsx('input',{'is-danger': error} )}
                 type="text"
                 placeholder="用户名"
@@ -62,6 +70,7 @@ function Login(props) {
             <div className="control has-icons-left has-icons-right">
               <input
                 value={password(state)}
+                onChange={e => handleField('password',e.target.value)}
                 className={clsx('input',{'is-danger': error} )}
                 type="password" placeholder="密码"
               />
@@ -72,7 +81,12 @@ function Login(props) {
           </div>
           <div className="field">
             <p className="control">
-              <button className="button is-success"> 登陆 </button>
+              <button
+                onClick={handleCommit}
+                className="button is-success"
+              >
+                登陆
+              </button>
             </p>
           </div>
         </div>
