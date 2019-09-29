@@ -42,7 +42,7 @@
          (claim (jose:decode :hs256 secret token))
          (expired (cdr (assoc "expired" claim :test #'string=)))
          (diff (- now expired)))
-    diff))
+    (if (< diff 0) claim nil)))
 
 (defun logged-in-p ()
   (gethash :token *session*))
