@@ -10,8 +10,6 @@
    :must-be-logged-out
    :must-be-looged-in
    :authenticate-user
-   :gen-token
-   :get-claim
    :login
    :logout
    ))
@@ -49,7 +47,8 @@
 
 (defun login (username)
   (let ((token (gen-token username)))
-    (setf (gethash :token *session*) token)))
+    (setf (gethash :token *session*) token)
+    token))
 
 (defun logout ()
   (setf (gethash :token *session*) nil))

@@ -35,6 +35,7 @@
     `(cond ,@cond-response-list
            (t (caveman2:throw-code 500)))))
 ;; api
+(defroute ("/api/login.json" :method :POST) () (aiwiki.api.auth:login))
 (defroute ("/api/pages.json" :method :GET) () (aiwiki.api.page:index))
 (defroute ("/api/pages/:id.json" :method :GET) (&key id) (aiwiki.api.page:show id))
 (defroute ("/api/pages/:id.json" :method :POST) (&key id) (aiwiki.api.page:update id))
