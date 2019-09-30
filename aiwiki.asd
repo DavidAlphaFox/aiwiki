@@ -16,6 +16,7 @@
                :uiop
                :woo
                :flexi-streams
+               :split-sequence
                ;; for @route annotation
                :cl-syntax-annot
                ;; HTML Template

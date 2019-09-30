@@ -21,11 +21,11 @@
 
   {% endfor %}
 
-{% if pages %}
-<section class="section">
-  {% block pagination %}
-  {{ block.super  }}
-  {% endblock %}
-</section>
-{% endif %}
+  {% if pages %}
+  <section class="section">
+    {% block pagination %}
+    {{ block.super  }}
+    {% endblock %}
+  </section>
+  {% endif %}
 {% endblock %}

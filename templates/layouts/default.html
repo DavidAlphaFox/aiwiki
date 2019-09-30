@@ -6,11 +6,15 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <meta name="description" content="{{site.intro}}" >
+    {% if not site.intro %}
+    <meta name="description" content="{% block intro %}{% endblock %}">
+    {% else %}
+    <meta name="description" content="{{site.intro}}{% block intro %}{% endblock %}" >
+    {% endif %}
     {% if not site.keywords %}
     <meta name="keywords" content="{% block keywords %}{% endblock %}">
     {% else %}
-    <meta name="keywords" content="{{site.keywords}},{% block keywords %} {% endblock %} ">
+    <meta name="keywords" content="{{site.keywords}}{% block keywords %}{% endblock %}">
     {% endif %}
     {{site.header | safe}}
     <title>{% block title %}{{site.brand}}{% endblock %}</title>

@@ -8,6 +8,9 @@
    :caveman2
    :<app>
    :throw-code)
+  (:import-from
+   :aiwiki.utils.auth
+   :must-be-logged-in)
   (:export
    :*web*))
 
@@ -36,9 +39,10 @@
            (t (caveman2:throw-code 500)))))
 ;; api
 (defroute ("/api/login.json" :method :POST) () (aiwiki.api.auth:login))
-(defroute ("/api/pages.json" :method :GET) () (aiwiki.api.page:index))
-(defroute ("/api/pages/:id.json" :method :GET) (&key id) (aiwiki.api.page:show id))
-(defroute ("/api/pages/:id.json" :method :POST) (&key id) (aiwiki.api.page:update id))
+(defroute ("/api/password.json" :method :POST) () (aiwiki.api.auth:update))
+(defroute ("/api/pages.json" :method :GET) () (must-be-logged-in (aiwiki.api.page:index)))
+(defroute ("/api/pages/:id.json" :method :GET) (&key id) (must-be-logged-in (aiwiki.api.page:show id)))
+(defroute ("/api/pages/:id.json" :method :POST) (&key id) (must-be-logged-in (aiwiki.api.page:update id)))
 
 ;; pages
 

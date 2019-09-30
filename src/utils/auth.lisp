@@ -7,11 +7,10 @@
    :aiwiki.base.config
    :config)
   (:export
-   :must-be-logged-out
-   :must-be-looged-in
+   :gen-token
+   :authenticated-user
    :authenticate-user
-   :login
-   :logout
+   :must-be-looged-in
    ))
 
 (in-package :aiwiki.utils.auth)
@@ -42,30 +41,20 @@
          (diff (- now expired)))
     (if (< diff 0) claim nil)))
 
-(defun logged-in-p ()
-  (gethash :token *session*))
+(defun authenticated ()
+  (handler-case
+      (let ((bearer (gethash "authorization" (request-headers *request*))))
+        (get-claim (cadr (split-sequence:split-sequence #\space bearer))))
+    (t (c) nil)))
 
-(defun login (username)
-  (let ((token (gen-token username)))
-    (setf (gethash :token *session*) token)
-    token))
-
-(defun logout ()
-  (setf (gethash :token *session*) nil))
-
-(defmacro must-be-logged-out (&body body)
-  "If user is logged in, return a rendered HTML page with an error message, else elavuate body"
-  `(if (logged-in-p)
-       (render #P "error.html" (list :username (logged-in-p)
-                                     :messages '("You are already logged in. Please log out first")))
-       (progn ,@body)))
+(defun authenticated-user ()
+  (let ((claim (authenticated)))
+    (cdr (assoc "username" claim :test #'string=))))
 
 (defmacro must-be-logged-in (&body body)
-  "If user isn't logged in, return a rendered HTML page with an error message, else evaluate body"
-  `(if (logged-in-p)
+  `(if (authenticated)
        (progn ,@body)
-       (render #P "error.html" (list :username (logged-in-p)
-                                     :messages '("You must be logged in to do that")))))
+       (setf (response-status *response*) "401")))
 
 (defun authenticate-user (user password)
   "Lookup user record and validate password. Returns two values:

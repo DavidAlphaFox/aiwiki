@@ -14,7 +14,7 @@ const genHandleAuthSuccess = (dispatch) => () => dispatch({
   type: AUTH_SUCCESS,
   f: R.pipe(
     R.set(R.lensProp('error'), false),
-    R.set(R.lensProp('isAuthenicated'), true),
+    R.set(R.lensProp('isAuthenticated'), true),
   ),
 });
 
@@ -22,7 +22,7 @@ const genHandleAuthFail = (dispatch) => () => dispatch({
   type: AUTH_ERROR,
   f:R.pipe(
     R.set(R.lensProp('error'), true),
-    R.set(R.lensProp('isAuthenicated'), false),
+    R.set(R.lensProp('isAuthenticated'), false),
   ),
 });
 

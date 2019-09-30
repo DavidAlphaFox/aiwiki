@@ -76,8 +76,8 @@ function Page(props) {
     }
     return (
       <div className="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
+        <div className="navbar-item">
+          <div className="buttons">
             <button
               className="button is-primary"
               onClick={e => handleCommit()}
