@@ -11,13 +11,27 @@ import {
 
 import rootReducer from '../reducers';
 const middleware = [ thunk ];
-const initialState = {
-  pages: pagesInitialState,
-  auth: authInitialState,
+const createState = () => {
+  const token = sessionStorage.getItem('token');
+  if (token === undefined){
+    return {
+      pages: pagesInitialState,
+      auth: authInitialState,
+    };
+  }
+  return {
+    pages: pagesInitialState,
+    auth: {
+      ...authInitialState,
+      isAuthenticated: true,
+    },
+  };
 };
+
+
 
 export default createStore(
   rootReducer,
-  initialState,
+  createState(),
   composeWithDevTools(applyMiddleware(...middleware)),
 );

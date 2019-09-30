@@ -1,6 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Editor from 'for-editor';
 
 import {
@@ -10,6 +10,7 @@ import {
 import {
   getPage,
   updatePage,
+  createPage,
 } from '../../common/api';
 
 import {
@@ -20,7 +21,7 @@ import './Page.scss';
 
 const initialState = {
   page: {
-    id: '',
+    id: null,
     title: '',
     intro: '',
     published: false,
@@ -55,17 +56,25 @@ function Page(props) {
   const startLoading = genStartLoading(dispatch);
   const handleField = genHandleField(dispatch);
   const handleCommit = genHandleCommit(dispatch);
+
   React.useEffect(() => {
     if (params === null || params === undefined) return;
+    if (params.id === 'new') return;
     startLoading();
     getPage(params.id).subscribe(res => handleRemoteData(res));
   }, [params]);
+
   React.useEffect(() => {
     const commited = R.view(commitedLens,state);
     if(commited === null) return;
     startLoading();
-    updatePage(commited.id,commited).subscribe(res => handleRemoteData(res));
+    if(commited.id === null || commited.id === '') {
+      createPage(commited).subscribe(res => handleField('id',res.id))
+    } else {
+      updatePage(commited.id,commited).subscribe(res => handleRemoteData(res));
+    }
   },[state.commited])
+
   const renderNav = () => {
     const {
       loading,
@@ -86,6 +95,7 @@ function Page(props) {
             </button>
             <button
               className="button is-light"
+              disabled={(state.page.id === null || state.page.id === '')}
               onClick={e => handleField('published', !page.published)}
             >
               { page.published ? '取消发布' : '发布'}
@@ -153,11 +163,15 @@ function Page(props) {
     );
   };
 
+  if(params.id === 'new' && (state.page.id !== null && state.page.id !== '' )) {
+    return (<Redirect to={`/admin/pages/${state.page.id}`} />);
+  }
+
   return (
     <div>
       <Navbar>
         <div className="navbar-start">
-          <Link className="navbar-item" to="/admin/pages" > 返回总览 </Link>
+          <Link className="navbar-item" to="/admin/pages" >所有文章</Link>
         </div>
         {renderNav()}
       </Navbar>

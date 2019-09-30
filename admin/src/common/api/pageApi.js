@@ -25,8 +25,18 @@ const updatePage = (pageID,page) => doRequest({
   data: JSON.stringify(page),
 });
 
+const createPage = (page) => doRequest({
+  method: 'POST',
+  url: pagesUrl,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  data: JSON.stringify(page),
+});
+
 export {
   getPages,
   getPage,
   updatePage,
+  createPage,
 };
