@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS tags (
   enabled BOOLEAN DEFAULT true
 );
 CREATE UNIQUE INDEX tags_title_key ON tags(title);
-s
-CREATE TABLE IF NOT EXISTS page_tags(
+
+CREATE TABLE IF NOT EXISTS page_tags (
   id BIGSERIAL PRIMARY KEY,
   page_id BIGINT,
   tag_id BIGINT

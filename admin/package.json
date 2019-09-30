@@ -40,6 +40,7 @@
     ]
   },
   "proxy": "http://127.0.0.1:5000",
+  "homepage": "/admin",
   "devDependencies": {
     "eslint-utils": "^1.4.2",
     "redux-devtools-extension": "^2.13.8"

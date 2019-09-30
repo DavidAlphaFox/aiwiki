@@ -21,6 +21,7 @@
                :cl-syntax-annot
                ;; HTML Template
                :djula
+               :trivial-mimes
                ;; for DB
                :datafly
                :cl-json
