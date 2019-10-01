@@ -13,7 +13,7 @@ import rootReducer from '../reducers';
 const middleware = [ thunk ];
 const createState = () => {
   const token = sessionStorage.getItem('token');
-  if (token === undefined){
+  if (token === undefined || token === null){
     return {
       pages: pagesInitialState,
       auth: authInitialState,
