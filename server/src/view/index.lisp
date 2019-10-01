@@ -40,9 +40,9 @@
 (defun index ()
   (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
          (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
-         (total (getf (total-pages) :total))
+         (total (getf (total-pages :published t) :total))
          (tags (load-tags))
          (pages (load-pages page-index page-size))
-         (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=10")))
+         (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=~d")))
     (render-view #P"index.html"
                  (list :index t :pages pages :tags tags :pagers pagination))))

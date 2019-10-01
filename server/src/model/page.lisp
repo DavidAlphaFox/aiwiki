@@ -20,23 +20,30 @@
    :total-pages
    :add-page
    :update-page
+   :publish-page
    ))
 
 (in-package :aiwiki.model.page)
 
 ;;; Page model
 
-(defun page-by-title (title)
-  (fetch-one (db)
+(defmacro update-action (id fields)
+  `(execute-transaction (db)
+     (update :pages
+       (set= ,@fields)
+       (where (:= :id ,id)))))
+
+(defmacro find-action (cond-statement)
+  `(fetch-one (db)
      (select :*
        (from :pages)
-       (where (:= :title title)))))
+       (where ,cond-statement))))
+
+(defun page-by-title (title)
+  (find-action (:= :title title)))
 
 (defun page-by-id (id)
-  (fetch-one (db)
-    (select :*
-      (from :pages)
-      (where (:= :id id)))))
+  (find-action (:= :id id)))
 
 (defun add-page (title intro content)
   (fetch-one (db)
@@ -48,22 +55,29 @@
       (returning :id))))
 
 (defun update-page (id title intro content published)
-  (execute-transaction (db)
-    (update :pages
-      (set= :title title
-            :intro intro
-            :content content
-            :published (to-db-boolean published))
-      (where (:= :id id)))))
+  (update-action id (:title title :intro intro
+                     :content content :published (to-db-boolean published))))
 
-(defun total-pages ()
+(defun publish-page (id published)
+  (update-action id (:published (to-db-boolean published))))
+
+(defun total-pages (&key published)
   (fetch-one (db)
-    (select ((:as (:count :id) :total))
-      (from :pages))))
+             (if published
+                 (select ((:as (:count :id) :total))
+                         (from :pages)
+                         (where (:= :published (to-db-boolean published))))
+                 (select ((:as (:count :id) :total))
+                         (from :pages)))))
 
 
 (defun pages-with-intro (page-index page-size)
-  (fetch-pagination :pages '(:id :title :intro) page-index page-size))
+  (fetch-pagination :pages
+                    (:id :title :intro)
+                    (:= :published "true")
+                    page-index page-size))
 
 (defun pages-only-title (page-index page-size)
-  (fetch-pagination :pages '(:id :title) page-index page-size))
+  (fetch-pagination :pages
+                    (:id :title) nil
+                    page-index page-size))

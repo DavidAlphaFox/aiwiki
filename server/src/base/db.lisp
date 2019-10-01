@@ -53,14 +53,25 @@
   `(with-transaction ,conn
      (execute ,@body)))
 
-(defmacro fetch-pagination (ptable pcols pindex psize)
+(defmacro fetch-pagination (ptable pcols pcond pindex psize)
   (let ((poffset (gensym)))
-    `(let ((,poffset (* (- ,pindex 1) ,psize)))
-       (fetch-all (db)
-         (sxql:select ,pcols
-           (sxql:from ,ptable)
-           (sxql:offset ,poffset)
-           (sxql:limit ,psize))))))
+    (if pcond
+        `(let ((,poffset (* (- ,pindex 1) ,psize)))
+           (fetch-all (db)
+             (sxql:select ,pcols
+               (sxql:from ,ptable)
+               (sxql:where ,pcond)
+               (sxql:order-by (:desc :id))
+               (sxql:offset ,poffset)
+               (sxql:limit ,psize))))
+        `(let ((,poffset (* (- ,pindex 1) ,psize)))
+           (fetch-all (db)
+             (sxql:select ,pcols
+               (sxql:from ,ptable)
+               (sxql:order-by (:desc :id))
+               (sxql:offset ,poffset)
+               (sxql:limit ,psize))))
+        )))
 
 (defun to-db-boolean (v)
   (if (eq t v) "true" "false"))
