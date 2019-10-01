@@ -1,21 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    {% if not site.intro %}
-    <meta name="description" content="{% block intro %}{% endblock %}">
-    {% else %}
-    <meta name="description" content="{{site.intro}}{% block intro %}{% endblock %}" >
-    {% endif %}
-    {% if not site.keywords %}
-    <meta name="keywords" content="{% block keywords %}{% endblock %}">
-    {% else %}
-    <meta name="keywords" content="{{site.keywords}}{% block keywords %}{% endblock %}">
-    {% endif %}
+    <meta name="description" content="{% block intro %}{{site.intro}}{% endblock %}" >
+    <meta name="keywords" content="{% block keywords %}{{site.keywords}}{% endblock %}">
     {{site.header | safe}}
     <title>{% block title %}{{site.brand}}{% endblock %}</title>
   <link href="https://cdn.bootcss.com/bulma/0.7.5/css/bulma.min.css" rel="stylesheet">
