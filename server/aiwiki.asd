@@ -13,6 +13,7 @@
                :envy
                :cl-ppcre
                :quri
+               :access
                :uiop
                :woo
                :flexi-streams
