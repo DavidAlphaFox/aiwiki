@@ -61,7 +61,8 @@ function Pages() {
   const renderTable = R.map((item) => (
     <tr key={R.prop('id', item)}>
       <td className="has-text-centered">{R.prop('id', item)}</td>
-      <td className="has-text-centered">{R.prop('title', item)} </td>
+      <td className="has-text-centered">{R.prop('title', item)}</td>
+      <td className="has-text-centered">{R.prop('published', item) ? '已发布' : '未发布'}</td>
       <td className="has-text-centered"><Link to={`/admin/pages/${R.prop('id', item)}`}> 编辑 </Link> </td>
     </tr>
   ));
@@ -81,6 +82,7 @@ function Pages() {
               <tr>
                 <th className="has-text-centered">文章ID</th>
                 <th className="has-text-centered">文章标题</th>
+                <th className="has-text-centered">发布状态</th>
                 <th className="has-text-centered">操作</th>
               </tr>
             </thead>

@@ -16,7 +16,7 @@
    :page-by-title
    :page-by-id
    :pages-with-intro
-   :pages-only-title
+   :pages-with-published
    :total-pages
    :add-page
    :update-page
@@ -77,7 +77,7 @@
                     (:= :published "true")
                     page-index page-size))
 
-(defun pages-only-title (page-index page-size)
+(defun pages-with-published (page-index page-size)
   (fetch-pagination :pages
-                    (:id :title) nil
+                    (:id :title :published) nil
                     page-index page-size))
