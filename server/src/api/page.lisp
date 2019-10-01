@@ -8,6 +8,7 @@
    :aiwiki.model.page)
   (:export
    :index
+   :create
    :show
    :update
    ))
@@ -28,12 +29,11 @@
     (render-json page)))
 
 (defun create ()
-  (let* ((body (fetch-json-body))
-         (title (assoc "title" body))
-         (intro (assoc "intro" body))
-         (content (assoc "content" body)))
-    (render-json body)))
-
+  (let* ((title (fetch-parameter "title"))
+         (intro (fetch-parameter "intro"))
+         (content (fetch-parameter "content"))
+         (result (add-page title intro content)))
+    (render-json result)))
 
 (defun update (id)
   (let ((title (fetch-parameter "title"))
@@ -41,5 +41,4 @@
         (content (fetch-parameter "content"))
         (published (fetch-parameter "published")))
     (update-page id title intro content published)
-    (show id)
-  ))
+    (show id)))

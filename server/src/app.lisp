@@ -41,8 +41,10 @@
 (defroute ("/api/login.json" :method :POST) () (aiwiki.api.auth:login))
 (defroute ("/api/password.json" :method :POST) () (aiwiki.api.auth:update))
 (defroute ("/api/pages.json" :method :GET) () (must-be-logged-in (aiwiki.api.page:index)))
+(defroute ("/api/pages.json" :method :POST) () (must-be-logged-in (aiwiki.api.page:create)))
 (defroute ("/api/pages/:id.json" :method :GET) (&key id) (must-be-logged-in (aiwiki.api.page:show id)))
 (defroute ("/api/pages/:id.json" :method :POST) (&key id) (must-be-logged-in (aiwiki.api.page:update id)))
+
 
 ;; pages
 

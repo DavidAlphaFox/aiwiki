@@ -11,6 +11,7 @@ import {
   getPages,
   getPage,
   updatePage,
+  createPage,
 } from './pageApi';
 
 export {
@@ -20,4 +21,5 @@ export {
   getPages,
   getPage,
   updatePage,
+  createPage,
 };

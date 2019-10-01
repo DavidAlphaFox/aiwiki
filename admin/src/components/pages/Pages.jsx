@@ -69,6 +69,9 @@ function Pages() {
     <div>
       <Navbar fixed={false}>
         <AdminAction  />
+        <div className="navbar-end">
+          <Link className="navbar-item" to="/admin/pages/new">新增文章</Link>
+      </div>
       </Navbar>
     <div className="section">
       <div className="columns is-centered">
