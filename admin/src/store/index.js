@@ -11,8 +11,8 @@ import {
 
 import rootReducer from '../reducers';
 const middleware = [ thunk ];
-const createState = () => {
-  const token = sessionStorage.getItem('token');
+const createState = (token) => {
+  sessionStorage.setItem('token',token);
   if (token === undefined || token === null){
     return {
       pages: pagesInitialState,
@@ -28,10 +28,13 @@ const createState = () => {
   };
 };
 
-
-
-export default createStore(
+const createReduxStore = (initState) => createStore(
   rootReducer,
-  createState(),
+  initState,
   composeWithDevTools(applyMiddleware(...middleware)),
 );
+
+export {
+  createReduxStore,
+  createState,
+};

@@ -39,7 +39,8 @@
            (t (caveman2:throw-code 500)))))
 ;; api
 (defroute ("/api/login.json" :method :POST) () (aiwiki.api.auth:login))
-(defroute ("/api/password.json" :method :POST) () (aiwiki.api.auth:update))
+(defroute ("/api/password/update.json" :method :POST) () (must-be-logged-in (aiwiki.api.auth:update-password)))
+(defroute ("/api/token/verify.json" :method :GET) () (must-be-logged-in (aiwiki.api.auth:verify-token)))
 (defroute ("/api/pages.json" :method :GET) () (must-be-logged-in (aiwiki.api.page:index)))
 (defroute ("/api/pages.json" :method :POST) () (must-be-logged-in (aiwiki.api.page:create)))
 (defroute ("/api/pages/:id.json" :method :GET) (&key id) (must-be-logged-in (aiwiki.api.page:show id)))

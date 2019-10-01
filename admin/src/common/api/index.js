@@ -5,6 +5,7 @@ import {
 
 import {
   login,
+  verifyToken,
 } from './authApi';
 
 import {
@@ -18,6 +19,7 @@ export {
   defaultPipe,
   doRequest,
   login,
+  verifyToken,
   getPages,
   getPage,
   updatePage,

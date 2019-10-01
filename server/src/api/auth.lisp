@@ -9,7 +9,8 @@
    :aiwiki.model.user)
   (:export
    :login
-   :update))
+   :update-password
+   :verify-token))
 
 (in-package :aiwiki.api.auth)
 
@@ -23,7 +24,7 @@
       (cond (password-correct (let ((token (gen-token username)))
                                 (render-json (list :token token))))
             (t (setf (response-status *response*) "401"))))))
-(defun update ()
+(defun update-password ()
   (let* ((old-password (fetch-parameter "oldPassword"))
          (new-password (fetch-parameter "newPassword"))
          (username (authenticated-user))
@@ -32,4 +33,13 @@
         (authenticate-user user old-password)
       (cond (password-correct (let ((token (gen-token username)))
                                 (render-json (list :token token))))
-            (t (setf (response-status *response*) "401"))))))
+            (t (setf (response-status *response*) "403"))))))
+
+(defun verify-token ()
+  (multiple-value-bind (verified username)
+      (verified-token)
+    (cond (verified (let ((token (gen-token username)))
+                      (render-json (list :token token))))
+          (username (let ((token (gen-token username)))
+                      (render-json (list :token token))))
+          (t (render-json (list :token nil))))))

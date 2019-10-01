@@ -11,6 +11,7 @@
    :authenticated-user
    :authenticate-user
    :must-be-looged-in
+   :verified-token
    ))
 
 (in-package :aiwiki.utils.auth)
@@ -47,6 +48,15 @@
         (get-claim (cadr (split-sequence:split-sequence #\space bearer))))
     (t (c) nil)))
 
+(defun verified-token ()
+  (let* ((claim (authenticated))
+         (now (timestamp))
+         (expired (cdr (assoc "expired" claim :test #'string=)))
+         (username (cdr (assoc "username" claim :test #'string=)))
+         (diff (- now expired)))
+    (cond ((> diff 0) (list nil nil))
+          ((> diff -7200) (list nil username))
+          (t (list t username)))))
 (defun authenticated-user ()
   (let ((claim (authenticated)))
     (cdr (assoc "username" claim :test #'string=))))
@@ -54,7 +64,7 @@
 (defmacro must-be-logged-in (&body body)
   `(if (authenticated)
        (progn ,@body)
-       (setf (response-status *response*) "401")))
+       (setf (response-status *response*) "403")))
 
 (defun authenticate-user (user password)
   "Lookup user record and validate password. Returns two values:

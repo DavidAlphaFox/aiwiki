@@ -2,15 +2,17 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route } from "react-router";
 import { createBrowserHistory } from "history";
-import store from './store';
+import { createReduxStore } from './store';
 
 import PrivateRoute from './components/routers/PrivateRoute';
 import Pages from './components/pages/Pages';
 import Page from './components/pages/Page';
 import Login from './components/auth/Login';
 
-function App() {
-  const history = createBrowserHistory()
+function App(props) {
+  const {state} = props;
+  const history = createBrowserHistory();
+  const store = createReduxStore(state);
   return (
     <Provider store={store}>
       <Router history={history}>
