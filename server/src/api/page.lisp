@@ -20,7 +20,7 @@
 (defun index ()
   (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
          (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
-         (pages (pages-only-title page-index page-size))
+         (pages (pages-with-published page-index page-size))
          (total (total-pages)))
     (render-json (list* :pages pages total) )))
 
