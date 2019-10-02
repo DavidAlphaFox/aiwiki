@@ -7,6 +7,7 @@ import { createReduxStore } from './store';
 import PrivateRoute from './components/routers/PrivateRoute';
 import Pages from './components/pages/Pages';
 import Page from './components/pages/Page';
+import SiteInfo from './components/site/SiteInfo';
 import Login from './components/auth/Login';
 
 function App(props) {
@@ -18,6 +19,7 @@ function App(props) {
       <Router history={history}>
         <PrivateRoute path="/admin/pages/:id" component={Page} exact />
         <PrivateRoute path="/admin/pages" component={Pages} exact />
+        <PrivateRoute path="/admin/site" component={SiteInfo} exact />
         <Route path="/admin/login" component={Login} exact/>
       </Router>
     </Provider>

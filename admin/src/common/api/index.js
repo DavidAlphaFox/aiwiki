@@ -15,6 +15,11 @@ import {
   createPage,
 } from './pageApi';
 
+import  {
+  getSiteInfo,
+  updateSiteInfo,
+} from './siteApi';
+
 export {
   defaultPipe,
   doRequest,
@@ -24,4 +29,6 @@ export {
   getPage,
   updatePage,
   createPage,
+  getSiteInfo,
+  updateSiteInfo,
 };

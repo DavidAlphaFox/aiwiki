@@ -73,7 +73,8 @@
                   :depends-on ("base" "model" "utils")
                   :components
                   ((:file "page")
-                   (:file "auth")))
+                   (:file "auth")
+                   (:file "site")))
                  (:file "app" :depends-on ("view" "api"))
                  (:file "main" :depends-on ("app"))
                  )))
