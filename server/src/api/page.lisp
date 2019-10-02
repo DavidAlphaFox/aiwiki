@@ -6,6 +6,9 @@
    :aiwiki.utils.view
    :aiwiki.utils.request
    :aiwiki.model.page)
+  (:import-from
+   :dbi.error
+   :<dbi-error>)
   (:export
    :index
    :create
@@ -29,16 +32,22 @@
     (render-json page)))
 
 (defun create ()
-  (let* ((title (fetch-parameter "title"))
-         (intro (fetch-parameter "intro"))
-         (content (fetch-parameter "content"))
-         (result (add-page title intro content)))
-    (render-json result)))
+  (handler-case
+      (let* ((title (fetch-parameter "title"))
+             (intro (fetch-parameter "intro"))
+             (content (fetch-parameter "content"))
+             (result (add-page title intro content)))
+        (render-json result))
+    (<dbi-error> (c)
+      (setf (response-status *response*) "409"))))
 
 (defun update (id)
-  (let ((title (fetch-parameter "title"))
-        (intro (fetch-parameter "intro"))
-        (content (fetch-parameter "content"))
-        (published (fetch-parameter "published")))
-    (update-page id title intro content published)
-    (show id)))
+  (handler-case
+      (let ((title (fetch-parameter "title"))
+            (intro (fetch-parameter "intro"))
+            (content (fetch-parameter "content"))
+            (published (fetch-parameter "published")))
+        (update-page id title intro content published)
+        (show id))
+    (<dbi-error> (c)
+      (setf (response-status *response*) "409"))))

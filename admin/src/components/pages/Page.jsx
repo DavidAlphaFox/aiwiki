@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import * as R from 'ramda';
 import { Link, Redirect } from 'react-router-dom';
 import Editor from 'for-editor';
@@ -19,6 +20,7 @@ import {
 
 import './Page.scss';
 
+
 const initialState = {
   page: {
     id: null,
@@ -29,22 +31,31 @@ const initialState = {
   },
   commited: null,
   loading: false,
+  error: false,
 };
 
 const pageLens = R.lensProp('page');
 const loadingLens = R.lensProp('loading');
 const commitedLens = R.lensProp('commited');
+const errorLens = R.lensProp('error');
 
 const genHandleRemoteData = R.curry((dispatch, data) => dispatch(
   R.pipe(
     R.set(pageLens, data),
-    R.set(loadingLens, false)
+    R.set(errorLens, false),
+    R.set(loadingLens, false),
   )));
 const genStartLoading = dispatch => () => dispatch(R.set(loadingLens, true));
-const genHandleField = R.curry((dispatch,field,data) => dispatch(
-  R.set(R.lensPath(['page',field]), data)
+const genHandleError = dispatch => () => dispatch(
+  R.pipe(
+    R.set(errorLens, true),
+    R.set(loadingLens, false),
+    R.set(commitedLens, null),
+  ));
+const genHandleField = R.curry((dispatch, field, data) => dispatch(
+  R.set(R.lensPath(['page', field]), data)
 ));
-const genHandleCommit = dispatch => () => dispatch(s => R.set(commitedLens,R.view(pageLens,s),s));
+const genHandleCommit = dispatch => () => dispatch(s => R.set(commitedLens, R.view(pageLens, s), s));
 
 function Page(props) {
   const {
@@ -56,6 +67,7 @@ function Page(props) {
   const startLoading = genStartLoading(dispatch);
   const handleField = genHandleField(dispatch);
   const handleCommit = genHandleCommit(dispatch);
+  const handleError = genHandleError(dispatch);
 
   React.useEffect(() => {
     if (params === null || params === undefined) return;
@@ -65,40 +77,46 @@ function Page(props) {
   }, [params]);
 
   React.useEffect(() => {
-    const commited = R.view(commitedLens,state);
-    if(commited === null) return;
+    const commited = R.view(commitedLens, state);
+    if (commited === null) return;
     startLoading();
-    if(commited.id === null || commited.id === '') {
-      createPage(commited).subscribe(res => handleField('id',res.id))
+    if (commited.id === null || commited.id === '') {
+      createPage(commited).subscribe(
+        res => handleField('id', res.id),
+        () => handleError())
     } else {
-      updatePage(commited.id,commited).subscribe(res => handleRemoteData(res));
+      updatePage(commited.id, commited).subscribe(
+        res => handleRemoteData(res),
+        () => handleError());
     }
-  },[state.commited])
+  }, [state.commited])
 
   const renderNav = () => {
     const {
       loading,
       page,
+      error,
     } = state;
-    if (loading) {
-       return null;
-    }
     return (
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
             <button
-              className="button is-primary"
+              disabled={loading}
+              className={clsx("button",{
+                'is-primary': !error,
+                'is-danger': error,
+              })}
               onClick={e => handleCommit()}
             >
-              { page.published ? '保存更改' : '存为草稿'}
+              {page.published ? '保存更改' : '存为草稿'}
             </button>
             <button
               className="button is-light"
-              disabled={(state.page.id === null || state.page.id === '')}
+              disabled={loading || page.id === null || page.id === ''}
               onClick={e => handleField('published', !page.published)}
             >
-              { page.published ? '取消发布' : '发布'}
+              {page.published ? '取消发布' : '发布'}
             </button>
           </div>
         </div>
@@ -111,7 +129,10 @@ function Page(props) {
       page,
     } = state;
     if (loading) {
-      return (<progress className="progress is-small is-primary" max="100">15%</progress>);
+      return (
+        <div className="column">
+          <progress className="progress is-small is-primary" max="100">15%</progress>
+        </div>);
     }
 
     return (
@@ -123,7 +144,7 @@ function Page(props) {
               className="input"
               type="text"
               placeholder="文章标题"
-              onChange={e => handleField('title',e.target.value) }
+              onChange={e => handleField('title', e.target.value)}
               value={page.title}
             />
           </div>
@@ -136,7 +157,7 @@ function Page(props) {
               className="textarea"
               type="text"
               placeholder="文章简介"
-              onChange={e => handleField('intro',e.target.value)}
+              onChange={e => handleField('intro', e.target.value)}
               value={page.intro} />
           </div>
         </div>
@@ -154,7 +175,7 @@ function Page(props) {
                 link: true, // 链接
                 code: true, // 代码块p
               }}
-              onChange={val => handleField('content',val)}
+              onChange={val => handleField('content', val)}
               value={page.content}
             />
           </div>
@@ -163,7 +184,7 @@ function Page(props) {
     );
   };
 
-  if(params.id === 'new' && (state.page.id !== null && state.page.id !== '' )) {
+  if (params.id === 'new' && (state.page.id !== null && state.page.id !== '')) {
     return (<Redirect to={`/admin/pages/${state.page.id}`} />);
   }
 
