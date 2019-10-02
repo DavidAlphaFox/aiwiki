@@ -45,7 +45,9 @@
 (defun authenticated ()
   (handler-case
       (let ((bearer (gethash "authorization" (request-headers *request*))))
-        (get-claim (cadr (split-sequence:split-sequence #\space bearer))))
+        (if bearer
+          (get-claim (cadr (split-sequence:split-sequence #\space bearer)))
+          nil))
     (t (c) nil)))
 
 (defun verified-token ()
