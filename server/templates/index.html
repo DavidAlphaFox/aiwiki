@@ -3,29 +3,24 @@
 {% extends "shared/_pagination.html" %}
 
 {% block content %}
-
+<div class="tile is-ancestor is-vertical">
   {% for page in pages %}
-  <a class="box" href="{{ page.url }}" target="_blank">
-    <article class="media">
-      <div class="media-content">
+    <a class="box" href="{{page.url}}" target="_blank">
+      <article class="tile">
         <div class="content">
-          <p>
-            <strong>{{ page.title  }}</strong>
-            <br>
-            {{ page.intro }}
-          </p>
+          <h2 class="title"> {{page.title}} </h2>
+          <h3 class="subtitle"> {{ page.intro }} </h3>
         </div>
-      </div>
-    </article>
-  </a>
-
+      </article>
+    </a>
   {% endfor %}
+</div>
 
   {% if pages %}
   <section class="section">
     {% block pagination %}
     {{ block.super  }}
-    {% endblock %}
-  </section>
-  {% endif %}
+  {% endblock %}
+</section>
+{% endif %}
 {% endblock %}
