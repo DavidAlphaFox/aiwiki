@@ -8,7 +8,7 @@
    :aiwiki.model.page)
   (:import-from
    :dbi.error
-   :<dbi-error>)
+   :<dbi-database-error>)
   (:export
    :index
    :create
@@ -38,7 +38,8 @@
              (content (fetch-parameter "content"))
              (result (add-page title intro content)))
         (render-json result))
-    (<dbi-error> (c)
+    (<dbi-database-error> (c)
+      ;; postgresql error code 23505
       (setf (response-status *response*) "409"))))
 
 (defun update (id)
@@ -49,5 +50,5 @@
             (published (fetch-parameter "published")))
         (update-page id title intro content published)
         (show id))
-    (<dbi-error> (c)
+    (<dbi-database-error> (c)
       (setf (response-status *response*) "409"))))
