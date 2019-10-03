@@ -12,9 +12,6 @@
    :execute-transaction
    :fetch-pagination
    :to-db-boolean)
-  (:import-from
-   :aiwiki.base.time
-   :timestamp)
   (:export
    :page-by-title
    :page-by-id
@@ -86,11 +83,12 @@
 
 (defun pages-with-intro (page-index page-size)
   (fetch-pagination :pages
-                    (:id :title :intro)
+                    ((:id :title :intro))
                     (:= :published "true")
                     page-index page-size))
 
 (defun pages-with-published (page-index page-size)
   (fetch-pagination :pages
-                    (:id :title :published) nil
+                    ((:id :title :published :published_at))
+                    nil
                     page-index page-size))

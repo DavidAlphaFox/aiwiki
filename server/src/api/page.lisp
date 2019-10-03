@@ -32,23 +32,23 @@
     (render-json page)))
 
 (defun create ()
-  ;;(handler-case
+  (handler-case
       (let* ((title (fetch-parameter "title"))
              (intro (fetch-parameter "intro"))
              (content (fetch-parameter "content"))
              (result (add-page title intro content)))
-        (render-json result)))
-    ;;(<dbi-database-error> (c)
+        (render-json result))
+    (<dbi-database-error> (c)
       ;; postgresql error code 23505
-      ;;(setf (response-status *response*) "409"))))
+      (setf (response-status *response*) "409"))))
 
 (defun update (id)
-;;  (handler-case
+  (handler-case
       (let ((title (fetch-parameter "title"))
             (intro (fetch-parameter "intro"))
             (content (fetch-parameter "content"))
             (published (fetch-parameter "published")))
         (update-page id title intro content published)
-        (show id)))
-  ;;  (<dbi-database-error> (c)
-    ;;  (setf (response-status *response*) "409"))))
+        (show id))
+    (<dbi-database-error> (c)
+      (setf (response-status *response*) "409"))))

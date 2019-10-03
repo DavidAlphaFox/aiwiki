@@ -5,16 +5,14 @@
 {% block content %}
 <div class="tile is-vertical">
   {% for page in pages %}
-    <a class="box" href="{{page.url}}" target="_blank">
-      <article class="tile media">
-        <div class="content">
-          <h2 class="title"> {{page.title}} </h2>
-          <div class="content">
-            {{ page.intro }}
-          </div>
-        </div>
-      </article>
+  <article class="tile">
+    <p>
+    <a href="{{page.url}}" target="_blank">
+      <h2 class="title"> {{page.title}} </h2>
     </a>
+    </p>
+    <p> <h3> {{ page.intro }} </h3></p>
+  </article>
   {% endfor %}
 </div>
 

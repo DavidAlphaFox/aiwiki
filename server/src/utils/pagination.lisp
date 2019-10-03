@@ -17,7 +17,7 @@
 (defun gen-pagination (total page-index page-size link)
   (let ((page-total (ceiling (/ total page-size))))
     (cond
-      ((and (< page-index page-total) (> page-index 1)) (gen-prev-next link page-index t t))
+      ((and (< page-index page-total) (> page-index 1)) (gen-prev-next link page-index page-size t t))
       ((> page-index 1) (gen-prev-next link page-index page-size t nil))
       ((< page-index page-total) (gen-prev-next link page-index page-size nil t))
       (t '()))))

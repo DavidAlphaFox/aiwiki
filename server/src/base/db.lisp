@@ -58,7 +58,7 @@
     (if pcond
         `(let ((,poffset (* (- ,pindex 1) ,psize)))
            (fetch-all (db)
-             (sxql:select ,pcols
+             (sxql:select ,@pcols
                (sxql:from ,ptable)
                (sxql:where ,pcond)
                (sxql:order-by (:desc :id))
@@ -66,7 +66,7 @@
                (sxql:limit ,psize))))
         `(let ((,poffset (* (- ,pindex 1) ,psize)))
            (fetch-all (db)
-             (sxql:select ,pcols
+             (sxql:select ,@pcols
                (sxql:from ,ptable)
                (sxql:order-by (:desc :id))
                (sxql:offset ,poffset)
