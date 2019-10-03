@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS pages (
   title VARCHAR(255) NOT NULL,
   intro TEXT,
   content TEXT,
+  topic_id BIGINT NOT NULL DEFAULT 0,
   published BOOLEAN DEFAULT false,
   published_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'UTC')
 );
@@ -11,7 +12,6 @@ CREATE UNIQUE INDEX pages_title_key ON pages(title);
 CREATE TABLE IF NOT EXISTS tags (
   id BIGSERIAL PRIMARY KEY,
   title VARCHAR(255),
-  intro TEXT,
   enabled BOOLEAN DEFAULT true
 );
 CREATE UNIQUE INDEX tags_title_key ON tags(title);
@@ -51,15 +51,15 @@ CREATE TABLE IF NOT EXISTS site (
 );
 INSERT INTO site (id,utm_source, utm_campaign, utm_medium, brand, intro,keywords, header, footer)
 VALUES ( 1,
-       'ttalk.im',
-       'Tech Talk',
-       'website',
-       'Tech Talk',
        '',
-       '这是一个在全栈工程师的博客,Teach Talk,ttalk,ttalk.im',
+       'Ai Wiki',
+       'website',
+       'Ai wiki',
+       '',
+       '',
        '',
        '<div class="content has-text-centered">
-         <p><strong>Tech Talk</strong> by <a href="https://github.com/DavidAlphaFox">David Gao</a></p>
+         <p><strong>Aiwiki</strong> by <a href="https://github.com/DavidAlphaFox">David Gao</a></p>
         </div>'
 );
 
@@ -69,3 +69,10 @@ CREATE TABLE IF NOT EXISTS users (
  password VARCHAR(255) NOT NULL
 );
 CREATE UNIQUE INDEX users_username_key on users(username);
+
+CREATE TABLE IF NOT EXISTS topics (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  intro TEXT
+);
+CREATE UNIQUE INDEX topics_title_key ON topics(title);
