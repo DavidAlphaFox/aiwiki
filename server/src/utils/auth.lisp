@@ -6,6 +6,9 @@
   (:import-from
    :aiwiki.base.config
    :config)
+  (:import-from
+   :aiwiki.base.time
+   :timestamp)
   (:export
    :gen-token
    :authenticated-user
@@ -16,8 +19,6 @@
 
 (in-package :aiwiki.utils.auth)
 
-
-(defun timestamp () (local-time:timestamp-to-unix (local-time:now)))
 
 (defun jose-secret ()
   (ironclad:ascii-string-to-byte-array (config :secret)))

@@ -14,6 +14,7 @@ const middleware = [ thunk ];
 const createState = (token) => {
   sessionStorage.setItem('token',token);
   if (token === undefined || token === null){
+    sessionStorage.removeItem('token');
     return {
       pages: pagesInitialState,
       auth: authInitialState,

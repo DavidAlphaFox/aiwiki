@@ -45,6 +45,7 @@
                 ((:module "base"
                   :components
                   ((:file "config")
+                   (:file "time")
                    (:file "view" :depends-on ("config"))
                    (:file "db" :depends-on ("config"))
                    ))
