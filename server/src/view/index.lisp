@@ -20,6 +20,7 @@
         collect (list
                  :title (getf page :title)
                  :intro (getf page :intro)
+                 :published-at (getf page :published-at)
                  :url (format nil "/pages/~d/~a.html"
                               (getf page :id)
                               (quri:url-encode (getf page :title)))

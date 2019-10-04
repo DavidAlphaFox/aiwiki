@@ -83,12 +83,12 @@
 
 (defun pages-with-intro (page-index page-size)
   (fetch-pagination :pages
-                    ((:id :title :intro))
+                    ((:id :title :intro :published_at))
                     (:= :published "true")
                     page-index page-size))
 
 (defun pages-with-published (page-index page-size)
   (fetch-pagination :pages
-                    ((:id :title :published :published_at))
+                    ((:id :title :published))
                     nil
                     page-index page-size))

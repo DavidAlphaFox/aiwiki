@@ -3,16 +3,21 @@
 {% extends "shared/_pagination.html" %}
 
 {% block content %}
-<div class="tile is-vertical">
+<div class="tile is-vertical is-ancestor">
   {% for page in pages %}
-  <article class="tile">
-    <p>
-    <a href="{{page.url}}" target="_blank">
-      <h2 class="title"> {{page.title}} </h2>
-    </a>
-    </p>
-    <p> <h3> {{ page.intro }} </h3></p>
-  </article>
+  <div class="tile is-parent is-vertical">
+    <div class="tile">
+      <a href="{{page.url}}" target="_blank">
+        <h2 class="title"> {{page.title}} </h2>
+      </a>
+    </div>
+    <div class="tile">
+      <h4>发布于：{{page.published-at | date}} </h4>
+    </div>
+    <div class="tile">
+      <h3> {{ page.intro }} </h3>
+    </div>
+  </div>
   {% endfor %}
 </div>
 
