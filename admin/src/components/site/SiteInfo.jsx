@@ -16,6 +16,11 @@ import {
   AdminAction,
 } from '../nav';
 
+import {
+  InputField,
+  TextField,
+} from '../fields';
+
 const initialState = {
   siteInfo: null,
   commited: null,
@@ -86,104 +91,63 @@ function SiteInfo() {
     }
     return (
       <div className="column">
-        <div className="field">
-          <label className="label">brand</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="brand"
-              onChange={e => handleField('brand',e.target.value) }
-              value={siteInfo.brand}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">介绍</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="介绍"
-              onChange={e => handleField('intro',e.target.value) }
-              value={siteInfo.intro}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">关键字</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="关键字"
-              onChange={e => handleField('keywords',e.target.value) }
-              value={siteInfo.keywords}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">header</label>
-          <div className="control">
-            <textarea
-              rows="5"
-              className="textarea"
-              type="text"
-              placeholder="header"
-              onChange={e => handleField('header',e.target.value) }
-              value={siteInfo.header}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">footer</label>
-          <div className="control">
-            <textarea
-              rows="5"
-              className="textarea"
-              type="text"
-              placeholder="footer"
-              onChange={e => handleField('footer',e.target.value) }
-              value={siteInfo.footer}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">utm source</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="utm source"
-              onChange={e => handleField('utmSource',e.target.value) }
-              value={siteInfo.utmSource}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">utm medium</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="介绍"
-              onChange={e => handleField('utmMedium',e.target.value) }
-              value={siteInfo.utmMedium}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">utm campaign</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="utm campaign"
-              onChange={e => handleField('utmCampaign',e.target.value) }
-              value={siteInfo.utmCampaign}
-            />
-          </div>
-        </div>
+        <InputField
+          label="brand"
+          type="text"
+          placeholder="brand"
+          onChange={handleField('brand')}
+          value={siteInfo.brand}
+        />
+        <InputField
+          label="介绍"
+          type="text"
+          placeholder="介绍"
+          onChange={e => handleField('intro') }
+          value={siteInfo.intro}
+        />
+        <InputField
+          label="关键字"
+          type="text"
+          placeholder="关键字"
+          onChange={e => handleField('keywords') }
+          value={siteInfo.keywords}
+        />
+        <TextField
+          label="header"
+          rows="5"
+          type="text"
+          placeholder="header"
+          onChange={handleField('header') }
+          value={siteInfo.header}
+        />
+        <TextField
+          label="footer"
+          rows="5"
+          placeholder="footer"
+          onChange={handleField('footer') }
+          value={siteInfo.footer}
+        />
+        <InputField
+          label="utm source"
+          type="text"
+          placeholder="utm source"
+          onChange={handleField('utmSource') }
+          value={siteInfo.utmSource}
+        />
+        <InputField
+          label="utm medium"
+          type="text"
+          placeholder="utm medium"
+          onChange={handleField('utmMedium') }
+          value={siteInfo.utmMedium}
+        />
+        <InputField
+          label="utm campaign"
+          type="text"
+          placeholder="utm campaign"
+          onChange={handleField('utmCampaign') }
+          value={siteInfo.utmCampaign}
+        />
       </div>
     );
   };

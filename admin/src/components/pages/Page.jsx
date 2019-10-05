@@ -17,6 +17,10 @@ import {
 import {
   Navbar,
 } from '../nav';
+import {
+  InputField,
+  TextField,
+} from '../fields';
 
 import './Page.scss';
 
@@ -137,30 +141,22 @@ function Page(props) {
 
     return (
       <div className="column">
-        <div className="field">
-          <label className="label">文章标题</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="文章标题"
-              onChange={e => handleField('title', e.target.value)}
-              value={page.title}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">文章简介</label>
-          <div className="control markdown">
-            <textarea
-              rows="3"
-              className="textarea"
-              type="text"
-              placeholder="文章简介"
-              onChange={e => handleField('intro', e.target.value)}
-              value={page.intro} />
-          </div>
-        </div>
+        <InputField
+          label="文章标题"
+          type="text"
+          placeholder="文章标题"
+          value={page.title}
+          onChange={handleField('title')}
+        />
+        <TextField
+          label="文章简介"
+          className="markdown"
+          rows="3"
+          type="text"
+          placeholder="文章简介"
+          value={page.intro}
+          onChange={handleField('intro')}
+        />
         <div className="field" >
           <label className="label">文章内容</label>
           <div className="control markdown">
