@@ -5,6 +5,7 @@ import { createBrowserHistory } from "history";
 import { createReduxStore } from './store';
 
 import PrivateRoute from './components/routers/PrivateRoute';
+import AdminIndex from './components/AdminIndex';
 import Pages from './components/pages/Pages';
 import Page from './components/pages/Page';
 import SiteInfo from './components/site/SiteInfo';
@@ -20,6 +21,8 @@ function App(props) {
         <PrivateRoute path="/admin/pages/:id" component={Page} exact />
         <PrivateRoute path="/admin/pages" component={Pages} exact />
         <PrivateRoute path="/admin/site" component={SiteInfo} exact />
+        <PrivateRoute path="/admin/index" component={AdminIndex} exact />
+        <PrivateRoute path="/admin" component={AdminIndex} exact />
         <Route path="/admin/login" component={Login} exact/>
       </Router>
     </Provider>
