@@ -15,6 +15,8 @@ function Select(props){
   const {
     children,
     multiple,
+    right,
+    disabled,
     value,
     renderValue,
     displayEmpty=true,
@@ -119,14 +121,17 @@ function Select(props){
 
   return(
     <div
-      className={clsx("dropdown",{'is-active': openState})}
+      className={clsx("dropdown",{
+        'is-active': openState,
+        'is-right': right,
+      })}
     >
       <div className="dropdown-trigger">
         <button
           className="button"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
-          onClick={handleClick}
+          onClick={disabled ? null : handleClick}
         >
           <span>{display}</span>
           <span className="icon is-small">

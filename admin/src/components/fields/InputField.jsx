@@ -8,9 +8,10 @@ function InputField(props){
     onChange,
     ...rest
   } = props;
+  const renderLabel = () => (label ? <label className="label">{label}</label> : null);
   return (
     <div className="field">
-      <label className="label">{label}</label>
+      {renderLabel()}
       <div className={clsx("control",className)}>
         <input
           {...rest}

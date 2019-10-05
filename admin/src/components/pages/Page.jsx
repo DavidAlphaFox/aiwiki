@@ -21,6 +21,10 @@ import {
   InputField,
   TextField,
 } from '../fields';
+import {
+  Select,
+  SelectItem,
+} from '../dropdown';
 
 import './Page.scss';
 
@@ -32,7 +36,9 @@ const initialState = {
     intro: '',
     published: false,
     content: '',
+    topic: 1,
   },
+  topics: [],
   commited: null,
   loading: false,
   error: false,
@@ -49,6 +55,7 @@ const genHandleRemoteData = R.curry((dispatch, data) => dispatch(
     R.set(errorLens, false),
     R.set(loadingLens, false),
   )));
+
 const genStartLoading = dispatch => () => dispatch(R.set(loadingLens, true));
 const genHandleError = dispatch => () => dispatch(
   R.pipe(
@@ -104,10 +111,14 @@ function Page(props) {
     return (
       <div className="navbar-end">
         <div className="navbar-item">
+          <Select right={true}>
+          </Select>
+        </div>
+        <div className="navbar-item">
           <div className="buttons">
             <button
               disabled={loading}
-              className={clsx("button",{
+              className={clsx("button", {
                 'is-primary': !error,
                 'is-danger': error,
               })}
