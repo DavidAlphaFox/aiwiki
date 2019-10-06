@@ -78,3 +78,11 @@ CREATE TABLE IF NOT EXISTS topics (
 CREATE UNIQUE INDEX topics_title_key ON topics(title);
 INSERT INTO topics (title,intro)
 VALUES ( '杂谈','全站点没有进行分类的文章聚集地，包含了各个方面的文章');
+INSERT INTO topics (title,intro)
+VALUES ( 'EMQ','介绍IoT通讯协议MQTT和使用Erlang开发的两款MQTT服务器EMQ和VerneMQ，及对这两款服务器的代码分析，调优化和二次开发');
+INSERT INTO topics (title,intro)
+VALUES ( 'ejabberd','介绍即时通讯协议XMPP和使用Erlang开发的即时通讯服务器ejabberd和MongooseIM，及对这两款服务器的代码分析，调优化和二次开发');
+INSERT INTO topics (title,intro)
+VALUES ( 'OCaml','学习OCaml以及使用OCaml开发应用时的一些经验和总结');
+INSERT INTO topics (title,intro)
+VALUES ( 'Lisp','学习Common Lisp，Scheme和使用Common Lisp开发应用时的一些经验和总结');

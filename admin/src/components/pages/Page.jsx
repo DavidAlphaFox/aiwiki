@@ -111,12 +111,16 @@ function Page(props) {
     startLoading();
     if (commited.id === null || commited.id === '') {
       createPage(commited).subscribe(
-        res => handleField('id', res.id),
+        (res) => {
+          handleField('id', res.id);
+          stopLoading();
+        },
         () => handleError())
     } else {
       updatePage(commited.id, commited).subscribe(
         res => {
           handlePage(res);
+          stopLoading();
         },
         () => handleError());
     }
@@ -137,7 +141,7 @@ function Page(props) {
           <Select
             right={true}
             value={page.topicId}
-            onChange={handleField('topicId')}
+            onChange={e => handleField('topicId',e.target.value)}
           >
             {renderTopics()}
           </Select>

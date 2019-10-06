@@ -42,7 +42,6 @@ function Select(props){
     update(!openState,event);
   };
   const handleItemClick = child => event => {
-    console.log('handleItemClick');
     if (!multiple) {
       update(false, event);
     }

@@ -24,7 +24,6 @@
                              (getf topic :title)
                              (getf page :title))
                      :intro (getf page :intro)
-                     :topic topic
                      :published-at (getf page :published-at)
                      :url (gen-page-url
                            (getf page :id)

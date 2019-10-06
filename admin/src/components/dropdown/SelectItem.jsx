@@ -7,7 +7,6 @@ function SelectItem(props) {
     children,
     other
   } = props;
-  console.log(selected);
   return (
     <button
       {...other}
