@@ -86,3 +86,5 @@ INSERT INTO topics (title,intro)
 VALUES ( 'OCaml','学习OCaml以及使用OCaml开发应用时的一些经验和总结');
 INSERT INTO topics (title,intro)
 VALUES ( 'Lisp','学习Common Lisp，Scheme和使用Common Lisp开发应用时的一些经验和总结');
+INSERT INTO topics (title,intro)
+VALUES ( 'Erlang','学习Erlang，使用Erlang以及对Erlang代码分析和调优经验总结');
