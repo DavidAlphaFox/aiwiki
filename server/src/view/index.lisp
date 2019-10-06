@@ -6,6 +6,7 @@
    :aiwiki.utils.request
    :aiwiki.utils.pagination
    :aiwiki.model.tag
+   :aiwiki.model.topic
    :aiwiki.model.page)
   (:export
    :index))
@@ -17,14 +18,18 @@
 (defun load-pages (page-index page-size)
   (let ((pages (pages-with-intro page-index page-size)))
     (loop for page in pages
-        collect (list
-                 :title (getf page :title)
-                 :intro (getf page :intro)
-                 :published-at (getf page :published-at)
-                 :url (format nil "/pages/~d/~a.html"
-                              (getf page :id)
-                              (quri:url-encode (getf page :title)))
-                 ))))
+          collect (let ((topic (topic-title (getf page :topic-id)) ))
+                    (list
+                     :title (gen-page-title
+                             (getf topic :title)
+                             (getf page :title))
+                     :intro (getf page :intro)
+                     :topic topic
+                     :published-at (getf page :published-at)
+                     :url (gen-page-url
+                           (getf page :id)
+                           (getf page :title))
+                     )))))
 
 (defun load-tags ()
   (let ((tags (all-tags)))

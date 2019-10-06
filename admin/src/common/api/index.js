@@ -20,6 +20,10 @@ import  {
   updateSiteInfo,
 } from './siteApi';
 
+import {
+  getTopics,
+} from './topicApi';
+
 export {
   defaultPipe,
   doRequest,
@@ -31,4 +35,5 @@ export {
   createPage,
   getSiteInfo,
   updateSiteInfo,
+  getTopics,
 };

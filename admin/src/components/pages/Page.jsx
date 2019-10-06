@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import * as R from 'ramda';
+import * as Rx from 'rxjs';
 import { Link, Redirect } from 'react-router-dom';
 import Editor from 'for-editor';
 
@@ -12,6 +13,8 @@ import {
   getPage,
   updatePage,
   createPage,
+  getTopics,
+  getPages,
 } from '../../common/api';
 
 import {
@@ -36,7 +39,7 @@ const initialState = {
     intro: '',
     published: false,
     content: '',
-    topic: 1,
+    topicId: 1,
   },
   topics: [],
   commited: null,
@@ -45,18 +48,19 @@ const initialState = {
 };
 
 const pageLens = R.lensProp('page');
+const topicsLens = R.lensProp('topics');
 const loadingLens = R.lensProp('loading');
 const commitedLens = R.lensProp('commited');
 const errorLens = R.lensProp('error');
 
-const genHandleRemoteData = R.curry((dispatch, data) => dispatch(
+const genHandlePage = R.curry((dispatch, data) => dispatch(
   R.pipe(
     R.set(pageLens, data),
     R.set(errorLens, false),
-    R.set(loadingLens, false),
   )));
-
+const genHandleTopics = R.curry((dispatch, data) => dispatch(R.set(topicsLens, data)));
 const genStartLoading = dispatch => () => dispatch(R.set(loadingLens, true));
+const genStopLoading = dispatch => () => dispatch(R.set(loadingLens,false));
 const genHandleError = dispatch => () => dispatch(
   R.pipe(
     R.set(errorLens, true),
@@ -74,17 +78,31 @@ function Page(props) {
   } = props;
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
-  const handleRemoteData = genHandleRemoteData(dispatch);
+  const handlePage = genHandlePage(dispatch);
+  const handleTopics = genHandleTopics(dispatch);
   const startLoading = genStartLoading(dispatch);
+  const stopLoading = genStopLoading(dispatch);
   const handleField = genHandleField(dispatch);
   const handleCommit = genHandleCommit(dispatch);
   const handleError = genHandleError(dispatch);
 
   React.useEffect(() => {
     if (params === null || params === undefined) return;
-    if (params.id === 'new') return;
+    if (params.id === 'new') {
+      startLoading();
+      getTopics().subscribe((topics) => {
+        handleTopics(topics);
+        stopLoading();
+      })
+      return;
+    }
     startLoading();
-    getPage(params.id).subscribe(res => handleRemoteData(res));
+    Rx.forkJoin([getPage(params.id),getTopics()])
+      .subscribe(([page,topics]) => {
+        handlePage(page);
+        handleTopics(topics);
+        stopLoading();
+      });
   }, [params]);
 
   React.useEffect(() => {
@@ -97,11 +115,16 @@ function Page(props) {
         () => handleError())
     } else {
       updatePage(commited.id, commited).subscribe(
-        res => handleRemoteData(res),
+        res => {
+          handlePage(res);
+        },
         () => handleError());
     }
   }, [state.commited])
 
+  const renderTopics = () => R.map(
+    i => (<SelectItem key={i.id} value={i.id}>{i.title} </SelectItem>),
+    state.topics);
   const renderNav = () => {
     const {
       loading,
@@ -110,8 +133,13 @@ function Page(props) {
     } = state;
     return (
       <div className="navbar-end">
-        <div className="navbar-item">
-          <Select right={true}>
+       <div className="navbar-item">
+          <Select
+            right={true}
+            value={page.topicId}
+            onChange={handleField('topicId')}
+          >
+            {renderTopics()}
           </Select>
         </div>
         <div className="navbar-item">

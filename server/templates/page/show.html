@@ -19,6 +19,9 @@
 {% block content %}
 <h1 class="title is-1">{{title}}</h1>
 <p class="subtitle"><span>发布于：</span>{{published-at | date }}</p>
+<div class="tags are-medium">
+  <span class="tag">{{topic.title}}</span>
+</div>
 <br/>
 <div class="content markdown-content">{{rendered-content|safe}}</div>
 {% endblock %}

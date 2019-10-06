@@ -45,23 +45,25 @@
   (fetch-one (db)
     (find-action (:*) (:= :id id))))
 
-(defun add-page (title intro content)
+(defun add-page (title intro content topic-id)
   (fetch-one (db)
     (insert-into :pages
       (set=
        :title title
        :intro intro
-       :content content)
+       :content content
+       :topic_id topic-id)
       (returning :id))))
 
-(defun update-page (id title intro content published)
+(defun update-page (id title intro content published topic-id)
   (execute-transaction (db)
     (let ((r (find-action (:published) (:= :id id))))
       (if (and (not (access:access r :published)) published)
-          (update-action id (:title title :intro intro
+          (update-action id (:title title :intro intro :topic_id topic-id
                              :content content :published (to-db-boolean published)))
           (update-action id (:title title :intro intro :published_at (:raw "now() AT TIME ZONE 'UTC'")
-                             :content content :published (to-db-boolean published)))))))
+                             :content content :topic_id topic-id
+                             :published (to-db-boolean published)))))))
 
 (defun publish-page (id published)
   (execute-transaction (db)
@@ -83,12 +85,12 @@
 
 (defun pages-with-intro (page-index page-size)
   (fetch-pagination :pages
-                    ((:id :title :intro :published_at))
+                    ((:id :title :intro :topic_id :published_at))
                     (:= :published "true")
                     page-index page-size))
 
 (defun pages-with-published (page-index page-size)
   (fetch-pagination :pages
-                    ((:id :title :published))
+                    ((:id :title :topic_id :published))
                     nil
                     page-index page-size))
