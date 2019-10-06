@@ -1,10 +1,24 @@
 {% extends "layouts/default.html" %}
 {% block title %}{{ title }}-{{site.brand}}{% endblock %}
 {% block intro %}{{ intro  }}{% endblock %}
+{% block sidebar %}
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- PageSidebar -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7166741407343632"
+     data-ad-slot="6735816045"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+ (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}
+
 {% block content %}
 <h1 class="title is-1">{{title}}</h1>
 <p class="subtitle"><span>发布于：</span>{{published-at | date }}</p>
 <br/>
 <div class="content markdown-content">{{rendered-content|safe}}</div>
 {% endblock %}
-
