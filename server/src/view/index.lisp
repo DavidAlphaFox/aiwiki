@@ -5,7 +5,6 @@
    :aiwiki.utils.view
    :aiwiki.utils.request
    :aiwiki.utils.pagination
-   :aiwiki.model.tag
    :aiwiki.model.topic
    :aiwiki.model.page)
   (:export
@@ -30,14 +29,14 @@
                            (getf page :title))
                      )))))
 
-(defun load-tags ()
-  (let ((tags (all-tags)))
-      (loop for tag in tags
+(defun load-topics ()
+  (let ((topics (all-topics-title)))
+      (loop for topic in topics
         collect (list
-                 :title (getf tag :title)
-                 :url (format nil "/tag/~d/~a.html"
-                              (getf tag :id)
-                              (quri:url-encode (getf tag :title)))
+                 :title (getf topic :title)
+                 :url (format nil "/topics/~d/~a.html"
+                              (getf topic :id)
+                              (quri:url-encode (getf topic :title)))
                  ))))
 
 
@@ -46,8 +45,8 @@
   (let* ((page-index (parse-integer (fetch-parameter-with-default "pageIndex" "1")))
          (page-size  (parse-integer (fetch-parameter-with-default "pageSize" "10")))
          (total (getf (total-pages :published t) :total))
-         (tags (load-tags))
+         (topics (load-topics))
          (pages (load-pages page-index page-size))
          (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=~d")))
     (render-view #P"index.html"
-                 (list :index t :pages pages :tags tags :pagers pagination))))
+                 (list :index t :pages pages :topics topics :pagers pagination))))

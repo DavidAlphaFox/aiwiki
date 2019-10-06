@@ -69,6 +69,7 @@
                   :depends-on ("base" "model" "utils")
                   :components
                   ((:file "index")
+                   (:file "topic")
                    (:file "page")))
                  (:module "api"
                   :depends-on ("base" "model" "utils")

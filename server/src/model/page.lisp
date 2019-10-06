@@ -93,11 +93,17 @@
           (select ((:as (:count :id) :total))
             (from :pages))))))
 
+(defmacro pages-with-intro-cond (topic-id)
+  `(if ,topic-id
+       (list :and
+             (list := :published "true")
+             (list := :topic_id ,topic-id))
+       '(:= :published "true")))
 
-(defun pages-with-intro (page-index page-size)
+(defun pages-with-intro (page-index page-size &key topic-id)
   (fetch-pagination :pages
                     ((:id :title :intro :topic_id :published_at))
-                    (:= :published "true")
+                    (pages-with-intro-cond topic-id)
                     page-index page-size))
 
 (defun pages-with-published (page-index page-size)

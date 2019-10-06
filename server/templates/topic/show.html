@@ -1,5 +1,4 @@
 {% extends "layouts/default.html" %}
-{% extends "shared/_topics.html" %}
 {% extends "shared/_pagination.html" %}
 
 {% block content %}
@@ -21,10 +20,10 @@
   {% endfor %}
 </div>
 
-  {% if pages %}
-  <section class="section">
-    {% block pagination %}
-    {{ block.super  }}
+{% if pages %}
+<section class="section">
+  {% block pagination %}
+  {{ block.super  }}
   {% endblock %}
 </section>
 {% endif %}

@@ -2,14 +2,14 @@
 
 <div class="panel">
   <p class="panel-heading">
-    文章分类
+    主题分类
   </p>
-  {% for tag in tags %}
-  <a class="panel-block" href="{{ tag.url }}">
+  {% for topic in topics %}
+  <a class="panel-block" href="{{ topic.url }}">
     <span class="panel-icon">
       <i class="fas fa-book" aria-hidden="true"></i>
     </span>
-    {{tag.title}}
+    {{topic.title}}
   </a>
   {% endfor %}
 </div>

@@ -56,6 +56,10 @@
   (with-uncaught-handler
     (with-response-format formatter
       (:html (aiwiki.view.page:show id title)))))
+(defroute ("/topics/:id/:title.:formatter" :method :GET) (&key id title formatter)
+  (with-uncaught-handler
+    (with-response-format formatter
+      (:html (aiwiki.view.topic:show id title)))))
 
 (defroute ("/" :method :GET) () (with-uncaught-handler (aiwiki.view.index:index)))
 
