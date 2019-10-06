@@ -43,6 +43,7 @@
 (defroute ("/api/token/verify.json" :method :GET) () (must-be-logged-in (aiwiki.api.auth:verify-token)))
 (defroute ("/api/site.json" :method :GET) () (must-be-logged-in (aiwiki.api.site:index)))
 (defroute ("/api/site.json" :method :POST) () (must-be-logged-in (aiwiki.api.site:update)))
+(defroute ("/api/topics.json" :method :GET) () (must-be-logged-in (aiwiki.api.topic:index)))
 (defroute ("/api/pages.json" :method :GET) () (must-be-logged-in (aiwiki.api.page:index)))
 (defroute ("/api/pages.json" :method :POST) () (must-be-logged-in (aiwiki.api.page:create)))
 (defroute ("/api/pages/:id.json" :method :GET) (&key id) (must-be-logged-in (aiwiki.api.page:show id)))

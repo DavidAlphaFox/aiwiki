@@ -55,6 +55,7 @@
                    (:file "link")
                    (:file "tag")
                    (:file "user")
+                   (:file "topic")
                    (:file "site")))
                  (:module "utils"
                   :depends-on ("base")
@@ -74,6 +75,7 @@
                   :components
                   ((:file "page")
                    (:file "auth")
+                   (:file "topic")
                    (:file "site")))
                  (:file "app" :depends-on ("view" "api"))
                  (:file "main" :depends-on ("app"))

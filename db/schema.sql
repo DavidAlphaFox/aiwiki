@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS pages (
   title VARCHAR(255) NOT NULL,
   intro TEXT,
   content TEXT,
-  topic_id BIGINT NOT NULL DEFAULT 0,
+  topic_id BIGINT DEFAULT 1 NOT NULL,
   published BOOLEAN DEFAULT false,
   published_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'UTC')
 );
@@ -76,3 +76,5 @@ CREATE TABLE IF NOT EXISTS topics (
   intro TEXT
 );
 CREATE UNIQUE INDEX topics_title_key ON topics(title);
+INSERT INTO topics (title,intro)
+VALUES ( '杂谈','全站点没有进行分类的文章聚集地，包含了各个方面的文章');
