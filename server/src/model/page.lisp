@@ -73,14 +73,25 @@
           (update-action id (:published (to-db-boolean published)
                              :published_at (:raw "now() AT TIME ZONE 'UTC'")))))))
 
-(defun total-pages (&key published)
+
+(defun total-pages (&key published topic-id)
   (fetch-one (db)
-    (if published
-        (select ((:as (:count :id) :total))
-          (from :pages)
-          (where (:= :published (to-db-boolean published))))
-        (select ((:as (:count :id) :total))
-          (from :pages)))))
+    (let ((cond-statement
+            (cond ((and published topic-id)
+              (where (:and
+                      (:= :published (to-db-boolean published))
+                      (:= :topic_id topic-id))))
+            (published
+             (where (:= :published (to-db-boolean published))))
+            (topic-id
+             (where (:= :topic_id topic-id)))
+            (t nil))))
+      (if cond-statement
+          (select ((:as (:count :id) :total))
+            (from :pages)
+            cond-statement)
+          (select ((:as (:count :id) :total))
+            (from :pages))))))
 
 
 (defun pages-with-intro (page-index page-size)

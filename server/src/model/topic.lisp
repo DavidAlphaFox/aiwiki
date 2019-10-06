@@ -10,7 +10,8 @@
    :fetch-one)
   (:export
    :all-topics-title
-   :topic-title))
+   :topic-title
+   :topic-by-id))
 
 (in-package :aiwiki.model.topic)
 
@@ -18,8 +19,15 @@
   (fetch-all (db)
     (select (:id :title)
       (from :topics))))
+
 (defun topic-title (id)
   (fetch-one (db)
     (select (:id :title)
+      (from :topics)
+      (where (:= :id id)))))
+
+(defun topic-by-id (id)
+  (fetch-one (db)
+    (select :*
       (from :topics)
       (where (:= :id id)))))
