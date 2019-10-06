@@ -1,9 +1,11 @@
 {% extends "layouts/default.html" %}
-{% extends "shared/_topics.html" %}
-{% extends "shared/_pagination.html" %}
 
 {% block title %}{{ topic.title }}-{{site.brand}}{% endblock %}
-{% block intro %}{{ block.super }} {{ topic.intro  }}{% endblock %}
+{% block intro %}{{ site.intro }} {{topic.title}}-{{topic.intro}}{% endblock %}
+
+{% block sidebar %}
+{% include "shared/_topics.html" %}
+{% endblock %}
 
 {% block content %}
 <div class="hero">
@@ -37,12 +39,8 @@
   {% endfor %}
 </div>
 
-{% if pages %}
 <section class="section" >
-  {% block pagination %}
-  {{ block.super }}
-  {% endblock %}
+  {% include "shared/_pagination.html" %}
 </section>
-{% endif %}
 
 {% endblock %}

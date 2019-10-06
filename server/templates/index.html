@@ -1,6 +1,8 @@
 {% extends "layouts/default.html" %}
-{% extends "shared/_topics.html" %}
-{% extends "shared/_pagination.html" %}
+
+{% block sidebar %}
+{% include "shared/_topics.html" %}
+{% endblock %}
 
 {% block content %}
 <div class="tile is-vertical is-ancestor">
@@ -22,8 +24,7 @@
 </div>
 
 <section class="section">
-  {% block pagination %}
-  {% endblock %}
+  {% include "shared/_pagination.html" %}
 </section>
 
 {% endblock %}
