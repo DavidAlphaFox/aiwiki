@@ -27,6 +27,15 @@
                          (getf page :id)
                          (getf page :title))
                    ))))
+(defun load-topics ()
+  (let ((topics (all-topics-title)))
+      (loop for topic in topics
+        collect (list
+                 :title (getf topic :title)
+                 :url (format nil "/topics/~d/~a.html"
+                              (getf topic :id)
+                              (quri:url-encode (getf topic :title)))
+                 ))))
 
 (defun show (id title)
   (let* ((topic (topic-by-id id))
@@ -36,6 +45,7 @@
          (topic-url (format nil "/topics/~d/~a.html?pageIndex=~~d&pageSize=~~d"
                             (getf topic :id) (quri:url-encode (getf topic :title))))
          (pagination (gen-pagination total page-index page-size topic-url))
-         (pages (load-pages page-index page-size topic)))
+         (pages (load-pages page-index page-size topic))
+         (topics (load-topics)))
     (render-view #P"topic/show.html"
-                 (list :pages pages :topic topic :pagers pagination))))
+                 (list :pages pages :topic topic :topics topics :pagers pagination))))

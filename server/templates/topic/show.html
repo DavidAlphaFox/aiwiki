@@ -1,30 +1,45 @@
 {% extends "layouts/default.html" %}
+{% extends "shared/_topics.html" %}
 {% extends "shared/_pagination.html" %}
 
 {% block content %}
-<div class="tile is-vertical is-ancestor">
-  {% for page in pages %}
-  <div class="tile is-parent is-vertical">
-    <div class="tile">
-      <a href="{{page.url}}" target="_blank">
-        <h2 class="title"> {{page.title}} </h2>
-      </a>
-    </div>
-    <div class="tile">
-      <span>发布于：{{page.published-at | date}} </span>
-    </div>
-    <div class="tile">
-      <h3> {{ page.intro }} </h3>
+<div class="hero">
+  <div class="hero-body" >
+    <div class="container" >
+      <h1 class="title is-1" >
+        {{topic.title}}
+        </<h1></h1>>
+        <h2 class="subtitle is-2" >
+          {{topic.intro}}
+        </h2>
     </div>
   </div>
-  {% endfor %}
 </div>
 
+<div class="tile is-vertical is-ancestor" >
+  {% for page in pages %}
+  <div class="tile is-parent is-vertical" >
+    <div class="tile" >
+      <a href="{{page.url}}" target = "_blank" >
+        <h3 class="title is-4" > {{ page.title }} </h2>
+      </a>
+    </div>
+    <div class="tile" >
+      <span>发布于：{{ page.published-at | date }} </span>
+      </div>
+      <div class="tile" >
+        <h4>{{ page.intro }} </h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
 {% if pages %}
-<section class="section">
+<section class="section" >
   {% block pagination %}
-  {{ block.super  }}
+  {{ block.super }}
   {% endblock %}
 </section>
 {% endif %}
+
 {% endblock %}
