@@ -21,9 +21,9 @@
   {% endfor %}
 </div>
 
-  {% if pages %}
-  <section class="section">
-    {% block pagination %}
+{% if pages %}
+<section class="section">
+  {% block pagination %}
     {{ block.super  }}
   {% endblock %}
 </section>

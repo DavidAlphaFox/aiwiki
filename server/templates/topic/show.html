@@ -2,6 +2,9 @@
 {% extends "shared/_topics.html" %}
 {% extends "shared/_pagination.html" %}
 
+{% block title %}{{ topic.title }}-{{site.brand}}{% endblock %}
+{% block intro %}{{ site.intro }} {{ topic.intro  }}{% endblock %}
+
 {% block content %}
 <div class="hero">
   <div class="hero-body" >
@@ -26,13 +29,13 @@
     </div>
     <div class="tile" >
       <span>发布于：{{ page.published-at | date }} </span>
-      </div>
-      <div class="tile" >
-        <h4>{{ page.intro }} </h3>
-      </div>
     </div>
-    {% endfor %}
+    <div class="tile" >
+      <h4>{{ page.intro }} </h3>
+    </div>
   </div>
+  {% endfor %}
+</div>
 
 {% if pages %}
 <section class="section" >
