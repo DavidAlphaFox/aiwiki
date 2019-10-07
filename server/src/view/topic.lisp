@@ -11,7 +11,7 @@
    :aiwiki.model.topic)
   (:export
    :show
-   :sitemaps))
+   :sitemap))
 
 (in-package :aiwiki.view.topic)
 (defun load-pages (page-index page-size topic)
