@@ -15,6 +15,7 @@
   (:export
    :gen-page-title
    :gen-page-url
+   :gen-topic-url
    :gen-sitemap-url
    :render-view
    :render-json
@@ -34,6 +35,16 @@
       `(format nil "/pages/~d/~a.html"
                ,page-id
                (quri:url-encode ,page-title))))
+(defmacro gen-topic-url (topic-id topic-title &key with-host)
+  (if with-host
+      `(format nil "~a://~a/topics/~d/~a.html"
+               (config :scheme)
+               (config :host)
+               ,topic-id
+               (quri:url-encode ,topic-title))
+      `(format nil "/topics/~d/~a.html"
+               ,topic-id
+               (quri:url-encode ,topic-title))))
 
 (defmacro gen-sitemap-url (loc &key month)
   `(if ,month
