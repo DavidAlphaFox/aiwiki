@@ -1,7 +1,9 @@
 {% extends "layouts/default.html" %}
 {% block title %}{{ title }}-{{site.brand}}{% endblock %}
 {% block intro %}{{ site.intro }} {{intro}}{% endblock %}
-
+{% block header %}
+<link rel="canonical" href={{canonical-url}} />
+{% endblock %}
 {% block sidebar %}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- PageSidebar -->

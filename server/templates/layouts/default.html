@@ -9,6 +9,7 @@
     <meta name="description" content="{% block intro %}{{site.intro}}{% endblock %}" >
     <meta name="keywords" content="{% block keywords %}{{site.keywords}}{% endblock %}">
     {{site.header | safe}}
+    {% block header %}{% endblock %}
     <title>{% block title %}{{site.brand}}{% endblock %}</title>
     <link href="https://cdn.bootcss.com/bulma/0.7.5/css/bulma.min.css" rel="stylesheet">
     <link href="/css/main.css?version=201910012303" rel="stylesheet">

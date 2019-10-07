@@ -20,10 +20,13 @@
 (defun show (id title)
   (let* ((page (page-by-id id))
          (topic (topic-title (getf page :topic-id)))
+         (canonical-url (gen-page-url
+                         (getf page :id)
+                         (getf page :title)))
          (page-title (gen-page-title
                       (getf topic :title)
                       (getf page :title))))
     (setf (getf page :title) page-title)
     (render-view #P"page/show.html"
-                 (parse-page (list* :topic topic page)))
+                 (parse-page (list* :topic topic :canonical-url canonical-url page)))
     ))
