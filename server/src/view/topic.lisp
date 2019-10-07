@@ -10,7 +10,8 @@
    :aiwiki.model.page
    :aiwiki.model.topic)
   (:export
-   :show))
+   :show
+   :sitemaps))
 
 (in-package :aiwiki.view.topic)
 (defun load-pages (page-index page-size topic)
@@ -32,9 +33,9 @@
       (loop for topic in topics
         collect (list
                  :title (getf topic :title)
-                 :url (format nil "/topics/~d/~a.html"
-                              (getf topic :id)
-                              (quri:url-encode (getf topic :title)))
+                 :url (gen-topic-url
+                       (getf topic :id)
+                       (quri:url-encode (getf topic :title)))
                  ))))
 
 (defun show (id title)
@@ -49,3 +50,21 @@
          (topics (load-topics)))
     (render-view #P"topic/show.html"
                  (list :pages pages :topic topic :topics topics :pagers pagination))))
+
+(defun load-topics-url ()
+  (let ((topics (all-topics-title)))
+    (loop for topic in topics
+          collect (list
+                   :freq "daily"
+                   :url (gen-topic-url
+                         (getf topic :id)
+                         (quri:url-encode (getf topic :title))
+                         :with-host true)
+                   ))))
+(defun sitemap ()
+  (let* ((topics (load-topics-url))
+         (index (list
+                 :url (gen-index-url)
+                 :freq "hourly"))
+         (urls (list* index topics)))
+    (render-xml #P"sitemap/urlset.xml" (list :urls urls))))

@@ -58,7 +58,9 @@
           collect (list :url
                         (gen-sitemap-url "pages" :month (getf page :month))))))
 (defun sitemap ()
-  (let ((last-mod (local-time:now))
-        (page-sitemaps (load-pages-sitemap)))
+  (let* ((last-mod (local-time:now))
+        (topic-sitemap (list :url (gen-sitemap-url "topics")))
+        (page-sitemaps (load-pages-sitemap))
+        (sitemaps (list* topic-sitemap page-sitemaps)))
     (render-xml #P"sitemap/index.xml"
-                 (list :last-mod last-mod :sitemaps page-sitemaps))))
+                 (list :last-mod last-mod :sitemaps sitemaps))))

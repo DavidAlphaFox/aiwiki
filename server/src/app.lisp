@@ -60,6 +60,7 @@
   (with-uncaught-handler
     (with-response-format formatter
       (:html (aiwiki.view.topic:show id title)))))
+(defroute ("/topics/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.topic:sitemap)))
 (defroute ("/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.index:sitemap)))
 (defroute ("/" :method :GET) () (with-uncaught-handler (aiwiki.view.index:index)))
 

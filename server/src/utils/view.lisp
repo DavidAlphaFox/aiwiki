@@ -17,6 +17,7 @@
    :gen-page-url
    :gen-topic-url
    :gen-sitemap-url
+   :gen-index-url
    :render-view
    :render-json
    :render-xml))
@@ -57,6 +58,11 @@
                (config :scheme)
                (config :host)
                ,loc)))
+
+(defmacro gen-index-url ()
+  `(format nil "~a://~a/"
+           (config :scheme)
+           (config :host)))
 
 (defun render-view (template-path &optional env)
   (let ((site (fetch-site)))
