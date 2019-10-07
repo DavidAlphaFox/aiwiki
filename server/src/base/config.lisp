@@ -26,6 +26,8 @@
 (defconfig :common
     `(:debug t
       :secret "my$ecret"
+      :scheme "https"
+      :host "www.ttalk.im"
       :databases ((:maindb :postgres
                    :database-name "ttalk"
                    :username "david"

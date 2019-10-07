@@ -51,16 +51,16 @@
 
 
 ;; pages
-
 (defroute ("/pages/:id/:title.:formatter" :method :GET) (&key id title formatter)
   (with-uncaught-handler
     (with-response-format formatter
       (:html (aiwiki.view.page:show id title)))))
+(defroute ("/pages/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.page:sitemap)))
 (defroute ("/topics/:id/:title.:formatter" :method :GET) (&key id title formatter)
   (with-uncaught-handler
     (with-response-format formatter
       (:html (aiwiki.view.topic:show id title)))))
-
+(defroute ("/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.index:sitemap)))
 (defroute ("/" :method :GET) () (with-uncaught-handler (aiwiki.view.index:index)))
 
 

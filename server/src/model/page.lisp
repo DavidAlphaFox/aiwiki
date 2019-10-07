@@ -21,7 +21,8 @@
    :add-page
    :update-page
    :publish-page
-   ))
+   :group-pages-month
+   :pages-under-month))
 
 (in-package :aiwiki.model.page)
 
@@ -111,3 +112,18 @@
                     ((:id :title :topic_id :published))
                     nil
                     page-index page-size))
+
+(defun group-pages-month ()
+  (fetch-all (db)
+    (select ((:as (:raw "to_char(published_at,'yyyy-mm')") :month))
+      (from :pages)
+      (where (:= :published "true"))
+      (group-by (:raw "to_char(published_at,'yyyy-mm')")))))
+
+(defun pages-under-month (month)
+  (fetch-all (db)
+    (select (:id :title)
+      (from :pages)
+      (where (:and
+              (:= :published "true")
+              (:= (:raw "to_char(published_at,'yyyy-mm')") month))))))

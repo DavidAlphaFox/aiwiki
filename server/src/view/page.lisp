@@ -9,13 +9,29 @@
    :aiwiki.model.page
    :aiwiki.model.topic)
   (:export
-   :show))
+   :show
+   :sitemap))
 
 (in-package :aiwiki.view.page)
 
 ;;
 ;; Routing rules
+;;
 
+(defun load-pages (month)
+  (let ((pages (pages-under-month month)))
+    (loop for page in pages
+          collect (list
+                   :freq "monthly"
+                   :url (gen-page-url
+                         (getf page :id)
+                         (getf page :title)
+                         :with-host t)))))
+
+(defun sitemap ()
+  (let* ((month (fetch-parameter "date"))
+         (urls (load-pages month)))
+    (render-xml #P"sitemap/urlset.xml" (list :urls urls))))
 
 (defun show (id title)
   (let* ((page (page-by-id id))

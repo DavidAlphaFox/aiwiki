@@ -19,7 +19,8 @@
    :encode-json)
   (:export
    :render
-   :render-json))
+   :render-json
+   :render-xml))
 
 (in-package :aiwiki.base.view)
 
@@ -41,3 +42,13 @@
 (defun render-json (object)
   (setf (getf (response-headers *response*) :content-type) "application/json")
   (encode-json object))
+
+(defun render-xml (template-path &optional env)
+  (setf (getf (response-headers *response*) :content-type) "application/xml")
+  (let ((template (gethash template-path *template-registry*)))
+    (unless template
+      (setf template (djula:compile-template* (princ-to-string template-path)))
+      (setf (gethash template-path *template-registry*) template))
+    (apply #'djula:render-template*
+           template nil
+           env)))

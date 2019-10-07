@@ -8,7 +8,8 @@
    :aiwiki.model.topic
    :aiwiki.model.page)
   (:export
-   :index))
+   :index
+   :sitemap))
 
 (in-package :aiwiki.view.index)
 
@@ -50,3 +51,14 @@
          (pagination (gen-pagination total page-index page-size "/?pageIndex=~d&pageSize=~d")))
     (render-view #P"index.html"
                  (list :index t :pages pages :topics topics :pagers pagination))))
+
+(defun load-pages-sitemap ()
+  (let ((pages (group-pages-month)))
+    (loop for page in pages
+          collect (list :url
+                        (gen-sitemap-url "pages" :month (getf page :month))))))
+(defun sitemap ()
+  (let ((last-mod (local-time:now))
+        (page-sitemaps (load-pages-sitemap)))
+    (render-xml #P"sitemap/index.xml"
+                 (list :last-mod last-mod :sitemaps page-sitemaps))))
