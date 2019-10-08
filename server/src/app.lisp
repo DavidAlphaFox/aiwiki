@@ -62,6 +62,7 @@
       (:html (aiwiki.view.topic:show id title)))))
 (defroute ("/topics/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.topic:sitemap)))
 (defroute ("/sitemap.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.index:sitemap)))
+(defroute ("/rss.xml" :method :GET) () (with-uncaught-handler (aiwiki.view.index:rss)))
 (defroute ("/" :method :GET) () (with-uncaught-handler (aiwiki.view.index:index)))
 
 

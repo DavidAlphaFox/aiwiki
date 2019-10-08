@@ -9,6 +9,7 @@
    :aiwiki.model.page)
   (:export
    :index
+   :rss
    :sitemap))
 
 (in-package :aiwiki.view.index)
@@ -63,4 +64,25 @@
         (page-sitemaps (load-pages-sitemap))
         (sitemaps (list* topic-sitemap page-sitemaps)))
     (render-xml #P"sitemap/index.xml"
-                 (list :last-mod last-mod :sitemaps sitemaps))))
+                (list :last-mod last-mod :sitemaps sitemaps))))
+(defun load-pages-rss (page-index page-size)
+  (let ((pages (pages-with-intro page-index page-size)))
+    (loop for page in pages
+          collect (let ((topic (topic-title (getf page :topic-id)) ))
+                    (list
+                     :title (gen-page-title
+                             (getf topic :title)
+                             (getf page :title))
+                     :intro (getf page :intro)
+                     :url (gen-page-url
+                           (getf page :id)
+                           (getf page :title)
+                           :with-host t)
+                     )))))
+
+(defun rss ()
+  (let* ((pages (load-pages-rss 1 5))
+         (site (aiwiki.model.site:fetch-site))
+         (site-url (gen-index-url)))
+    (render-xml #P"rss.xml"
+                (list :pages pages :site site :site-url site-url))))
