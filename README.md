@@ -5,7 +5,6 @@
 ### 技术
 
 - cowboy
-- postgreSQL
 - mustach
 - React
 - tailwind CSS
