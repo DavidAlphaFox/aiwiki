@@ -1,0 +1,20 @@
+{
+  "db":{
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "ttalk",
+    "pool": 5,
+    "username": "david",
+    "password": ""
+  },
+  "cache": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "pool": 5
+  },
+  "jwt": {
+    "secret": "xckjvi3cri7",
+    "algorithm": "HS256",
+    "expiration": 36000
+  }
+}
