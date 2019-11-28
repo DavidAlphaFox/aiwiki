@@ -12,6 +12,6 @@ dep_bcrypt_commit = 1.0.2
 dep_jwt = git https://github.com/DavidAlphaFox/jwt.git 0.1.9
 dep_ailib = git https://github.com/DavidAlphaFox/ailib.git tag-0.4.0
 dep_aiconf = git https://github.com/DavidAlphaFox/aiconf.git tag-0.1.2
-dep_aihtml = git https://github.com/DavidAlphaFox/aihtml.git tag-0.2.4
+dep_aihtml = git https://github.com/DavidAlphaFox/aihtml.git tag-0.2.5
 dep_aidb = git https://github.com/DavidAlphaFox/aidb.git tag-0.3.0
 include erlang.mk

@@ -14,10 +14,12 @@ register_models() ->
       end,Models).
 router_list() ->
     [
+     {'_',aiwiki_home_controller,#{}}
     ].
 
 start() ->
     register_models(),
+    ai_mustache:bootstrap(),
     Port = aiwiki_conf:get_value(?SERVER_SECTION,?PORT,5000),
     RouterList = router_list(),
     lists:foreach(

@@ -23,16 +23,11 @@ init() ->
 
 get_config_file()->
     {ok, CurrentDirectory} = file:get_cwd(),
-    AppEnv =
+    ConfFile =
         case os:getenv(?APP_ENV) of
-            false -> prod;
-            "dev" -> dev;
-            "prod" -> prod
+            false -> ?PROD_CONF;
+            "dev" -> ?DEV_CONF;
+            "prod" -> ?PROD_CONF
         end,
-    if
-        AppEnv == dev ->
-            filename:join([CurrentDirectory,?DEV_CONF]);
-        true ->
-            filename:join([CurrentDirectory,?PROD_CONF])
-    end.
+    filename:join([CurrentDirectory,ConfFile]).
 
