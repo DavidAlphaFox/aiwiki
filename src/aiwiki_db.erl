@@ -22,11 +22,15 @@ create()->
                             {disc_copies,[Node]}
                            ]),
   mnesia:create_table(topic,[
-                             {attributes,aiwiki_topic_model:atrributes()},
+                             {attributes,aiwiki_topic_model:attributes()},
                              {index,[title]},
                              {disc_copies,[Node]}
                             ]),
-  ok = mnesia:wait_for_tables([page,topic],6000).
+  mnesia:create_table(user,[
+                            {attributes,aiwiki_user_model:attributes()},
+                            {disc_copies,[Node]}
+                           ]),
+  ok = mnesia:wait_for_tables([page,topic,user],6000).
 
 store()->
     DBSection = aiwiki_conf:get_section(?DB_SECTION),
