@@ -1,18 +1,32 @@
 -module(aiwiki_db).
 -export([store/0,run_connection/1,run_transaction/1]).
+-export([create/0]).
 
 -define(DB_SECTION,<<"db">>).
--define(CACHE_SECTION,<<"cache">>).
 -define(POOL_SIZE,<<"pool">>).
--define(HOST,<<"host">>).
--define(USERNAME,<<"username">>).
--define(PASSWORD,<<"password">>).
--define(DATABASE,<<"database">>).
--define(PORT,<<"port">>).
-
 
 run_connection(Fun)-> ai_db_store:dirty(aiwiki_store,Fun).
 run_transaction(Fun)-> ai_db_store:transaction(aiwiki_store,Fun).
+
+create()->
+  Node = node(),
+  _ = application:stop(mnesia),
+  _ = case mnesia:create_schema([Node]) of
+    ok -> ok;
+    {error, {Node, {already_exists, Node}}} -> ok
+  end,
+  {ok, _} = application:ensure_all_started(mnesia),
+  mnesia:create_table(page,[
+                            {attributes,aiwiki_page_model:attributes()},
+                            {index,[title]},
+                            {disc_copies,[Node]}
+                           ]),
+  mnesia:create_table(topic,[
+                             {attributes,aiwiki_topic_model:atrributes()},
+                             {index,[title]},
+                             {disc_copies,[Node]}
+                            ]),
+  ok = mnesia:wait_for_tables([page,topic],6000).
 
 store()->
     DBSection = aiwiki_conf:get_section(?DB_SECTION),
@@ -21,14 +35,7 @@ store()->
             undefined -> 5;
             Size -> Size
         end,
-    Hostname = erlang:binary_to_list(proplists:get_value(?HOST, DBSection)),
-    Username = proplists:get_value(?USERNAME, DBSection),
-    Password = proplists:get_value(?PASSWORD, DBSection),
-    Database = proplists:get_value(?DATABASE,DBSection),
-    Port = proplists:get_value(?PORT,DBSection,5432),
     {aiwiki_store, #{
-                    pool_size => PoolSize,host => Hostname,
-                    port => Port, username => Username,
-                    password => Password, database => Database,
-                    store_handler => ai_db_store_postgres
+                    pool_size => PoolSize,
+                    store_handler => ai_db_store_mnesia
      }}.

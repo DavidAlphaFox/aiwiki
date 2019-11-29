@@ -5,7 +5,7 @@
 -define(PORT,<<"port">>).
 register_models() ->
     Models = [
-              {pages,aiwiki_store,#{module => aiwiki_page_model}}
+              {page,aiwiki_store,#{module => aiwiki_page_model}}
              ],
     lists:foreach(
       fun({Model,Store,#{module := Module } = Attrs}) ->

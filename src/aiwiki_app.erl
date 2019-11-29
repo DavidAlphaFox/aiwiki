@@ -24,6 +24,7 @@ start(_Type, _Args) ->
     application:start(aidb),
     application:start(aihtml),
     aiwiki_conf:init(),
+    aiwiki_db:create(),
     StoreSpec = aiwiki_db:store(),
     ai_db:start_pool(store,StoreSpec),
   	Sup = aiwiki_sup:start_link(),
