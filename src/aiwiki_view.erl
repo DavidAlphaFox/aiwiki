@@ -20,7 +20,7 @@ render(Template,Req,State)->
                             <<"yield">> => [fun yield/2,Template],
                             <<"site_title">> => fun site_title/2
                           },
-  Body = ai_mustache:render(<<"_layout/default">>,LayoutContext),
+  Body = ai_mustache:render(<<"layout/default">>,LayoutContext),
   Req0 = cowboy_req:reply(200, #{
 		<<"content-type">> => <<"text/html; charset=utf-8">>
 	}, Body, Req),
