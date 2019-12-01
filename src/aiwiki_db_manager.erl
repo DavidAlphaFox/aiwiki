@@ -1,11 +1,13 @@
 
 -module(aiwiki_db_manager).
 -export([load_page/1,dump_page/1]).
+-export([load_topic/1]).
 
 load_page(File)->
   {ok,FileData} = file:read_file(File),
   Json = jsx:decode(FileData),
   lists:foreach(fun(I) -> 
+    ID = proplists:get_value(<<"id">>,I),
     Title = proplists:get_value(<<"title">>,I),
     Intro = proplists:get_value(<<"intro">>,I),
     Content = proplists:get_value(<<"content">>,I),
@@ -18,6 +20,7 @@ load_page(File)->
     PublishedAt0 = calendar:gregorian_seconds_to_datetime(PublishedAt),
     TopicID = proplists:get_value(<<"topic_id">>,I),
     Item = [
+           {id,ID},
            {title,Title},
            {intro,Intro},
            {content,Content},
@@ -36,3 +39,18 @@ dump_page(File) ->
     end,All),
   Bin = jsx:encode(All0),
   file:write_file(File,Bin).
+
+load_topic(File)->
+  {ok,FileData} = file:read_file(File),
+  Json = jsx:decode(FileData),
+  lists:foreach(fun(I) -> 
+      ID = proplists:get_value(<<"id">>,I),
+      Title = proplists:get_value(<<"title">>,I),
+      Intro = proplists:get_value(<<"intro">>,I),
+      Item = [
+             {id,ID},
+             {title,Title},
+             {intro,Intro}
+            ],
+      ai_db:persist(topic,Item)
+      end,Json).

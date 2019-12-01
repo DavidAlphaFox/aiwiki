@@ -12,7 +12,11 @@ init(Req,#{action := index} = State)->
       Url = url(M0),
       M0#{<<"url">> => Url}
     end,Pages),
-  aiwiki_view:render(<<"page/index">>,Req,State#{context => #{<<"pages">> => Pages0}});
+  Topics = aiwiki_topic_model:aside(1,<<"杂谈"/utf8>>),
+  aiwiki_view:render(<<"page/index">>,Req,State#{context => #{
+    <<"pages">> => Pages0,
+    <<"topics">> => Topics
+  }});
   
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),

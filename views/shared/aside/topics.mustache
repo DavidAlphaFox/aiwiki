@@ -1,0 +1,28 @@
+ <div class="w-full md:rounded-lg md:shadow-lg md:bg-gray-400">
+    <div class="px-4 py-2 
+      border-b border-gray-400 md:border-none">
+      <span class="text-lg font-bold">分类</span>
+    </div>
+    <ul class="pb-4 pt-4 md:bg-white">
+      {{# topics }}
+        {{# topics.selected}}
+          <li class="mx-4 my-2 bg-blue-200 rounded">
+            <a href={{topics.url}} >
+              <span class="px-4 text-md text-blue-500 hover:text-teal-500"> 
+                {{topics.title}}
+              </span>
+            </a>
+          </li>
+        {{/ topics.selected}}
+        {{^ topics.selected}}
+          <li class="mx-4 my-2">
+            <a href={{topics.url}} >
+              <span class="px-4 text-md text-gray-800 hover:text-teal-500"> 
+                {{topics.title}} 
+              </span>
+            </a>
+          </li>
+        {{/ topics.selected}}
+      {{/ topics }}
+    </ul>
+  </div>
