@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "scripts": {
+    "prod": "cross-env NODE_ENV=production webpack --no-progress"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "cross-env": "^5.1",
+    "css-loader": "^0.28.10",
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss": "^6.0.19",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^2.1.1",
+    "style-loader": "^0.20.3",
+    "tailwindcss": "^1.1.4",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

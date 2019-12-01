@@ -24,6 +24,8 @@ priv
 node_modules
 etc/storage/*
 !etc/storage/.gitkeep
-public/*
+public/css/*
 !public/.gitkeep
 aiwiki.d
+assets/node_modules
+assets/dist
