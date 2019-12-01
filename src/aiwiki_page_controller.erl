@@ -23,12 +23,17 @@ init(Req,#{action := index} = State)->
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
     Title = cowboy_req:binding(title,Req),
+    Title1 = 
+      case binary:split(Title,<<".">>) of
+        [Title0,_Format]-> ai_url:urldecode(Title0);
+        [Title0] ->  ai_url:urldecode(Title0)
+      end,
     PageID0 = ai_string:to_integer(PageID),
-    [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title}]}]),
+    [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title1}]}]),
     Page0 = aiwiki_page_model:view(Page),
-    Title0 = proplists:get_value(title,Page),
+    Title1 = proplists:get_value(title,Page),
     aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
-      <<"title">> => Title0,
+      <<"title">> => Title1,
       <<"page">> => Page0
     }}).
 
