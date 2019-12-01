@@ -15,9 +15,8 @@
   }
 
   pre {
-    @apply my-4 mx-4 bg-gray-200 overflow-scroll;
+    @apply px-4 py-4 bg-gray-200 overflow-scroll;
   }
-
   ul {
     @apply my-4 ml-4;
     li {

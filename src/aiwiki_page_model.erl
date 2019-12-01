@@ -1,7 +1,7 @@
 -module(aiwiki_page_model).
 -export([wakeup/1,sleep/1,schema/0,attributes/0]).
 -export([build/3,view/1]).
--export([pagination/2,pagination/3]).
+-export([pagination/2,pagination/3,pagination/4]).
 
 -include_lib("stdlib/include/qlc.hrl").
 
@@ -27,12 +27,21 @@ view(Page)->
       end
   end,#{},Page).
 
-pagination(PageIndex,PageCount)->pagination(PageIndex,PageCount,true).
-pagination(PageIndex,PageCount,Published)->
+pagination(PageIndex,PageCount)->pagination(PageIndex,PageCount, undefined,true).
+pagination(PageIndex,PageCount,TopicID)->pagination(PageIndex,PageCount, TopicID,true).
+pagination(PageIndex,PageCount,TopicID,Published)->
   Offset = PageIndex * PageCount,
   F = fun() ->  
-      Q = qlc:q([P || P <- mnesia:table(page),
-        erlang:element(6,P) == Published]),  
+      Q = 
+        case TopicID of 
+          undefined ->
+            qlc:q([P || P <- mnesia:table(page),
+              erlang:element(6,P) == Published]);
+          _-> 
+            qlc:q([P || P <- mnesia:table(page),
+              erlang:element(6,P) == Published,
+              erlang:element(7,P) == TopicID])
+        end,
       Q0 = qlc:keysort(7, Q, [{order, descending}]),
       QC = qlc:cursor(Q0),
       Answers = 

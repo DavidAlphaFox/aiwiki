@@ -13,18 +13,24 @@ init(Req,#{action := index} = State)->
       M0#{<<"url">> => Url}
     end,Pages),
   Topics = aiwiki_topic_model:aside(1,<<"杂谈"/utf8>>),
+  Pager = pagination(PageIndex0,PageCount0,erlang:length(Pages0)),
   aiwiki_view:render(<<"page/index">>,Req,State#{context => #{
     <<"pages">> => Pages0,
-    <<"topics">> => Topics
+    <<"topics">> => Topics,
+    <<"pager">> => Pager
   }});
-  
+ 
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
     Title = cowboy_req:binding(title,Req),
     PageID0 = ai_string:to_integer(PageID),
     [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title}]}]),
     Page0 = aiwiki_page_model:view(Page),
-    aiwiki_view:render(<<"page/show">>,Req,State#{context => #{<<"page">> => Page0}}).
+    Title0 = proplists:get_value(title,Page),
+    aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
+      <<"title">> => Title0,
+      <<"page">> => Page0
+    }}).
 
 
 url(Page)->
@@ -33,3 +39,38 @@ url(Page)->
   EncodeTitle = ai_url:urlencode(Title),
   EncodeID = ai_url:urlencode(ai_string:to_string(ID)),
   <<"/pages/",EncodeID/binary,"/",EncodeTitle/binary,".html">>.
+
+pagination(PageIndex,PageCount,Length)->
+  PageCount0 = ai_string:to_string(PageCount),
+  PageIndex0 = ai_string:to_string(PageIndex - 1),
+  PageIndex1 = ai_string:to_string(PageIndex + 1),
+  PrevUrl = <<"/pages?pageIndex=",PageIndex0/binary,"&pageCount=",PageCount0/binary>>,
+  NextUrl = <<"/pages?pageIndex=",PageIndex1/binary,"&pageCount=",PageCount0/binary>>,
+  if
+    PageIndex > 0 ->
+      if PageCount > Length ->
+          [
+            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => true,<<"url">> => PrevUrl},
+            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => false}
+          ];
+        true ->
+          [
+            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => true,<<"url">> => PrevUrl},
+            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => true,<<"url">> => NextUrl}
+          ]
+      end;
+    true ->
+      if 
+        PageCount > Length ->
+          [
+            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => false},
+            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => false}
+          ];
+        true ->
+          [
+            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => false},
+            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => true,<<"url">> => NextUrl}
+          ]
+      end
+  end.
+
