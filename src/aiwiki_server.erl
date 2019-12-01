@@ -14,7 +14,8 @@ register_models() ->
       end,Models).
 router_list() ->
     [
-     {'_',aiwiki_home_controller,#{}}
+     {"/pages/:id/:title/[:format]",aiwiki_page_controller,#{action => show}},
+     {'_',aiwiki_page_controller,#{action => index}}
     ].
 
 start() ->
