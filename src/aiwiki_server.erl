@@ -27,7 +27,16 @@ start() ->
       fun({_Path,Module,_Ctx})->
           {module,Module} = code:ensure_loaded(Module)
       end,RouterList),
-    Router =  {'_', RouterList},
+    RouterList0 = 
+        case aiwiki_conf:env() of 
+          dev ->
+            {ok, CurrentDirectory} = file:get_cwd(),
+            StaticFile = filename:join([CurrentDirectory,"public"]),
+            [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
+          prod -> RouterList
+        end,
+    io:format("~p~n",[RouterList0]),
+    Router =  {'_', RouterList0},
     Dispatch = cowboy_router:compile([Router]),
     cowboy:start_clear(aiwiki_server,[{port, Port}],
                       #{env => #{ dispatch => Dispatch }

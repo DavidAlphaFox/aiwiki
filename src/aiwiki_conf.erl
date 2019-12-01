@@ -1,6 +1,7 @@
 -module(aiwiki_conf).
 -export([init/0,get_value/2,get_value/3]).
 -export([get_section/2,get_section/1,sections/0]).
+-export([env/0]).
 
 
 -define(APP_ENV,"APP_ENV").
@@ -20,6 +21,13 @@ sections()-> ai_conf:sections(aiwiki).
 init() ->
     Conf = get_config_file(),
     ai_conf:load_conf(aiwiki,[Conf]).
+    
+env()-> 
+  case os:getenv(?APP_ENV) of
+    false -> prod;
+    "dev" -> dev;
+    "prod" -> prod
+  end.
 
 get_config_file()->
     {ok, CurrentDirectory} = file:get_cwd(),
