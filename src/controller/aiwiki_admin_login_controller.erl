@@ -6,9 +6,10 @@ init(#{method := <<"GET">> } = Req,State)->
       undefined -> aiwiki_helper:new_session(Req);
       Session -> {ok,Session,Req}
     end,
-
-  {CSRFKey,CSRFToken} = aiwiki_helper:csrf(Session0,<<"POST">>,<<"/admin/login.php">>),
+  Path = cowboy_req:path(Req),
+  {CSRFKey,CSRFToken} = aiwiki_helper:csrf(Session0,<<"POST">>,Path),
   aiwiki_view:render(<<"admin/login">>,Req0,State#{ context => #{
+    <<"path">> => Path,
     <<"csrf">> => #{
       <<"param">> => CSRFKey,
       <<"token">> => CSRFToken

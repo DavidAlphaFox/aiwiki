@@ -1,7 +1,7 @@
 <div class="h-full bg-gray-200
   py-10 flex justify-center">
 <div class="w-full max-w-sm">
-  <form action="/admin/login.php" method="post"
+  <form action="{{path}}" method="post"
     class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <input type="hidden" name="_csrf_token" value="{{csrf.token}}" />
     <input type="hidden" name="_csrf_param" value="{{csrf.param}}" />
