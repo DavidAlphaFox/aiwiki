@@ -17,6 +17,7 @@ register_models() ->
 router_list() ->
     [
      {"/rss.xml",aiwiki_rss_controller,#{layout => null}},
+     {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].

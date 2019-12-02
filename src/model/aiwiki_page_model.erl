@@ -28,7 +28,7 @@ pagination(PageIndex,PageCount,TopicID,Published)->
           _-> 
             qlc:q([P || P <- mnesia:table(page),
               erlang:element(6,P) == Published,
-              erlang:element(7,P) == TopicID])
+              erlang:element(8,P) == TopicID])
         end,
       Q0 = qlc:keysort(7, Q, [{order, descending}]),
       QC = qlc:cursor(Q0),
