@@ -6,7 +6,8 @@
 register_models() ->
     Models = [
               {page,aiwiki_store,#{module => aiwiki_page_model}},
-              {topic,aiwiki_store,#{module => aiwiki_topic_model}}
+              {topic,aiwiki_store,#{module => aiwiki_topic_model}},
+              {site,aiwiki_store,#{module => aiwiki_site_model}}
              ],
     lists:foreach(
       fun({Model,Store,#{module := Module } = Attrs}) ->

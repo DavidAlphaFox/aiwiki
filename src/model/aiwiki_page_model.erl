@@ -1,6 +1,6 @@
 -module(aiwiki_page_model).
 -export([wakeup/1,sleep/1,schema/0,attributes/0]).
--export([build/3,view/1]).
+-export([build/3]).
 -export([pagination/2,pagination/3,pagination/4]).
 
 -include_lib("stdlib/include/qlc.hrl").
@@ -14,18 +14,6 @@ build(Title,Intro,Content)->
    {published_at, calendar:universal_time()},
    {topic_id,0}
   ].
-view(Page)->
-  lists:foldl(
-    fun({Key,Value},Acc) ->
-      KeyBin = ai_string:to_string(Key),
-      case Key of 
-        published_at -> 
-          PublishedAt = ai_iso8601:format(Value),
-          Acc#{KeyBin => PublishedAt};
-        _ -> 
-          Acc#{KeyBin => Value}
-      end
-  end,#{},Page).
 
 pagination(PageIndex,PageCount)->pagination(PageIndex,PageCount, undefined,true).
 pagination(PageIndex,PageCount,TopicID)->pagination(PageIndex,PageCount, TopicID,true).

@@ -1,6 +1,7 @@
 -module(aiwiki_helper).
 -export([pagination/4]).
 -export([resource_and_format/1]).
+-export([view_model/1]).
 
 pagination(Path,PageIndex,PageCount,Length)->
   PageCount0 = ai_string:to_string(PageCount),
@@ -45,3 +46,9 @@ resource_and_format(Resource)->
       Format = binary:part(Resource,FormatPos,FormatLength),
       {ResourceName,Format}
   end.
+
+view_model(Model)->
+  lists:foldl(
+    fun({Key,Value},Acc) ->
+      Acc#{ai_string:to_string(Key) => Value}
+    end,#{},Model).

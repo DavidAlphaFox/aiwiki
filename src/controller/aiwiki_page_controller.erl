@@ -8,7 +8,7 @@ init(Req,#{action := index} = State)->
   PageCount0 = ai_string:to_integer(PageCount),
   Pages = aiwiki_page_model:pagination(PageIndex0,PageCount0),
   Pages0 = lists:map(fun(M) -> 
-      M0 = aiwiki_page_model:view(M),
+      M0 = aiwiki_page_helper:view_model(M),
       Url = aiwiki_page_helper:url(M0),
       M0#{<<"url">> => Url}
     end,Pages),
@@ -27,7 +27,7 @@ init(Req,#{action := show} = State)->
     Title2 = ai_url:urldecode(Title1),
     PageID0 = ai_string:to_integer(PageID),
     [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title2}]}]),
-    Page0 = aiwiki_page_model:view(Page),
+    Page0 = aiwiki_page_helper:view_model(Page),
     Title2 = proplists:get_value(title,Page),
     aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
       <<"title">> => Title2,
