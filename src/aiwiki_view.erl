@@ -32,12 +32,17 @@ site_keywords(Acc,Context)->
       end
   end.
 render(Template,Format,Req,State)->
+  IsDev = 
+    case aiwiki_conf:env() of 
+      dev -> true;
+      prod -> false
+    end,
   Context = maps:get(context,State,#{}),
   Layout = maps:get(layout,State,<<"layout/default">>),
   Req0 =
     case  Layout of
       null ->
-        Body = ai_mustache:render(Template,Context),
+        Body = ai_mustache:render(Template,Context#{<<"is_dev">> => IsDev}),
         cowboy_req:reply(200, #{<<"content-type">> => Format}, Body, Req);
       _ ->
         Site = ai_db:find_all(site),
@@ -52,7 +57,8 @@ render(Template,Format,Req,State)->
             <<"site_title">> => fun site_title/2,
             <<"site_intro">> => fun site_intro/2,
             <<"site_keywords">> => fun site_keywords/2,
-            <<"site">> => Site0
+            <<"site">> => Site0,
+            <<"is_dev">> => IsDev
         },
 
         Body = ai_mustache:render(Layout,LayoutContext),

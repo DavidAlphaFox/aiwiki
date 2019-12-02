@@ -23,7 +23,7 @@ init(Req,#{action := index} = State)->
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
     Title = cowboy_req:binding(title,Req),
-    {Title1,_} = aiwiki_page_helper:resource_and_format(Title),
+    {Title1,_} = aiwiki_helper:resource_and_format(Title),
     Title2 = ai_url:urldecode(Title1),
     PageID0 = ai_string:to_integer(PageID),
     [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title2}]}]),
