@@ -24,8 +24,9 @@ priv
 node_modules
 etc/storage/*
 !etc/storage/.gitkeep
-public/css/*
+public/assets
 !public/.gitkeep
 aiwiki.d
 assets/node_modules
 assets/dist
+assets/yarn-error.log

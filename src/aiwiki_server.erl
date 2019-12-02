@@ -35,7 +35,7 @@ start() ->
         case aiwiki_conf:env() of 
           dev ->
             {ok, CurrentDirectory} = file:get_cwd(),
-            StaticFile = filename:join([CurrentDirectory,"public"]),
+            StaticFile = filename:join([CurrentDirectory,"public/assets"]),
             [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
           prod -> RouterList
         end,
