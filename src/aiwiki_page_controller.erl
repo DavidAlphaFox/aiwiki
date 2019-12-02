@@ -23,17 +23,14 @@ init(Req,#{action := index} = State)->
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
     Title = cowboy_req:binding(title,Req),
-    Title1 = 
-      case binary:split(Title,<<".">>) of
-        [Title0,_Format]-> ai_url:urldecode(Title0);
-        [Title0] ->  ai_url:urldecode(Title0)
-      end,
+    {Title1,_} = ttile_and_format(Title),
+    Title2 = ai_url:urldecode(Title1),
     PageID0 = ai_string:to_integer(PageID),
-    [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title1}]}]),
+    [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title2}]}]),
     Page0 = aiwiki_page_model:view(Page),
-    Title1 = proplists:get_value(title,Page),
+    Title2 = proplists:get_value(title,Page),
     aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
-      <<"title">> => Title1,
+      <<"title">> => Title2,
       <<"page">> => Page0
     }}).
 
@@ -79,3 +76,13 @@ pagination(PageIndex,PageCount,Length)->
       end
   end.
 
+ttile_and_format(Title)->
+  case re:run(Title,<<"(.*)\\.(.+)$">>) of 
+    nomatch -> {Title,undefined};
+    {match,[_,R1,R2]} ->
+      {TitlePos,TitleLength} = R1,
+      {FormatPos,FormatLength} = R2,
+      RealTitle = binary:part(Title,TitlePos,TitleLength),
+      Format = binary:part(Title,FormatPos,FormatLength),
+      {RealTitle,Format}
+  end.
