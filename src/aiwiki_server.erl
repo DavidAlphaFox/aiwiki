@@ -19,6 +19,7 @@ router_list() ->
      {"/rss.xml",aiwiki_rss_controller,#{layout => null}},
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
+     {"/admin/login.php",aiwiki_admin_login_controller,#{layout => <<"layout/admin">>}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 

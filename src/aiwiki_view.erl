@@ -1,5 +1,5 @@
 -module(aiwiki_view).
--export([render/3,render/4]).
+-export([render/3,render/4,error/3]).
 
 yield(Template,Context)->
   ai_mustache:render(Template,Context).
@@ -68,4 +68,12 @@ render(Template,Format,Req,State)->
 
 render(Template,Req,State)->
   render(Template,<<"text/html; charset=utf-8">>,Req,State).
- 
+
+error(StatusCode,Req,State)->
+  Body = ai_mustache:render(<<"error">>,#{
+    <<"status">> => StatusCode
+  }),
+  Req0 = cowboy_req:reply(StatusCode, 
+    #{<<"content-type">> => <<"text/html; charset=utf-8">>}, 
+    Body, Req),
+  {ok,Req0,State}.

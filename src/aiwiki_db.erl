@@ -1,19 +1,24 @@
 -module(aiwiki_db).
 
 -export([run_connection/1, run_transaction/1, store/0]).
-
+-export([cache/0,run_cache/1]).
 -export([create/0]).
 
 -define(DB_SECTION, <<"db">>).
+-define(CACHE_SECTION,<<"cache">>).
+-define(POOL_SIZE,<<"pool">>).
+-define(HOST,<<"host">>).
+-define(PORT,<<"port">>).
 
--define(POOL_SIZE, <<"pool">>).
 
 run_connection(Fun) ->
     ai_db_store:dirty(aiwiki_store, Fun).
 
 run_transaction(Fun) ->
     ai_db_store:transaction(aiwiki_store, Fun).
-
+run_cache(Fun)->
+		ai_pool:transaction(chalk_cache,fun(Worker)-> ai_redis_worker:with_connection(Worker,Fun) end).
+	
 create() ->
     Node = node(),
     _ = application:stop(mnesia),
@@ -39,12 +44,24 @@ create() ->
 
 store() ->
     DBSection = aiwiki_conf:get_section(?DB_SECTION),
-    PoolSize = case proplists:get_value(?POOL_SIZE,
-					DBSection)
-		   of
-		 undefined -> 5;
-		 Size -> Size
-	       end,
+    PoolSize = 
+			case proplists:get_value(?POOL_SIZE,DBSection) of
+		 		undefined -> 5;
+		 		Size -> Size
+	    end,
     {aiwiki_store,
      #{pool_size => PoolSize,
        store_handler => ai_db_store_mnesia}}.
+cache()->
+    CacheSection = aiwiki_conf:get_section(?CACHE_SECTION),
+    PoolSize =
+        case proplists:get_value(?POOL_SIZE,CacheSection) of
+            undefined -> 5;
+            Size -> Size
+        end,
+    Hostname = erlang:binary_to_list(proplists:get_value(?HOST, CacheSection)),
+    Port = proplists:get_value(?PORT,CacheSection,6379),
+    {chalk_cache, #{
+                    pool_size => PoolSize,host => Hostname,
+                    port => Port
+                   }}.
