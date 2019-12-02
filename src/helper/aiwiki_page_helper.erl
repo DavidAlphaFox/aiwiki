@@ -1,5 +1,6 @@
 -module(aiwiki_page_helper).
 -export([url/1,url/2]).
+-export([pagination/3]).
 
 -include_lib("ailib/include/ai_url.hrl").
 
@@ -15,3 +16,7 @@ url(Host,Page)->
   R = ai_url:parse(Host),
   R1 = R#ai_url{path = Path},
   ai_url:build(R).
+
+
+pagination(PageIndex,PageCount,Length)-> 
+  aiwiki_helper:pagination(<<"/pages">>,PageIndex,PageCount,Length).
