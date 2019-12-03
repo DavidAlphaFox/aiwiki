@@ -1,7 +1,15 @@
 -module(aiwiki_admin_page_controller).
 -behaviour(cowboy_handler).
 -export([init/2,terminate/3]).
-
+init(Req,#{action := edit} = State)->
+  Menus = menus(),
+  QS = cowboy_req:parse_qs(Req),
+  PageID = proplists:get_value(<<"id">>,QS),
+  Context = #{
+    <<"page_id">> => PageID,
+    <<"menus">> => Menus
+    },
+  aiwiki_view:render(<<"admin/page/edit">>,Req,State#{context => Context});
 init(Req,State)->
   Menus = menus(),
   QS = cowboy_req:parse_qs(Req),
@@ -16,7 +24,7 @@ init(Req,State)->
       M0#{<<"edit_url">> => Url}
     end,Pages),
   Pager = aiwiki_helper:pagination(<<"/admin/pages.php">>,
-    PageIndex0,PageCount0,erlang:length(Pages0)),
+  PageIndex0,PageCount0,erlang:length(Pages0)),
   Context = #{
       <<"pages">> => Pages0,
       <<"pager">> => Pager,

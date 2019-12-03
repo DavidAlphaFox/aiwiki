@@ -22,6 +22,7 @@ router_list() ->
      {"/admin/login.php",aiwiki_admin_login_controller,#{layout => <<"layout/admin">>}},
      {"/admin/index.php",aiwiki_admin_index_controller,#{layout => <<"layout/admin">>}},
      {"/admin/pages.php",aiwiki_admin_page_controller,#{layout => <<"layout/admin">>}},
+     {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
      {"/admin/pages/edit.php",aiwiki_admin_page_controller,#{
        layout => <<"layout/admin">>,
         action => edit

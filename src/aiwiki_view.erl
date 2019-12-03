@@ -1,5 +1,6 @@
 -module(aiwiki_view).
 -export([render/3,render/4]).
+-export([render_api/3,render_api/4]).
 -export([error/3,error/4]).
 -export([redirect/3]).
 
@@ -103,3 +104,12 @@ redirect(Path,Req,State)->
   Req0 = cowboy_req:reply(302,
     #{<<"location">> => Path},Req),
   {ok,Req0,State}.
+
+render_api(Data,Format,Req,State)->
+  Req0 = cowboy_req:reply(200, #{<<"content-type">> => Format}, Data, Req),
+  {ok,Req0,State}.
+render_api(Data,Req,State)->
+  Body = jsx:encode([{
+      <<"data">>,Data
+  }]),
+  render_api(Body,<<"application/json; charset=utf-8">>,Req,State).

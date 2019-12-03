@@ -1,4 +1,5 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "./content.css";
+@import "./editor-content.css";
 @import "tailwindcss/utilities";
