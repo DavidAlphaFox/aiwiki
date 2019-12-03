@@ -1,0 +1,23 @@
+<ul class="pb-4 pt-4">
+  {{# menus }}
+    {{# menus.selected}}
+      <li class="mx-2 my-2 bg-blue-200 rounded text-center ">
+        <a href="{{{menus.url}}}">
+          <div class="text-md text-blue-500 hover:text-teal-500"> 
+            {{menus.title}}
+          </div>
+        </a>
+      </li>
+    {{/ menus.selected}}
+    {{^ menus.selected}}
+      <li class="mx-2 my-2 text-center ">
+        <a href="{{{menus.url}}}">
+          <div class="text-md text-gray-800 hover:text-teal-500"> 
+            {{menus.title}} 
+          </div>
+        </a>
+      </li>
+    {{/ menus.selected}}
+  {{/ menus}}
+</ul>
+  

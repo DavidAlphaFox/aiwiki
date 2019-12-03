@@ -21,8 +21,10 @@ pagination(PageIndex,PageCount,TopicID,Published)->
   Offset = PageIndex * PageCount,
   F = fun() ->  
       Q = 
-        case TopicID of 
-          undefined ->
+        case {TopicID,Published} of 
+          {undefined,undefined} ->
+            qlc:q([P || P <- mnesia:table(page)]);
+          {undefined,_}->
             qlc:q([P || P <- mnesia:table(page),
               erlang:element(6,P) == Published]);
           _-> 

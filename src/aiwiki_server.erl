@@ -20,6 +20,7 @@ router_list() ->
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
      {"/admin/login.php",aiwiki_admin_login_controller,#{layout => <<"layout/admin">>}},
+     {"/admin/index.php",aiwiki_admin_index_controller,#{layout => <<"layout/admin">>}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 
@@ -40,11 +41,17 @@ start() ->
             [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
           prod -> RouterList
         end,
-    io:format("~p~n",[RouterList0]),
     Router =  {'_', RouterList0},
+    Auth = #{
+        exclude => [<<"/admin/login.php">>],
+        include => [<<"/admin.*">>],
+        to => <<"/admin/login.php">>
+    },
     Dispatch = cowboy_router:compile([Router]),
     cowboy:start_clear(aiwiki_server,[{port, Port}],
-                      #{env => #{ dispatch => Dispatch }
+                      #{
+                        env => #{ dispatch => Dispatch, auth => Auth },
+                        middlewares => [cowboy_router,aiwiki_auth_handler,cowboy_handler]
                       }).
 
 

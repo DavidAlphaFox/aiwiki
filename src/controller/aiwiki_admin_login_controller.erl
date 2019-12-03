@@ -40,7 +40,9 @@ init(#{method := <<"POST">>} = Req,State)->
             }
           }
         });
-        _ -> aiwiki_view:redirect(<<"/admin/index.php">>,Req,State)
+        _->
+          ok = aiwiki_helper:login_session(Session,Email),
+          aiwiki_view:redirect(<<"/admin/index.php">>,Req,State)
       end
   end.
 terminate(normal,_Req,_State) -> ok;
