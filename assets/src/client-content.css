@@ -1,0 +1,15 @@
+@import './content.css';
+.content {
+ul {
+  @apply my-4 ml-4;
+  li {
+    list-style: disc;
+  }
+}
+ol {
+  @apply my-4 ml-4;
+  li {
+    list-style: decimal;
+  }
+}
+}

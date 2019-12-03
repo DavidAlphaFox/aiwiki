@@ -5,7 +5,7 @@ import 'braft-editor/dist/index.css'
 
 import {
   getPage
-} from './pageApi';
+} from './common/pageApi';
 
 function App(props){
   const {
@@ -26,7 +26,7 @@ function App(props){
   },[pageID])
   return (
     <div className="p-8">
-      <div className="editor-content shadow-md rounded">
+      <div className="content shadow-md rounded">
       <BraftEditor
         className="bg-white"
         value={editorState}

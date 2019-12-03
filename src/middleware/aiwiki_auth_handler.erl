@@ -47,7 +47,7 @@ session(Req,#{auth := Auth } = Env,Session)->
   #{to := To} = Auth,
   case has(Session) of 
     undefined -> 
-      Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>,<<"">>,Req),
+      Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>,<<"">>,Req,#{max_age => 0}),
       { stop, cowboy_req:reply( 302, #{ <<"Location">> => To }, Req0 ) };
     _ ->
       {ok,Req,Env}

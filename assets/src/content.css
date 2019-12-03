@@ -1,4 +1,4 @@
-.editor-content {
+.content {
   h1,h2,h3,h4,h5,h6 {
     @apply text-gray-900 font-semibold my-4;
   }
@@ -15,13 +15,6 @@
   }
 
   pre {
-    @apply px-4 py-4 bg-gray-200 overflow-scroll;
-  }
-
-  ul {
-    @apply my-4 ml-4;
-  }
-  ol {
-    @apply my-4 ml-4;
+    @apply px-4 py-4 bg-gray-200 overflow-scroll border-l-8 border-blue-500;
   }
 }
