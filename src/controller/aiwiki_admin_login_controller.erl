@@ -23,7 +23,22 @@ init(#{method := <<"POST">>} = Req,State)->
   R = ai_url:parse_query(Body),
   CSRFKey = proplists:get_value(<<"_csrf_param">>,R),
   CSRFToken = proplists:get_value(<<"_csrf_token">>,R),
+  Email = proplists:get_value(<<"username">>,R),
+  Password = proplists:get_value(<<"password">>,R),
   case aiwiki_helper:csrf(CSRFToken,CSRFKey,Session,Method,Path) of 
     false -> aiwiki_view:error(400,Req,State);
-    true -> aiwiki_view:render(<<"admin/login">>,Req0,State)
+    true -> 
+      case aiwiki_user_model:auth(Email,Password) of 
+        false -> aiwiki_view:render(<<"admin/login">>,Req0,State#{
+          context => #{
+            <<"error_message">> => <<"用户名或密码错误"/utf8>>,
+            <<"path">> => Path,
+            <<"csrf">> => #{
+                <<"param">> => CSRFKey,
+                <<"token">> => CSRFToken
+            }
+          }
+        });
+        _ -> aiwiki_view:redirect(<<"/admin/index.php">>,Req,State)
+      end
   end.

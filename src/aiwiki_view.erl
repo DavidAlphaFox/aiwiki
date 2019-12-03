@@ -1,5 +1,6 @@
 -module(aiwiki_view).
 -export([render/3,render/4,error/3]).
+-export([redirect/3]).
 
 yield(Template,Context)->
   ai_mustache:render(Template,Context).
@@ -76,4 +77,9 @@ error(StatusCode,Req,State)->
   Req0 = cowboy_req:reply(StatusCode, 
     #{<<"content-type">> => <<"text/html; charset=utf-8">>}, 
     Body, Req),
+  {ok,Req0,State}.
+
+redirect(Path,Req,State)->
+  Req0 = cowboy_req:reply(302,
+    #{<<"location">> => Path},Req),
   {ok,Req0,State}.

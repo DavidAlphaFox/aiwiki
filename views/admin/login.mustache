@@ -6,12 +6,17 @@
     <input type="hidden" name="_csrf_token" value="{{csrf.token}}" />
     <input type="hidden" name="_csrf_param" value="{{csrf.param}}" />
     <div class="mb-4">
+        {{# error_message}}
+        <p class="text-red-500 text-xs italic">{{error_message}}</p>
+        {{/ error_message}}
+      </div>
+    <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
         用户名
       </label>
       <input class="border rounded shadow
       w-full py-2 px-3 text-gray-700 
-      focus:shadow-outline" name="email" type="text" placeholder="Username" />
+      focus:shadow-outline" name="username" type="text" placeholder="Username" />
     </div>
     <div class="mb-6">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password" >
