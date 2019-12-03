@@ -1,0 +1,62 @@
+<div class="flex h-full w-full">
+  <aside class="w-20 bg-white h-full">
+    {{> shared/aside/admin/menus}}
+  </aside>
+  <div class="pt-4 mx-8 w-full h-full">
+    <div class="bg-white shadow-md rounded my-6">
+
+  <table class="text-left w-full border-collapse table-fixed">
+    <thead>
+      <tr>
+        <th class="p-4 bg-grey-lightest font-bold w-1/2
+          text-sm text-grey-dark border-b border-grey-light">标题</th>
+        <th class="p-4 bg-grey-lightest font-bold w-1/4
+          text-sm text-grey-dark border-b border-grey-light">是否发布</th>
+        <th class="p-4 bg-grey-lightest font-bold w-1/4
+          text-sm text-grey-dark border-b border-grey-light">操作</th>
+      </tr>
+    </thead>
+    <tbody class="hover:bg-grey-lighter">
+    {{# pages }}
+      <tr>
+        <td class="p-4 border-b border-grey-light">
+          <span>
+          {{ pages.title }}
+          </span>
+        </td>
+        <td class="p-4 border-b border-grey-light"> 
+          {{# pages.published}}
+            <span class="border-b-2  border-teal-400 text-sm p-2">已发布</span>
+          {{/ pages.published}}
+          {{^ pages.published}}
+            <span class="border-b-2 border-orange-400 text-sm  p-2">未发布</span>
+          {{/ pages.published}}
+        </td>
+        <td class="p-4 border-b border-grey-light">
+        <a class="text-teal-500" href="{{{pages.edit_url}}}" target="_blank">编辑</a> 
+        </td>
+      </tr>
+    {{/ pages }}
+        </tbody>
+    </table>
+    </div>
+  <div class="mt-4 md:mx-4 flex justify-center">
+    {{# pager}}
+      {{# pager.enabled}}
+        <a class="text-teal-500 
+          hover:text-white hover:bg-teal-500 
+          py-2 px-2 my-auto"
+          href="{{{pager.url}}}"
+        >
+          {{pager.title}}
+        </a>
+      {{/ pager.enabled}}
+      {{^ pager.enabled}}
+        <a class="text-gray-400 px-2 py-2 my-auto">
+          {{pager.title}}
+        </a>
+      {{/ pager.enabled}}
+    {{/ pager}}
+  </div>
+</div>
+</div>

@@ -21,6 +21,15 @@ router_list() ->
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
      {"/admin/login.php",aiwiki_admin_login_controller,#{layout => <<"layout/admin">>}},
      {"/admin/index.php",aiwiki_admin_index_controller,#{layout => <<"layout/admin">>}},
+     {"/admin/pages.php",aiwiki_admin_page_controller,#{layout => <<"layout/admin">>}},
+     {"/admin/pages/edit.php",aiwiki_admin_page_controller,#{
+       layout => <<"layout/admin">>,
+        action => edit
+      }},
+     {"/admin/pages/create.php",aiwiki_admin_page_controller,#{
+       layout => <<"layout/admin">>,
+       action => create
+      }},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 
