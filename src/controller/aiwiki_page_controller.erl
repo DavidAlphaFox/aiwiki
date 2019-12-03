@@ -1,5 +1,5 @@
 -module(aiwiki_page_controller).
--export([init/2]).
+-export([init/2,terminate/3]).
 init(Req,#{action := index} = State)->
   QS = cowboy_req:parse_qs(Req),
   PageIndex = proplists:get_value(<<"pageIndex">>,QS,0),
@@ -35,3 +35,9 @@ init(Req,#{action := show} = State)->
     }}).
 
 
+  terminate(normal,_Req,_State) -> ok;
+  terminate(Reason,Req,State)->
+    Reason0 = io_lib:format("~p~n",[Reason]),
+    aiwiki_view:error(500,Reason0,Req,State),
+    ok.
+  

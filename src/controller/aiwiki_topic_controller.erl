@@ -1,5 +1,5 @@
 -module(aiwiki_topic_controller).
--export([init/2]).
+-export([init/2,terminate/3]).
 
 init(Req,State)->
   QS = cowboy_req:parse_qs(Req),
@@ -30,3 +30,10 @@ init(Req,State)->
     <<"pager">> => Pager,
     <<"topic">> => aiwiki_helper:view_model(TopicR)
   }}).
+
+
+terminate(normal,_Req,_State) -> ok;
+terminate(Reason,Req,State)->
+  Reason0 = io_lib:format("~p~n",[Reason]),
+  aiwiki_view:error(500,Reason0,Req,State),
+  ok.

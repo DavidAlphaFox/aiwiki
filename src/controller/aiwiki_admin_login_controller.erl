@@ -1,5 +1,6 @@
 -module(aiwiki_admin_login_controller).
--export([init/2]).
+-behaviour(cowboy_handler).
+-export([init/2,terminate/3]).
 init(#{method := <<"GET">> } = Req,State)->
   {ok,Session0,Req0} = 
     case aiwiki_helper:current_session(Req) of 
@@ -42,3 +43,8 @@ init(#{method := <<"POST">>} = Req,State)->
         _ -> aiwiki_view:redirect(<<"/admin/index.php">>,Req,State)
       end
   end.
+terminate(normal,_Req,_State) -> ok;
+terminate(Reason,Req,State)->
+  Reason0 = io_lib:format("~p~n",[Reason]),
+  aiwiki_view:error(500,Reason0,Req,State),
+  ok.

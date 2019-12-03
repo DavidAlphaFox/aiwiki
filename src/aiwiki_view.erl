@@ -1,5 +1,6 @@
 -module(aiwiki_view).
--export([render/3,render/4,error/3]).
+-export([render/3,render/4]).
+-export([error/3,error/4]).
 -export([redirect/3]).
 
 yield(Template,Context)->
@@ -70,14 +71,33 @@ render(Template,Format,Req,State)->
 render(Template,Req,State)->
   render(Template,<<"text/html; charset=utf-8">>,Req,State).
 
-error(StatusCode,Req,State)->
-  Body = ai_mustache:render(<<"error">>,#{
-    <<"status">> => StatusCode
-  }),
+error(StatusCode,Reason,Req,State)->
+  IsDev = 
+    case aiwiki_conf:env() of 
+      dev -> true;
+      prod -> false
+    end,
+  Context = 
+    case  Reason of
+      undefined ->
+       #{
+          <<"is_dev">> => IsDev,
+          <<"status">> => StatusCode
+        };
+      _ -> 
+        #{
+          <<"is_dev">> => IsDev,
+          <<"reason">> => Reason,
+          <<"status">> => StatusCode
+        }  
+    end,
+  Body = ai_mustache:render(<<"error">>,Context),
   Req0 = cowboy_req:reply(StatusCode, 
-    #{<<"content-type">> => <<"text/html; charset=utf-8">>}, 
+  #{<<"content-type">> => <<"text/html; charset=utf-8">>}, 
     Body, Req),
   {ok,Req0,State}.
+error(StatusCode,Req,State)->
+  error(StatusCode,undefined,Req,State).
 
 redirect(Path,Req,State)->
   Req0 = cowboy_req:reply(302,

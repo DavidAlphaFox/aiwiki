@@ -42,7 +42,12 @@
   <body>
     <div id="main">
       <div class="error">
+        {{# is_dev}}
+          <span>{{reason}}</span>
+        {{/ is_dev}}
+        {{^ is_dev}}
         <div class="code">{{status}}</div>
+        {{/ is_dev}}
         <div class="message">SERVER ERROR</div>
       </div>
     </div>
