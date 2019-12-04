@@ -9,7 +9,7 @@ init(Req,#{action := index} = State)->
   Pages = aiwiki_page_model:pagination(PageIndex0,PageCount0),
   Pages0 = lists:map(fun(M) -> 
       M0 = aiwiki_page_helper:view_model(M),
-      Url = aiwiki_page_helper:url(M0),
+      Url = aiwiki_page_helper:url(M),
       M0#{<<"url">> => Url}
     end,Pages),
   Topics = aiwiki_topic_helper:aside(undefined,undefined),
@@ -40,4 +40,3 @@ init(Req,#{action := show} = State)->
     Reason0 = io_lib:format("~p~n",[Reason]),
     aiwiki_view:error(500,Reason0,Req,State),
     ok.
-  

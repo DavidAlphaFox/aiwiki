@@ -6,8 +6,8 @@
 -include_lib("ailib/include/ai_url.hrl").
 
 url(Page) ->
-    Title = maps:get(<<"title">>, Page),
-    ID = maps:get(<<"id">>, Page),
+    Title = proplists:get_value(title, Page),
+    ID = proplists:get_value(id, Page),
     EncodeTitle = ai_url:urlencode(Title),
     EncodeID = ai_url:urlencode(ai_string:to_string(ID)),
     <<"/pages/", EncodeID/binary, "/", EncodeTitle/binary,

@@ -17,6 +17,8 @@ register_models() ->
 router_list() ->
     [
      {"/rss.xml",aiwiki_rss_controller,#{layout => null}},
+     {"/:title/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
+     {"/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
      {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
