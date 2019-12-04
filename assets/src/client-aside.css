@@ -1,0 +1,14 @@
+@media (min-width: 768px){
+.aside-item {
+  &:hover > a:after {
+    width: 100%;
+  }
+}
+.aside-link:after{
+  width: 0;
+  content: "";
+  display: block;
+  transition: all 0.3s ease 0s;
+  @apply border-b-2 border-solid border-teal-500;
+}
+}
