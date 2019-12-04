@@ -6,7 +6,7 @@ init(Req,State)->
   Host = proplists:get_value(value,HostConf),
   Pages0 = lists:map(fun(M) -> 
       M0 = aiwiki_page_helper:view_model(M),
-      Url = aiwiki_page_helper:url(Host,M0),
+      Url = aiwiki_page_helper:url(Host,M),
       M0#{<<"url">> => Url}
     end,Pages),
   aiwiki_view:render(<<"xml/rss">>,<<"application/xml">>,Req,State#{context => #{
