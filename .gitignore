@@ -22,6 +22,7 @@ deps
 Mnesia.*
 priv
 node_modules
+etc/prod.json
 etc/storage/*
 !etc/storage/.gitkeep
 public/assets
