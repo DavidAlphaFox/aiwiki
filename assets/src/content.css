@@ -15,7 +15,7 @@
   }
 
   pre {
-    @apply px-4 py-4 bg-gray-200 overflow-scroll rounded-lg
+    @apply px-4 py-4 bg-gray-200 overflow-auto rounded-lg
       border-l-8 border-blue-500;
   }
 }
