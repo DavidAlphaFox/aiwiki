@@ -656,6 +656,7 @@ video {
     padding-bottom: 1rem;
     background-color: #edf2f7;
     overflow: scroll;
+    border-radius: 0.5rem;
     border-left-width: 8px;
     border-color: #4299e1;
   }

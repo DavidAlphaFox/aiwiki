@@ -12,7 +12,7 @@ init(Req,#{action := index} = State)->
       Url = aiwiki_page_helper:url(M0),
       M0#{<<"url">> => Url}
     end,Pages),
-  Topics = aiwiki_topic_helper:aside(1,<<"杂谈"/utf8>>),
+  Topics = aiwiki_topic_helper:aside(undefined,undefined),
   Pager = aiwiki_page_helper:pagination(PageIndex0,PageCount0,erlang:length(Pages0)),
   aiwiki_view:render(<<"page/index">>,Req,State#{context => #{
     <<"pages">> => Pages0,

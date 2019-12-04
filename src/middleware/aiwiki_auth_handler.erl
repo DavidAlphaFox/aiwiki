@@ -40,17 +40,38 @@ session(Req)->
     _:_ -> undefined
   end.    
 session(Req,#{auth := Auth },undefined)->
-  #{to := To} = Auth,
-  Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>,<<"">>,Req),
-  { stop, cowboy_req:reply( 302, #{ <<"Location">> => To }, Req0 ) };
+  reply(Req,Auth);
 session(Req,#{auth := Auth } = Env,Session)->
-  #{to := To} = Auth,
   case has(Session) of 
-    undefined -> 
+    undefined -> reply(Req,Auth);
+    _ -> {ok,Req,Env}
+  end.
+
+no_redirect(Req,Auth)->
+  Path = cowboy_req:path(Req),
+  case maps:get(no_redirect,Auth,undefined) of
+    undefined -> false;
+    NoRedirect ->
+      lists:any(
+        fun(E)->
+            case re:run(Path,E) of
+              {match,_} -> true;
+              nomatch -> false
+            end
+        end,NoRedirect)
+  end.
+
+reply(Req,Auth)->
+  case maps:get(to,Auth,undefined) of
+    undefined -> {stop,cowboy_req:reply(401,Req)};
+    To ->
       Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>,<<"">>,Req,#{max_age => 0}),
-      { stop, cowboy_req:reply( 302, #{ <<"Location">> => To }, Req0 ) };
-    _ ->
-      {ok,Req,Env}
+      case no_redirect(Req,Auth) of
+        false ->
+          { stop, cowboy_req:reply( 302, #{ <<"Location">> => To }, Req0 ) };
+        ture ->
+          {stop,cowboy_req:reply(401,Req)}
+      end
   end.
 
 

@@ -19,18 +19,7 @@ router_list() ->
      {"/rss.xml",aiwiki_rss_controller,#{layout => null}},
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
-     {"/admin/login.php",aiwiki_admin_login_controller,#{layout => <<"layout/admin">>}},
-     {"/admin/index.php",aiwiki_admin_index_controller,#{layout => <<"layout/admin">>}},
-     {"/admin/pages.php",aiwiki_admin_page_controller,#{layout => <<"layout/admin">>}},
      {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
-     {"/admin/pages/edit.php",aiwiki_admin_page_controller,#{
-       layout => <<"layout/admin">>,
-        action => edit
-      }},
-     {"/admin/pages/create.php",aiwiki_admin_page_controller,#{
-       layout => <<"layout/admin">>,
-       action => create
-      }},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 
