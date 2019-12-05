@@ -1,4 +1,4 @@
--module(aiwiki_admin_login_controller).
+-module(aiwiki_login_controller).
 -behaviour(cowboy_handler).
 -export([init/2,terminate/3]).
 init(#{method := <<"GET">> } = Req,State)->
@@ -9,13 +9,14 @@ init(#{method := <<"GET">> } = Req,State)->
     end,
   Path = cowboy_req:path(Req),
   {CSRFKey,CSRFToken} = aiwiki_helper:csrf(Session0,<<"POST">>,Path),
-  aiwiki_view:render(<<"admin/login">>,Req0,State#{ context => #{
+  aiwiki_view:render(<<"login">>,Req0,State#{ context => #{
     <<"path">> => Path,
     <<"csrf">> => #{
       <<"param">> => CSRFKey,
       <<"token">> => CSRFToken
     }}
   });
+
 init(#{method := <<"POST">>} = Req,State)->
   Method = cowboy_req:method(Req),
   Path = cowboy_req:path(Req),
@@ -30,7 +31,7 @@ init(#{method := <<"POST">>} = Req,State)->
     false -> aiwiki_view:error(400,Req,State);
     true -> 
       case aiwiki_user_model:auth(Email,Password) of 
-        false -> aiwiki_view:render(<<"admin/login">>,Req0,State#{
+        false -> aiwiki_view:render(<<"login">>,Req0,State#{
           context => #{
             <<"error_message">> => <<"用户名或密码错误"/utf8>>,
             <<"path">> => Path,
@@ -42,7 +43,7 @@ init(#{method := <<"POST">>} = Req,State)->
         });
         _->
           ok = aiwiki_helper:login_session(Session,Email),
-          aiwiki_view:redirect(<<"/admin/index.php">>,Req,State)
+          aiwiki_view:redirect(<<"/admin/">>,Req,State)
       end
   end.
 terminate(normal,_Req,_State) -> ok;

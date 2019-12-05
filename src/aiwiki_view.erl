@@ -48,19 +48,13 @@ render(Template,Format,Req,State)->
         Body = ai_mustache:render(Template,Context#{<<"is_dev">> => IsDev}),
         cowboy_req:reply(200, #{<<"content-type">> => Format}, Body, Req);
       _ ->
-        Site = ai_db:find_all(site),
-        Site0 = lists:foldl(
-            fun(Conf,Acc) ->
-              Key = proplists:get_value(key,Conf),
-              Value = proplists:get_value(value,Conf),
-              Acc#{Key => Value}
-            end,#{},Site),
+        Site = aiwiki_helper:site(),
         LayoutContext = Context#{
             <<"yield">> => [fun yield/2,Template],
             <<"site_title">> => fun site_title/2,
             <<"site_intro">> => fun site_intro/2,
             <<"site_keywords">> => fun site_keywords/2,
-            <<"site">> => Site0,
+            <<"site">> => Site,
             <<"is_dev">> => IsDev
         },
 

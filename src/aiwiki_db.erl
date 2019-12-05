@@ -17,7 +17,7 @@ run_connection(Fun) ->
 run_transaction(Fun) ->
     ai_db_store:transaction(aiwiki_store, Fun).
 run_cache(Fun)->
-		ai_pool:transaction(chalk_cache,fun(Worker)-> ai_redis_worker:with_connection(Worker,Fun) end).
+    ai_pool:transaction(chalk_cache,fun(Worker)-> ai_redis_worker:with_connection(Worker,Fun) end).
 	
 create() ->
     Node = node(),
@@ -39,8 +39,12 @@ create() ->
     mnesia:create_table(site,
 			[{attributes, aiwiki_site_model:attributes()},
 			 {disc_copies, [Node]}]),
-    ok = mnesia:wait_for_tables([page, topic, user, site],
-				6000).
+    mnesia:create_table(exlink,
+			[{attributes, aiwiki_site_model:attributes()},
+			 {disc_copies, [Node]}]),
+    ok = mnesia:wait_for_tables(
+           [page, topic,user, site,exlink]
+          ,6000).
 
 store() ->
     DBSection = aiwiki_conf:get_section(?DB_SECTION),

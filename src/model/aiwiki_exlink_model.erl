@@ -1,4 +1,4 @@
--module(aiwiki_site_model).
+-module(aiwiki_exlink_model).
 -export([sleep/1,wakeup/1,schema/0,attributes/0]).
 
 
@@ -14,4 +14,4 @@ fields()->
     ].
 schema()->
   Fields = fields(),
-  ai_db_schema:def_schema(site,Fields).
+  ai_db_schema:def_schema(exlink,Fields).

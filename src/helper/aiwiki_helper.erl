@@ -6,9 +6,20 @@
 -export([body/1]).
 -export([current_session/1,new_session/1]).
 -export([login_session/2,login_session/3]).
+-export([site/0]).
 
 -define(CSRF_SECTION, <<"csrf">>).
 -define(SECRET,<<"secret">>).
+
+site()->
+  Site = ai_db:find_all(site),
+  lists:foldl(
+    fun(Conf,Acc) ->
+        Key = proplists:get_value(key,Conf),
+        Value = proplists:get_value(value,Conf),
+        Acc#{Key => Value}
+    end,#{},Site).
+
 
 pagination(Path,PageIndex,PageCount,Length)->
   PageCount0 = ai_string:to_string(PageCount),

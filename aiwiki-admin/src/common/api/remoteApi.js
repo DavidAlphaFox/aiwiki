@@ -1,10 +1,30 @@
+import * as R from 'ramda';
 import axios from 'axios';
 import { Subject } from 'rxjs';
 import * as RxOp from 'rxjs/operators';
 
 const makeAxiosInstance = (axiosConfig) => {
   const instance = axios.create();
-  return instance({...axiosConfig,withCredentials: true});
+  instance.interceptors.request.use(function (config){
+    const headers = config.headers || {};
+    const token = sessionStorage.getItem('token');
+    if (
+      token !== undefined
+        && token !== null
+        && (config.withoutBearer === undefined
+            || config.withoutBearer === null
+            || config.withoutBearer === false)
+        && (headers.Authorization === undefined
+            || headers.Authorization === null)
+       ) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+    config.headers = headers;
+    return config;
+  }, function (error){
+    return Promise.reject(error);
+  });
+  return instance({...axiosConfig});
 };
 
 const  defaultPipe = event$ => event$.pipe(RxOp.map(res => res.data));

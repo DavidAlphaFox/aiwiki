@@ -1,0 +1,17 @@
+<div class="w-full">
+    <div class="px-4 py-2
+      border-b border-gray-400 md:border-none md:text-center">
+      <span class="text-lg font-bold"> 推荐链接 </span>
+    </div>
+    <ul class="pb-4 pt-4 md:bg-white">
+      {{# exlinks }}
+        <li class="mx-4 my-2 aside-item">
+          <a href="{{{exlinks.url}}}" class="aside-link" >
+            <span class="px-4 text-md text-gray-800 hover:text-teal-500">
+              {{exlinks.title}}
+            </span>
+          </a>
+        </li>
+      {{/ exlinks }}
+    </ul>
+  </div>

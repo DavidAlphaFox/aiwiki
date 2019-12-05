@@ -1,5 +1,8 @@
 -module(aiwiki_page_controller).
 -export([init/2,terminate/3]).
+
+-include_lib("ailib/include/ai_url.hrl").
+
 init(Req,#{action := index} = State)->
   QS = cowboy_req:parse_qs(Req),
   PageIndex = proplists:get_value(<<"pageIndex">>,QS,0),
@@ -13,12 +16,17 @@ init(Req,#{action := index} = State)->
       M0#{<<"url">> => Url}
     end,Pages),
   Topics = aiwiki_topic_helper:aside(undefined,undefined),
+  {HasExlinks,Exlinks} = exlink(),
   Pager = aiwiki_page_helper:pagination(PageIndex0,PageCount0,erlang:length(Pages0)),
-  aiwiki_view:render(<<"page/index">>,Req,State#{context => #{
-    <<"pages">> => Pages0,
-    <<"topics">> => Topics,
-    <<"pager">> => Pager
-  }});
+  aiwiki_view:render(<<"page/index">>,
+                     Req,State#{
+                                context => #{
+                                             <<"pages">> => Pages0,
+                                             <<"topics">> => Topics,
+                                             <<"pager">> => Pager,
+                                             <<"has_exlinks">> => HasExlinks,
+                                             <<"exlinks">> => Exlinks
+                                            }});
  
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
@@ -29,14 +37,42 @@ init(Req,#{action := show} = State)->
     [Page] = ai_db:find_by(page,[{'or',[{id,PageID0},{title,Title2}]}]),
     Page0 = aiwiki_page_helper:view_model(Page),
     Title2 = proplists:get_value(title,Page),
-    aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
+  aiwiki_view:render(<<"page/show">>,Req,State#{context => #{
       <<"title">> => Title2,
       <<"page">> => Page0
     }}).
 
 
-  terminate(normal,_Req,_State) -> ok;
-  terminate(Reason,Req,State)->
-    Reason0 = io_lib:format("~p~n",[Reason]),
-    aiwiki_view:error(500,Reason0,Req,State),
-    ok.
+terminate(normal,_Req,_State) -> ok;
+terminate(Reason,Req,State)->
+  Reason0 = io_lib:format("~p~n",[Reason]),
+  aiwiki_view:error(500,Reason0,Req,State),
+  ok.
+
+exlink()->
+  Exlinks = ai_db:find_all(exlink),
+  HasExlinks = erlang:length(Exlinks) > 0,
+  Site = aiwiki_helper:site(),
+  Query =
+    lists:filter(fun({K,_V})->
+                     K =:= <<"utm_source">>
+                       orelse K =:= <<"utm_media">>
+                       orelse K =:= <<"utm_campaign">>
+                 end,maps:to_list(Site)),
+  ExlinksModel =
+    lists:map(fun(Link) ->
+                  Title = proplists:get_value(key,Link),
+                  Url0 = proplists:get_value(value,Link),
+                  Url1 = ai_url:parse(Url0),
+                  QS = Url1#ai_url.qs,
+                  QS1 = case QS of
+                          undefined -> Query;
+                          _ -> QS ++ Query
+                        end,
+                  Url2 = Url1#ai_url{qs = QS1},
+                  #{
+                    <<"title">> => Title,
+                    <<"url">> => ai_url:build(Url2)
+                   }
+              end,Exlinks),
+  {HasExlinks,ExlinksModel}.

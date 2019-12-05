@@ -36,5 +36,8 @@
 </div>
 <aside class="pt-4 w-full md:mx-8 md:max-w-xs">
   {{> shared/aside/topics}}
+  {{# has_exlinks}}
+    {{> shared/aside/exlinks}}
+  {{/ has_exlinks}}
 </aside>
 </div>

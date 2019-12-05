@@ -7,7 +7,8 @@ register_models() ->
     Models = [
               {page,aiwiki_store,#{module => aiwiki_page_model}},
               {topic,aiwiki_store,#{module => aiwiki_topic_model}},
-              {site,aiwiki_store,#{module => aiwiki_site_model}}
+              {site,aiwiki_store,#{module => aiwiki_site_model}},
+              {exlink,aiwiki_store,#{module => aiwiki_exlink_model}}
              ],
     lists:foreach(
       fun({Model,Store,#{module := Module } = Attrs}) ->
@@ -19,8 +20,12 @@ router_list() ->
      {"/rss.xml",aiwiki_rss_controller,#{layout => null}},
      {"/:title/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
      {"/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
+
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
+
+     {"/login.php",aiwiki_login_controller,#{layout => null}},
+
      {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
