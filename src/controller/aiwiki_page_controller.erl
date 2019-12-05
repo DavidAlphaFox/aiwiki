@@ -56,7 +56,7 @@ exlink()->
   Query =
     lists:filter(fun({K,_V})->
                      K =:= <<"utm_source">>
-                       orelse K =:= <<"utm_media">>
+                       orelse K =:= <<"utm_medium">>
                        orelse K =:= <<"utm_campaign">>
                  end,maps:to_list(Site)),
   ExlinksModel =

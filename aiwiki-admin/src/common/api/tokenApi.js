@@ -4,7 +4,7 @@ import {
 
 const getTokenUrl = '/api/auth/token.json';
 
-const getPage = () => doRequest({
+const getToken = () => doRequest({
   method: 'GET',
   url: getTokenUrl,
   withCredentials: true,
@@ -12,5 +12,5 @@ const getPage = () => doRequest({
 });
 
 export {
-  getPage,
+  getToken
 };
