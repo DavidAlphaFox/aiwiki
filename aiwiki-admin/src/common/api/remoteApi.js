@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import axios from 'axios';
 import { Subject } from 'rxjs';
 import * as RxOp from 'rxjs/operators';

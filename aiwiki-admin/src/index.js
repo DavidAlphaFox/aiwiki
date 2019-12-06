@@ -12,8 +12,12 @@ const token$  = getToken();
 
 token$.subscribe(
   (res) => {
-    sessionStorage.setItem('token',res.token);
-    ReactDOM.render(<App />, document.getElementById('root'));
+    if(res.token){
+      sessionStorage.setItem('token',res.token);
+      ReactDOM.render(<App />, document.getElementById('root'));
+    } else {
+      window.location.href='/login.php';
+    }
   },
   err => console.log(err)
 );
