@@ -25,7 +25,7 @@ router_list() ->
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
 
      {"/login.php",aiwiki_login_controller,#{layout => null}},
-
+     {"/api/auth/token.json",aiwiki_api_auth_controller,#{}},
      {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].

@@ -5,7 +5,7 @@ import 'braft-editor/dist/index.css'
 
 import {
   getPage
-} from './common/pageApi';
+} from './common/api';
 
 function App(props){
   const {

@@ -1,6 +1,6 @@
 -module(aiwiki_session_handler).
 -export([execute/2]).
--export([create/1,session/1,login/2,login/3]).
+-export([create/1,session/1,session_id/1,login/2,login/3]).
 
 execute(Req,_Env)->
     case session_id(Req) of

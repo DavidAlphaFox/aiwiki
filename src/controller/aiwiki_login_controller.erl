@@ -3,8 +3,8 @@
 -export([init/2,terminate/3]).
 init(#{method := <<"GET">> } = Req,State)->
   {ok,Session0,Req0} = 
-    case aiwiki_session_handlerr:current(Req) of
-      undefined -> aiwiki_session_handler:session(Req);
+    case aiwiki_session_handler:session_id(Req) of
+      undefined -> aiwiki_session_handler:create(Req);
       Session -> {ok,Session,Req}
     end,
   Path = cowboy_req:path(Req),
@@ -21,7 +21,7 @@ init(#{method := <<"POST">>} = Req,State)->
   Method = cowboy_req:method(Req),
   Path = cowboy_req:path(Req),
   {ok,Body,Req0} = aiwiki_helper:body(Req),
-  Session = aiwiki_session_handler:session(Req),
+  Session = aiwiki_session_handler:session_id(Req),
   R = ai_url:parse_query(Body),
   CSRFKey = proplists:get_value(<<"_csrf_param">>,R),
   CSRFToken = proplists:get_value(<<"_csrf_token">>,R),
