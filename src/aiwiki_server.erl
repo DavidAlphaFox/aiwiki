@@ -49,9 +49,12 @@ start() ->
         end,
     Router =  {'_', RouterList0},
     Auth = #{
-        exclude => [<<"/admin/login.php">>],
-        include => [<<"/admin.*">>],
-        to => <<"/admin/login.php">>
+             exclude => [],
+             include => [
+                         {<<"/api/auth.*">>,aiwiki_session_handler},
+                         {<<"/api/.*">>,aiwiki_token_handler}
+                    ],
+             to => <<"/login.php">>
     },
     Dispatch = cowboy_router:compile([Router]),
     cowboy:start_clear(aiwiki_server,[{port, Port}],

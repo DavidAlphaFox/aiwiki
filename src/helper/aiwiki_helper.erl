@@ -4,8 +4,6 @@
 -export([view_model/1]).
 -export([token/0,csrf/3,csrf/5]).
 -export([body/1]).
--export([current_session/1,new_session/1]).
--export([login_session/2,login_session/3]).
 -export([site/0]).
 
 -define(CSRF_SECTION, <<"csrf">>).
@@ -101,35 +99,3 @@ read_body(Req, Acc) ->
 
 body(Req)-> read_body(Req,<<>>).
 
-current_session(Req)->
-  try cowboy_req:parse_cookies(Req) of
-    Cookies -> proplists:get_value(<<"aiwiki.session">>,Cookies)
-  catch 
-    _:_ -> undefined
-  end.
-
-
-new_session(Req)->
-  Token = token(),
-  Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>, 
-    Token, Req,#{http_only => true}),
-  {ok,Token,Req0}.
-
-
-login_session(Session,Email)-> login_session(Session,Email,undefined).
-login_session(Session,Email,Timeout)->
-  CacheKey = <<"session:",Session/binary>>,
-  Commands = 
-    case Timeout of 
-      undefined -> [["SET",CacheKey,Email]];
-      _ ->  [
-              ["SET",CacheKey,Email],
-              ["EXPIRE",CacheKey,Timeout]
-            ]
-    end,
-  try 
-    aiwiki_db:run_cache(fun(C)-> eredis:qp(C,Commands) end),
-    ok
-  catch 
-    _Type:Reason -> {error,Reason}
-  end.
