@@ -1,39 +1,20 @@
 import React from 'react'
-import * as R from 'ramda';
-import BraftEditor from 'braft-editor'
-import 'braft-editor/dist/index.css'
+import { Provider } from 'react-redux';
+import { Router} from 'react-router';
+import { createBrowserHistory } from 'history';
+import { createReduxStore } from './store';
+import PrivateRoute from './router/PrivateRoute';
+import Home from './home/Home';
 
-import {
-  getPage
-} from './common/api';
-
-function App(props){
-  const {
-    pageID
-  } = props;
-  const [editorState,setEditorState] = React.useState(BraftEditor.createEditorState(''));
-  React.useEffect(() => {
-    if(pageID === null || pageID === undefined){
-      return;
-    }
-    getPage(pageID).subscribe(
-      (res) => {
-        const content = R.view(R.lensPath(['data','content']),res);
-        const newEditorState = BraftEditor.createEditorState(content);
-        setEditorState(newEditorState);
-      }
-    )
-  },[pageID])
+function App(){
+  const history = createBrowserHistory();
+  const store = createReduxStore();
   return (
-    <div className="p-8">
-      <div className="content shadow-md rounded">
-      <BraftEditor
-        className="bg-white"
-        value={editorState}
-      />
-      </div>
-
-    </div>
+    <Provider store={store}>
+      <Router history={history}>
+        <PrivateRoute path="/admin/" component={Home} />
+      </Router>
+    </Provider>
   );
 }
 export default App;
