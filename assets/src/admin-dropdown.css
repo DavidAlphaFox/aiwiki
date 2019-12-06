@@ -1,10 +1,10 @@
 @media (min-width: 768px){
-  .aside-item {
+  .tab-menu {
     &:hover > a:after {
       width: 100%;
     }
   }
-  .aside-link:after{
+  .tab-menu-link:after{
     width: 0;
     content: "";
     display: block;

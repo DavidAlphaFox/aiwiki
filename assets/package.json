@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build:styles": "gulp",
+    "dev": "yarn build:styles",
     "prod": "NODE_ENV=production yarn build:styles"
   },
   "devDependencies": {

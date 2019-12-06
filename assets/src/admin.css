@@ -2,5 +2,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "./admin-content.css";
+@import "./admin-dropdown.css";
 /* purgecss end ignore */
 @import "tailwindcss/utilities";
