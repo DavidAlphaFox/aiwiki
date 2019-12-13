@@ -1,6 +1,6 @@
 -module(aiwiki_view).
 -export([render/3,render/4]).
--export([render_json/4,render_json/5,render_api/4,render_api/5]).
+-export([render_json/4,render_json/5,render_api/4]).
 -export([error/3,error/4]).
 -export([redirect/3]).
 

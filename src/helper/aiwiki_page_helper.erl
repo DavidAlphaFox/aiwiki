@@ -10,8 +10,7 @@ url(Page) ->
     ID = proplists:get_value(id, Page),
     EncodeTitle = ai_url:urlencode(Title),
     EncodeID = ai_url:urlencode(ai_string:to_string(ID)),
-    <<"/pages/", EncodeID/binary, "/", EncodeTitle/binary,
-      ".html">>.
+    <<"/pages/", EncodeID/binary, "/", EncodeTitle/binary,".html">>.
 
 url(Host, Page) ->
     Path = url(Page),
@@ -20,17 +19,16 @@ url(Host, Page) ->
     ai_url:build(R1).
 
 pagination(PageIndex, PageCount, Length) ->
-    aiwiki_helper:pagination(<<"/pages">>, PageIndex,
-			     PageCount, Length).
+    aiwiki_helper:pagination(<<"/pages">>, PageIndex,PageCount, Length).
 
 view_model(Page) ->
-    lists:foldl(fun ({Key, Value}, Acc) ->
-			KeyBin = ai_string:to_string(Key),
-			case Key of
-			  published_at ->
-			      PublishedAt = ai_iso8601:format(Value),
-			      Acc#{KeyBin => PublishedAt};
-			  _ -> Acc#{KeyBin => Value}
-			end
-		end,
-		#{}, Page).
+    lists:foldl(
+      fun ({Key, Value}, Acc) ->
+              KeyBin = ai_string:to_string(Key),
+              case Key of
+                  published_at ->
+                      PublishedAt = ai_iso8601:format(Value),
+                      Acc#{KeyBin => PublishedAt};
+                  _ -> Acc#{KeyBin => Value}
+              end
+      end,#{}, Page).

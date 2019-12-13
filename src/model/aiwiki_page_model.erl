@@ -20,36 +20,35 @@ pagination(PageIndex,PageCount,TopicID)->pagination(PageIndex,PageCount, TopicID
 pagination(PageIndex,PageCount,TopicID,Published)->
   Offset = PageIndex * PageCount,
   F = fun() ->  
-      Q = 
-        case {TopicID,Published} of 
-          {undefined,undefined} ->
-            qlc:q([P || P <- mnesia:table(page)]);
-          {undefined,_}->
-            qlc:q([P || P <- mnesia:table(page),
-              erlang:element(6,P) == Published]);
-          _-> 
-            qlc:q([P || P <- mnesia:table(page),
-              erlang:element(6,P) == Published,
-              erlang:element(8,P) == TopicID])
-        end,
-      Q0 = qlc:keysort(7, Q, [{order, descending}]),
-      QC = qlc:cursor(Q0),
-      Answers = 
-        if Offset == 0 -> qlc:next_answers(QC,PageCount);
-          true -> 
-            qlc:next_answers(QC,Offset),
-            qlc:next_answers(QC,PageCount)
-        end,
-      qlc:delete_cursor(QC),
-      Answers
-    end,  
+          Q =
+            case {TopicID,Published} of
+              {undefined,undefined} ->
+                qlc:q([P || P <- mnesia:table(page)]);
+              {undefined,_}->
+                qlc:q([P || P <- mnesia:table(page),
+                            erlang:element(6,P) == Published]);
+              _->
+                qlc:q([P || P <- mnesia:table(page),
+                            erlang:element(6,P) == Published,
+                            erlang:element(8,P) == TopicID])
+            end,
+          Q0 = qlc:keysort(7, Q, [{order, descending}]),
+          QC = qlc:cursor(Q0),
+          Answers =
+            if Offset == 0 -> qlc:next_answers(QC,PageCount);
+               true ->
+                qlc:next_answers(QC,Offset),
+                qlc:next_answers(QC,PageCount)
+            end,
+          qlc:delete_cursor(QC),
+          Answers
+      end,
   case mnesia:transaction(F) of 
     {atomic,Pages} -> lists:map(fun proplists/1,Pages);
     {aborted,_Reason} -> []
   end.
 
 sleep(PropList)-> maps:from_list(PropList).
-
 wakeup(Fields)-> maps:to_list(Fields).
 
 attributes()->

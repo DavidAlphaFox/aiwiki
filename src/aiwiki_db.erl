@@ -18,40 +18,39 @@ run_transaction(Fun) ->
     ai_db_store:transaction(aiwiki_store, Fun).
 run_cache(Fun)->
     ai_pool:transaction(chalk_cache,fun(Worker)-> ai_redis_worker:with_connection(Worker,Fun) end).
-	
+
 create() ->
     Node = node(),
     _ = application:stop(mnesia),
     _ = case mnesia:create_schema([Node]) of
-	  ok -> ok;
-	  {error, {Node, {already_exists, Node}}} -> ok
-	end,
+            ok -> ok;
+            {error, {Node, {already_exists, Node}}} -> ok
+        end,
     {ok, _} = application:ensure_all_started(mnesia),
     mnesia:create_table(page,
-			[{attributes, aiwiki_page_model:attributes()},
-			 {index, [title]}, {disc_copies, [Node]}]),
+                        [{attributes, aiwiki_page_model:attributes()},
+                         {index, [title]}, {disc_copies, [Node]}]),
     mnesia:create_table(topic,
-			[{attributes, aiwiki_topic_model:attributes()},
-			 {index, [title]}, {disc_copies, [Node]}]),
+                        [{attributes, aiwiki_topic_model:attributes()},
+                         {index, [title]}, {disc_copies, [Node]}]),
     mnesia:create_table(user,
-			[{attributes, aiwiki_user_model:attributes()},
-			 {disc_copies, [Node]}]),
+                        [{attributes, aiwiki_user_model:attributes()},
+                         {disc_copies, [Node]}]),
     mnesia:create_table(site,
-			[{attributes, aiwiki_site_model:attributes()},
-			 {disc_copies, [Node]}]),
+                        [{attributes, aiwiki_site_model:attributes()},
+                         {disc_copies, [Node]}]),
     mnesia:create_table(exlink,
-			[{attributes, aiwiki_site_model:attributes()},
-			 {disc_copies, [Node]}]),
-    ok = mnesia:wait_for_tables(
-           [page, topic,user, site,exlink]
-          ,6000).
+                        [{attributes, aiwiki_site_model:attributes()},
+                         {disc_copies, [Node]}]),
+    ok = mnesia:wait_for_tables([page, topic,user, site,exlink]
+                               ,6000).
 
 store() ->
     DBSection = aiwiki_conf:get_section(?DB_SECTION),
     PoolSize = 
-			case proplists:get_value(?POOL_SIZE,DBSection) of
-		 		undefined -> 5;
-		 		Size -> Size
+        case proplists:get_value(?POOL_SIZE,DBSection) of
+            undefined -> 5;
+            Size -> Size
 	    end,
     {aiwiki_store,
      #{pool_size => PoolSize,

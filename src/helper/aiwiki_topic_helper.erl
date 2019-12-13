@@ -3,18 +3,19 @@
 
 aside(Idx,Title)->
   Topics = ai_db:find_all(topic),
-  lists:map(fun(Topic)-> 
-    Topic0 = aiwiki_helper:view_model(Topic),
-    TopicIdx = proplists:get_value(id,Topic),
-    TopicTitle = proplists:get_value(title,Topic),
-    Topic1 = Topic0#{<<"url">> => url(TopicIdx,TopicTitle)},
-    if 
-      (TopicIdx == Idx) orelse (TopicTitle == Title) ->
-          Topic1#{<<"selected">> => true};
-      true ->
-          Topic1#{<<"selected">> => false}
-    end
-  end,Topics).
+  lists:map(
+    fun(Topic)->
+        Topic0 = aiwiki_helper:view_model(Topic),
+        TopicIdx = proplists:get_value(id,Topic),
+        TopicTitle = proplists:get_value(title,Topic),
+        Topic1 = Topic0#{<<"url">> => url(TopicIdx,TopicTitle)},
+        if
+          (TopicIdx == Idx) orelse (TopicTitle == Title) ->
+            Topic1#{<<"selected">> => true};
+          true ->
+            Topic1#{<<"selected">> => false}
+        end
+    end,Topics).
 
 url(Idx,Title)->
   EncodeTopicIdx = ai_string:to_string(Idx),
