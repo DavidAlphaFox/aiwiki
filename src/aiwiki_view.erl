@@ -99,39 +99,34 @@ redirect(Path,Req,State)->
 
 
 render_json(error,Status,Message,Req,State)->
-  Body = jsx:encode([{
-      <<"message">>,Message
-  }]),
+  Body = jiffy:encode(#{
+      <<"message">> => Message
+  }),
   reply(Status,Body,<<"application/json; charset=utf-8">>,Req,State);
 render_json(data,Status,Data,Req,State)->
-  Body = jsx:encode(Data),
+  Body = jiffy:encode(Data),
   reply(Status,Body,<<"application/json; charset=utf-8">>,Req,State).
   
 render_json(error,Message,Req,State)->
-  Body = jsx:encode([{
-      <<"message">>,Message
-  }]),
+  Body = jiffy:encode(#{
+      <<"message">> => Message
+  }),
   reply(400,Body,<<"application/json; charset=utf-8">>,Req,State);
 render_json(data,Data,Req,State)->
-  Body = jsx:encode(Data),
+  Body = jiffy:encode(Data),
   reply(200,Body,<<"application/json; charset=utf-8">>,Req,State).
 
 
   
-render_api({ok,data} = R ,Data,Req,State)-> render_api(R,200,Data,Req,State);
-render_api({error,data} = R,Message,Req,State)-> render_api(R,400,Message,Req,State);
+render_api({ok,data} ,Data,Req,State)->  {jiffy:encode(Data),Req,State};
+render_api({error,data},Message,Req,State)->    
+  Data = #{<<"message">> => Message},
+  {jiffy:encode(Data),Req,State};
 render_api(ok,Data,Req,State)->
-  Req0 = cowboy_req:set_resp_body(jsx:encode(Data),Req),
+  Req0 = cowboy_req:set_resp_body(jiffy:encode(Data),Req),
   {true,Req0,State};
 render_api(error,Message,Req,State) ->
-  Data = [{<<"message">>,Message}],
-  Req0 = cowboy_req:set_resp_body(jsx:encode(Data),Req),
+  Data = #{<<"message">> => Message},
+  Req0 = cowboy_req:set_resp_body(jiffy:encode(Data),Req),
   {false,Req0,State}.
 
-render_api({ok,data},Status,Data,Req,State)->
-  Req0 = cowboy_req:reply(Status,Req),
-  {jsx:encode(Data),Req0,State};
-render_api({error,data},Status,Message,Req,State)->
-    Req0 = cowboy_req:reply(Status,Req),
-    Data = [{<<"message">>,Message}],
-    {jsx:encode(Data),Req0,State}.
