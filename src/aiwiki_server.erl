@@ -25,8 +25,6 @@ router_list() ->
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
 
      {"/login.php",aiwiki_login_controller,#{layout => null}},
-     {"/api/auth/token.json",aiwiki_api_auth_controller,#{}},
-     {"/api/pages/show.json",aiwiki_api_page_controller,#{}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 
@@ -41,21 +39,20 @@ start() ->
       end,RouterList),
     RouterList0 = 
         case aiwiki_conf:env() of 
-          dev ->
-            {ok, CurrentDirectory} = file:get_cwd(),
-            StaticFile = filename:join([CurrentDirectory,"public/assets"]),
-            [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
-          prod -> RouterList
+            dev ->
+                {ok, CurrentDirectory} = file:get_cwd(),
+                StaticFile = filename:join([CurrentDirectory,"public/assets"]),
+                [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
+            prod -> RouterList
         end,
     Router =  {'_', RouterList0},
     Auth = #{
              exclude => [],
              include => [
-                         {<<"/api/auth.*">>,aiwiki_session_handler},
-                         {<<"/api/.*">>,aiwiki_token_handler}
-                    ],
+                         {<<"/api/auth.*">>,aiwiki_session_handler}
+                        ],
              to => <<"/login.php">>
-    },
+            },
     Dispatch = cowboy_router:compile([Router]),
     cowboy:start_clear(aiwiki_server,[{port, Port}],
                       #{
