@@ -1,21 +1,31 @@
 {
+  "name": "landing",
   "private": true,
   "scripts": {
-    "build:styles": "gulp",
-    "dev": "yarn build:styles",
-    "prod": "NODE_ENV=production yarn build:styles"
+    "build": "gulp build",
+    "dev": "yarn build",
+    "prod": "NODE_ENV=production yarn build"
   },
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
     "@fullhuman/postcss-purgecss": "^1.3.0",
     "autoprefixer": "^9.7.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "cssnano": "^4.1.10",
     "gulp": "^4.0.2",
-    "gulp-cli": "^2.2.0",
     "gulp-postcss": "^8.0.0",
-    "postcss-cli": "^6.1.3",
+    "jquery": "^3.4.1",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.1",
-    "tailwindcss": "^1.1.4"
+    "stimulus": "^1.1.1",
+    "tailwindcss": "^1.1.4",
+    "webpack": "^4.41.2",
+    "webpack-stream": "^5.2.1"
   },
   "browserslist": {
     "production": [

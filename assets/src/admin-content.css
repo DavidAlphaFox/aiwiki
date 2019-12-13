@@ -1,9 +1,0 @@
-@import './content.css';
-.content {
-  ul {
-    @apply my-4 ml-4;
-  }
-  ol {
-    @apply my-4 ml-4;
-  }
-}

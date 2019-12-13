@@ -1,7 +1,8 @@
-/* purgecss start ignore */
 @import "tailwindcss/base";
 @import "tailwindcss/components";
-@import "./admin-content.css";
-@import "./admin-dropdown.css";
+/* purgecss start ignore */
+@import "./content.css";
+@import "./aside-item.css";
+@import "./dropdown-menu.css";
 /* purgecss end ignore */
 @import "tailwindcss/utilities";

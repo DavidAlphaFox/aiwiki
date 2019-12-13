@@ -1,5 +1,5 @@
-
-var gulp = require('gulp');
+const gulp           = require('gulp');
+const webpack        = require('webpack-stream');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var postcssImport = require('postcss-import');
@@ -10,7 +10,28 @@ var cssnano = require('cssnano');
 
 var isProduction = process.env.NODE_ENV === 'production';
 
-function clientCSS() {
+const paths = {
+  config: {
+    tailwind: './tailwind.js',
+    webpack:  './webpack.config.js'
+  },
+  src: {
+    css: 'src/css/styles.css',
+    js: 'src/js/index.js'
+  },
+  dist: {
+    css:  '../public/assets/css/',
+    js:   '../public/assets/js'
+  }
+}
+
+var js = function() {
+  return gulp.src(paths.src.js)
+    .pipe(webpack(require(paths.config.webpack)))
+    .pipe(gulp.dest(paths.dist.js));
+}
+
+var css = function() {
   var plugins = [
     postcssImport(),
     tailwindcss(),
@@ -23,7 +44,8 @@ function clientCSS() {
 
         // Specify the paths to all of the template files in your project
         content: [
-          '../views/**/*.mustache'
+          '../views/**/*.mustache',
+          './src/js/**/*.js',
         ],
 
         // Include any special characters you're using in this regular expression
@@ -32,36 +54,9 @@ function clientCSS() {
   }
 
   plugins.push(cssnano());
-  return gulp.src('./src/client.css')
+  return gulp.src(paths.src.css)
     .pipe(postcss(plugins))
-    .pipe(gulp.dest('../public/assets/css/'));
+    .pipe(gulp.dest(paths.dist.css));
 };
 
-function adminCSS() {
-  var plugins = [
-    postcssImport(),
-    tailwindcss(),
-    postcssNested(),
-    autoprefixer(),
-  ];
-  if (isProduction) {
-    plugins.push(purgecss({
-
-      // Specify the paths to all of the template files in your project
-      content: [
-        '../aiwiki-admin/src/**/*.jsx',
-        '../aiwiki-admin/public/index.html'
-      ],
-
-      // Include any special characters you're using in this regular expression
-      defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
-
-    }));
-  }
-  return gulp.src('./src/admin.css')
-    .pipe(postcss(plugins))
-    .pipe(gulp.dest('../aiwiki-admin/src/'));
-};
-exports.clientCSS = clientCSS;
-exports.adminCSS = adminCSS;
-exports.default = gulp.parallel(clientCSS, adminCSS);
+gulp.task('build', gulp.parallel(css, js));

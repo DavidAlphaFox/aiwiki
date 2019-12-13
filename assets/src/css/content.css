@@ -18,4 +18,16 @@
     @apply px-4 py-4 bg-gray-200 overflow-auto rounded-lg
       border-l-8 border-blue-500;
   }
+  ul {
+    @apply my-4 ml-4;
+    li {
+      list-style: disc;
+    }
+  }
+  ol {
+    @apply my-4 ml-4;
+    li {
+      list-style: decimal;
+    }
+  }
 }
