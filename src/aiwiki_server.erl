@@ -5,6 +5,7 @@
 -define(PORT,<<"port">>).
 register_models() ->
     Models = [
+              {user,aiwiki_store,#{module => aiwiki_user_model}},
               {page,aiwiki_store,#{module => aiwiki_page_model}},
               {topic,aiwiki_store,#{module => aiwiki_topic_model}},
               {site,aiwiki_store,#{module => aiwiki_site_model}},
@@ -24,7 +25,7 @@ router_list() ->
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
 
-     {"/login.php",aiwiki_login_controller,#{layout => null}},
+     {"/admin/login.php",aiwiki_login_controller,#{layout => null}},
      {"/admin/page/:action",aiwiki_admin_page_controller,
       #{layout => <<"layout/admin">>}},
      {'_',aiwiki_page_controller,#{action => index}}
@@ -52,11 +53,11 @@ start() ->
         end,
     Router =  {'_', RouterList0},
     Auth = #{
-             exclude => [],
+             exclude => [<<"/admin/login.php">>],
              include => [
-                         {<<"/api/auth.*">>,aiwiki_session_handler}
+                         {<<"/admin/.*">>,aiwiki_session_handler}
                         ],
-             to => <<"/login.php">>
+             to => <<"/admin/login.php">>
             },
     Dispatch = cowboy_router:compile([Router]),
     cowboy:start_clear(aiwiki_server,[{port, Port}],

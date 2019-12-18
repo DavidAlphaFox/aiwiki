@@ -30,7 +30,7 @@ session(Req)->
 create(Req)->
   Token = token(),
   Req0 = cowboy_req:set_resp_cookie(<<"aiwiki.session">>,
-                                    Token, Req,#{http_only => true}),
+                                    Token, Req,#{http_only => true,path => <<"/">>}),
   {ok,Token,Req0}.
 logout(Req)->
   case session_id(Req) of
@@ -68,7 +68,7 @@ session_id(Req)->
 
 remove_session_id(Req)->
   cowboy_req:set_resp_cookie(<<"aiwiki.session">>,<<"">>,
-                             Req,#{max_age => 0}).
+                             Req,#{max_age => 0, path => <<"/">>}).
 
 
 has(Session)->

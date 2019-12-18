@@ -1,5 +1,5 @@
 -module(aiwiki_user_model).
--export([attributes/0,schema/0]).
+-export([sleep/1,wakeup/1,schema/0,attributes/0]).
 -export([create/2,update/2,auth/2,select/1]).
 
 select(Email) ->
@@ -65,6 +65,9 @@ proplists(Record)->
   [_ModelName|Values] = erlang:tuple_to_list(Record),
   Attrs = attributes(),
   lists:zip(Attrs, Values).
+
+sleep(PropList)-> maps:from_list(PropList).
+wakeup(Fields)-> maps:to_list(Fields).
 
 attributes()->
   Fields = fields(),

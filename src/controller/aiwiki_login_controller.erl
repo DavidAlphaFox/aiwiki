@@ -32,7 +32,7 @@ terminate(Reason,Req,State)->
 action(get,Session,Req,State)->
   Path = cowboy_req:path(Req),
   {CSRFKey,CSRFToken} = aiwiki_helper:csrf(Session,<<"POST">>,Path),
-  aiwiki_view:render(<<"login">>,Req,State#{ context => #{
+  aiwiki_view:render(<<"admin/login">>,Req,State#{ context => #{
     <<"path">> => Path,
     <<"csrf">> => #{
       <<"param">> => CSRFKey,
@@ -54,7 +54,7 @@ action(post,Session,Req,#{form := Form } = State)->
                                   <<"token">> => CSRFToken
                                  }
                  },
-      aiwiki_view:render(<<"login">>,Req,
+      aiwiki_view:render(<<"admin/login">>,Req,
                          State#{ context => Context});
     _->
       ok = aiwiki_session_handler:login(Session,Email),

@@ -1,6 +1,25 @@
 
-<div class="px-10 pt-10"
-     data-controller="page-editor">
+<section class="px-8 pt-6 pb-8 mb-4">
+  <form action="{{path}}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{csrf.token}}" />
+    <input type="hidden" name="_csrf_param" value="{{csrf.param}}" />
+    <div class="mb-4">
+      {{# error_message}}
+        <p class="text-red-500 text-xs italic">{{error_message}}</p>
+      {{/ error_message}}
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+        标题
+      </label>
+      <input class="border py-2 px-2
+                    w-full text-gray-700
+                    focus:shadow-outline"
+             value="{{page.title}}"
+             name="title" type="text" placeholder="标题" />
+    </div>
+  </form>
+  <div data-controller="page-editor">
   <div id="editor-container">
     {{{page.content}}}
   </div>
@@ -8,6 +27,9 @@
     <button data-action="click->page-editor#savePage">保存</button>
   </div>
 </div>
+</section>
+
+
 <style>
   #editor-container {
     height: 500px;

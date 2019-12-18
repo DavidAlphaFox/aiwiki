@@ -2,7 +2,7 @@
 -export([pagination/4]).
 -export([resource_and_format/1]).
 -export([view_model/1]).
--export([token/0,csrf/3,csrf/5,verify_form/2]).
+-export([token/0,csrf/3,csrf/5,verify_form/2,build_form/2]).
 -export([body/1,body/2,path/1]).
 -export([site/0]).
 
@@ -114,6 +114,17 @@ path(Req)->
     true -> Path
   end.
 
+build_form(Req,Method)->
+  Path = path(Req),
+  Session =  aiwiki_session_handler:session_id(Req) ,
+  {CSRFKey,CSRFToken} = csrf(Session,Method,Path),
+  #{
+    <<"path">> => Path,
+    <<"csrf">> => #{
+                    <<"param">> => CSRFKey,
+                    <<"token">> => CSRFToken
+                   }
+   }.
 verify_form(Req,Form)->
   Method = cowboy_req:method(Req),
   Path = path(Req),
@@ -122,5 +133,5 @@ verify_form(Req,Form)->
     Session ->
       CSRFKey = proplists:get_value(<<"_csrf_param">>,Form),
       CSRFToken = proplists:get_value(<<"_csrf_token">>,Form),
-      aiwiki_helper:csrf(CSRFToken,CSRFKey,Session,Method,Path)
+      csrf(CSRFToken,CSRFKey,Session,Method,Path)
   end.
