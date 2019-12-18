@@ -4,6 +4,10 @@
       width: 100%;
     }
   }
+  .aside-item-selected {
+    @apply bg-teal-200 text-teal-600;
+    clip-path: polygon(0% 0%, 100% 0%, 96% 100%, 0% 100%);
+  }
   .aside-link:after{
     width: 0;
     content: "";
@@ -11,4 +15,5 @@
     transition: all 0.3s ease 0s;
     @apply border-b-2 border-solid border-teal-500;
   }
+
 }

@@ -6,9 +6,9 @@
     <ul class="pb-4 pt-4 md:bg-white">
       {{# topics }}
         {{# topics.selected}}
-          <li class="mx-4 my-2 bg-blue-200 rounded">
+          <li class="mx-4 my-2 aside-item-selected">
             <a href="{{{topics.url}}}" >
-              <span class="px-4 text-md text-blue-500 hover:text-teal-500"> 
+              <span class="px-4 text-md">
                 {{topics.title}}
               </span>
             </a>
@@ -17,7 +17,7 @@
         {{^ topics.selected}}
           <li class="mx-4 my-2 aside-item">
             <a href="{{{topics.url}}}" class="aside-link" >
-              <span class="px-4 text-md text-gray-800 hover:text-teal-500"> 
+              <span class="px-4 text-md text-gray-800 hover:text-teal-500">
                 {{topics.title}} 
               </span>
             </a>
