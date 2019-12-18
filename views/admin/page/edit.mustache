@@ -13,20 +13,23 @@
         标题
       </label>
       <input class="border py-2 px-2
-                    w-full text-gray-700
-                    focus:shadow-outline"
+                    w-full text-gray-700"
              value="{{page.title}}"
              name="title" type="text" placeholder="标题" />
     </div>
   </form>
-  <div data-controller="page-editor">
-  <div id="editor-container">
-    {{{page.content}}}
+  <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+        内容
+      </label>
+
+      <div data-controller="page-editor">
+        <div id="editor-container">
+          {{{page.content}}}
+        </div>
+      </div>
   </div>
-  <div>
-    <button data-action="click->page-editor#savePage">保存</button>
-  </div>
-</div>
+  <button data-action="click->page-editor#savePage">保存</button>
 </section>
 
 
