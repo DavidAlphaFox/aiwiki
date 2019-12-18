@@ -5,7 +5,8 @@
 ### 技术
 
 - cowboy
-- mustach
-- React
+- mustache
+- stimulus.js
+- quill.js
 - tailwind CSS
 
