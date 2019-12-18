@@ -4,5 +4,6 @@
 @import "./content.css";
 @import "./aside-item.css";
 @import "./dropdown-menu.css";
+@import "./editor.css";
 /* purgecss end ignore */
 @import "tailwindcss/utilities";

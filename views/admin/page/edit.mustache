@@ -1,0 +1,15 @@
+
+<div class="px-10 pt-10"
+     data-controller="page-editor">
+  <div id="editor-container">
+    {{{page.content}}}
+  </div>
+  <div>
+    <button data-action="click->page-editor#savePage">保存</button>
+  </div>
+</div>
+<style>
+  #editor-container {
+    height: 500px;
+  }
+</style>

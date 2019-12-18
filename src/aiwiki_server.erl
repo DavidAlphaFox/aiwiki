@@ -25,6 +25,8 @@ router_list() ->
      {"/pages/:id/:title",aiwiki_page_controller,#{action => show}},
 
      {"/login.php",aiwiki_login_controller,#{layout => null}},
+     {"/admin/page/:action",aiwiki_admin_page_controller,
+      #{layout => <<"layout/admin">>}},
      {'_',aiwiki_page_controller,#{action => index}}
     ].
 
@@ -42,7 +44,10 @@ start() ->
             dev ->
                 {ok, CurrentDirectory} = file:get_cwd(),
                 StaticFile = filename:join([CurrentDirectory,"public/assets"]),
-                [{"/assets/[...]", cowboy_static, {dir,StaticFile}}|RouterList];
+                BundleFile = filename:join([CurrentDirectory,"public/bundles"]),
+                [{"/assets/[...]", cowboy_static, {dir,StaticFile}},
+                 {"/bundles/[...]", cowboy_static, {dir,BundleFile}}
+                 |RouterList];
             prod -> RouterList
         end,
     Router =  {'_', RouterList0},

@@ -1,9 +1,10 @@
 .content {
   h1,h2,h3,h4,h5,h6 {
-    @apply text-gray-900 font-semibold my-4;
+    @apply text-gray-900  my-4 font-semibold;
   }
+  
   h2 {
-  @apply text-xl border-b border-gray-400;
+    @apply text-xl border-b border-gray-400;
   }
 
   a {
@@ -15,9 +16,10 @@
   }
 
   pre {
-    @apply px-4 py-4 bg-gray-200 overflow-auto rounded-lg
-      border-l-8 border-blue-500;
+    @apply overflow-auto rounded-lg border-l-8 border-blue-500;
   }
+
+  
   ul {
     @apply my-4 ml-4;
     li {
