@@ -3,7 +3,7 @@ import Quill from 'quill';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 export default class extends Controller {
-  static targets = []
+  static targets = ['form','content']
 
   initialize() {
     const toolbarOptions = [
@@ -35,6 +35,8 @@ export default class extends Controller {
     const delta = this.quill.getContents();
     const converter = new QuillDeltaToHtmlConverter(delta.ops, {});
     const html = converter.convert();
+    this.contentTarget.value = html;
+    this.formTarget.submit();
   }
 
 }

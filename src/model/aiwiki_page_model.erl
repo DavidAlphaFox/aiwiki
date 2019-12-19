@@ -1,6 +1,6 @@
 -module(aiwiki_page_model).
 -export([wakeup/1,sleep/1,schema/0,attributes/0]).
--export([build/3]).
+-export([build/3,build/5]).
 -export([pagination/2,pagination/3,pagination/4]).
 
 -include_lib("stdlib/include/qlc.hrl").
@@ -15,6 +15,15 @@ build(Title,Intro,Content)->
    {topic_id,0}
   ].
 
+build(Title,Intro,Content,Topic,Published)->
+  [
+   {title,Title},
+   {intro,Intro},
+   {content,Content},
+   {published, Published},
+   {published_at, calendar:universal_time()},
+   {topic_id,Topic}
+  ].
 pagination(PageIndex,PageCount)->pagination(PageIndex,PageCount, undefined,true).
 pagination(PageIndex,PageCount,TopicID)->pagination(PageIndex,PageCount, TopicID,true).
 pagination(PageIndex,PageCount,TopicID,Published)->
