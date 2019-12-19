@@ -31,9 +31,14 @@
                       click@window->fake-select#closeSelect
                       ">
             <select data-target="fake-select.select" name="topic">
-              <option value="0">A</option>
-              <option value="1">B</option>
-              <option value="2">C</option>
+              {{# topics}}
+                {{# topics.selected}}
+                  <option value="{{topics.id}}" selected>{{topics.title}}</option>
+                {{/ topics.selected}}
+                {{^ topics.selected}}
+                  <option value="{{topics.id}}">{{topics.title}}</option>
+                {{/ topics.selected}}
+              {{/ topics}}
             </select>
           </div>
         </div>

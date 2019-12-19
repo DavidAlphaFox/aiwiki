@@ -9,9 +9,12 @@ init(<<"edit.php">>,#{method := <<"GET">> } = Req,State) ->
     ID = proplists:get_value(<<"id">>, QS),
     IntID = ai_string:to_integer(ID),
     Page = ai_db:fetch(page,IntID),
+    TopicID = proplists:get_value(topic_id,Page),
+    Topics = aiwiki_topic_helper:select(TopicID),
     PageModel = aiwiki_helper:view_model(Page),
-    io:format("~p~n",[PageModel]),
+    io:format("~p~n",[Topics]),
     Context = Form#{
+                    <<"topics">> => Topics,
                     <<"page">> => PageModel
                    },
     aiwiki_view:render(<<"admin/page/edit">>,

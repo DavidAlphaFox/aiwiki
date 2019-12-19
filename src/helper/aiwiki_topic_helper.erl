@@ -1,5 +1,19 @@
 -module(aiwiki_topic_helper).
--export([aside/2,url/2]).
+-export([aside/2,url/2,select/1]).
+
+select(Idx)->
+  Topics = ai_db:find_all(topic),
+  lists:map(
+    fun(Topic)->
+        Topic0 = aiwiki_helper:view_model(Topic),
+        TopicIdx = proplists:get_value(id,Topic),
+        if
+          TopicIdx == Idx ->
+            Topic0#{<<"selected">> => true};
+          true ->
+            Topic0#{<<"selected">> => false}
+        end
+    end,Topics).
 
 aside(Idx,Title)->
   Topics = ai_db:find_all(topic),
