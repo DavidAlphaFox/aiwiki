@@ -1,0 +1,47 @@
+.fake-select {
+  position: relative;
+}
+
+.fake-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-field {
+  @apply bg-white border px-2 py-2;
+}
+
+.select-items div {
+  @apply mx-2 my-2;
+  cursor: pointer;
+  user-select: none;
+}
+
+.select-items {
+  @apply bg-white shadow;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.select-hide {
+  display: none;
+}
+
+.select-selected {
+  @apply bg-teal-200 text-teal-600;
+  clip-path: polygon(0% 0%, 100% 0%, 96% 100%, 0% 100%);
+}
+
+.select-items div:not(.select-selected):hover {
+  &:after {
+    width: 100%;
+  }
+}
+.select-items div:after {
+  width: 0;
+  content: "";
+  display: block;
+  transition: all 0.3s ease 0s;
+  @apply border-b-2 border-solid border-teal-500;
+}

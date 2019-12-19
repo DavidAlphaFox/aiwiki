@@ -17,6 +17,27 @@
              value="{{page.title}}"
              name="title" type="text" placeholder="标题" />
     </div>
+    <div class="mb-4">
+      <div class="fake-select" data-controller="fake-select"
+           data-target="fake-select.container"
+           data-action="
+                  resize@window->fake-select#closeSelect
+                  click@window->fake-select#closeSelect
+                  ">
+        <select data-target="fake-select.select" name="topic">
+          <option value="a">A</option>
+          <option value="b" selected>B</option>
+          <option value="c">C</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-4">
+      <button class="bg-teal-500 hover:bg-teal-700
+                           text-white font-bold py-2 px-4 rounded
+                           focus:shadow-outline" type="submit">
+      保存
+      </button>
+    </div>
   </form>
   <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="title">

@@ -2,6 +2,7 @@
   @apply bg-teal-200 text-teal-600;
   clip-path: polygon(0% 0%, 100% 0%, 96% 100%, 0% 100%);
 }
+
 @media (min-width: 768px){
   .aside-item {
     &:hover > a:after {
