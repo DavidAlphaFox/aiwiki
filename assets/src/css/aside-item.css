@@ -16,5 +16,4 @@
     transition: all 0.3s ease 0s;
     @apply border-b-2 border-solid border-teal-500;
   }
-
 }
