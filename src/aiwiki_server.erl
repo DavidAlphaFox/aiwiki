@@ -36,11 +36,7 @@ start() ->
     ai_mustache:bootstrap(),
     Port = aiwiki_conf:get_value(?SERVER_SECTION,?PORT,5000),
     RouterList = router_list(),
-    lists:foreach(
-      fun({_Path,Module,_Ctx})->
-          {module,Module} = code:ensure_loaded(Module)
-      end,RouterList),
-    RouterList0 = 
+    RouterList0 =
         case aiwiki_conf:env() of 
             dev ->
                 {ok, CurrentDirectory} = file:get_cwd(),
@@ -51,7 +47,6 @@ start() ->
                  |RouterList];
             prod -> RouterList
         end,
-    Router =  {'_', RouterList0},
     Auth = #{
              exclude => [<<"/admin/login.php">>],
              include => [
@@ -59,7 +54,7 @@ start() ->
                         ],
              to => <<"/admin/login.php">>
             },
-    aicow_server:start_page(aiwiki_server,Port,Router,aiwiki_render,Auth,undefined).
+    aicow_server:start_page(aiwiki_server,Port,RouterList0,aiwiki_render,Auth,undefined).
 
 
 stop() ->
