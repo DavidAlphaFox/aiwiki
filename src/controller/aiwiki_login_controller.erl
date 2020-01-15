@@ -6,7 +6,7 @@ init(#{method := <<"GET">> } = Req,State)->
   case aiwiki_session_handler:session(Req) of
     undefined ->
       {ok,Session0,Req0} = aiwiki_session_handler:create(Req),
-      Action(get,Session0,Req0,State);
+      action(get,Session0,Req0,State);
     {Session,undefined}->
       action(get,Session,Req,State);
     _ ->
