@@ -1,4 +1,4 @@
--module(aiwiki_admin_page_controller).
+ -module(aiwiki_admin_page_controller).
 -export([init/2]).
 init(Req,State)->
     Action = cowboy_req:binding(action,Req),
