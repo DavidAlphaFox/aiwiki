@@ -20,6 +20,7 @@ start() ->
   ok = application:start(aiconf),
   ok = application:start(aijwt),
   ok = application:start(aidb),
+  ok = application:start(aicache),
 	ok = application:start(aihtml),
   ok = application:start(aiwiki).
 

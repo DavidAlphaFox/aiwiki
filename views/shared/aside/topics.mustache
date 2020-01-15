@@ -5,7 +5,7 @@
     </div>
     <ul class="pb-4 pt-4 md:bg-white">
       {{# topics }}
-        {{# topics.selected}}
+        {{+ topics.selected}}
           <li class="mx-4 my-2 aside-item-selected">
             <a href="{{{topics.url}}}" >
               <span class="px-4 text-md">
@@ -14,7 +14,7 @@
             </a>
           </li>
         {{/ topics.selected}}
-        {{^ topics.selected}}
+        {{- topics.selected}}
           <li class="mx-4 my-2 aside-item">
             <a href="{{{topics.url}}}" class="aside-link" >
               <span class="px-4 text-md text-gray-800 hover:text-teal-500">

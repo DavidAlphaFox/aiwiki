@@ -16,7 +16,7 @@ init(Req,#{action := index} = State)->
       M0#{<<"url">> => Url}
     end,Pages),
   Topics = aiwiki_topic_helper:aside(undefined,undefined),
-  {HasExlinks,Exlinks} = exlink(),
+  Exlinks = exlink(),
   Pager = aiwiki_page_helper:pagination(PageIndex0,PageCount0,erlang:length(Pages0)),
   aiwiki_view:render(<<"page/index">>,
                      Req,State#{
@@ -24,7 +24,6 @@ init(Req,#{action := index} = State)->
                                              <<"pages">> => Pages0,
                                              <<"topics">> => Topics,
                                              <<"pager">> => Pager,
-                                             <<"has_exlinks">> => HasExlinks,
                                              <<"exlinks">> => Exlinks
                                             }});
  
@@ -51,7 +50,6 @@ terminate(Reason,Req,State)->
 
 exlink()->
   Exlinks = ai_db:find_all(exlink),
-  HasExlinks = erlang:length(Exlinks) > 0,
   Site = aiwiki_helper:site(),
   Query =
     lists:filter(fun({K,_V})->
@@ -59,7 +57,6 @@ exlink()->
                        orelse K =:= <<"utm_medium">>
                        orelse K =:= <<"utm_campaign">>
                  end,maps:to_list(Site)),
-  ExlinksModel =
     lists:map(fun(Link) ->
                   Title = proplists:get_value(key,Link),
                   Url0 = proplists:get_value(value,Link),
@@ -74,5 +71,4 @@ exlink()->
                     <<"title">> => Title,
                     <<"url">> => ai_url:build(Url2)
                    }
-              end,Exlinks),
-  {HasExlinks,ExlinksModel}.
+              end,Exlinks).

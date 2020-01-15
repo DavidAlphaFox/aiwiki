@@ -11,13 +11,9 @@
 -define(PORT,<<"port">>).
 
 
-run_connection(Fun) ->
-    ai_db_store:dirty(aiwiki_store, Fun).
-
-run_transaction(Fun) ->
-    ai_db_store:transaction(aiwiki_store, Fun).
-run_cache(Fun)->
-    ai_pool:transaction(chalk_cache,fun(Worker)-> ai_redis_worker:with_connection(Worker,Fun) end).
+run_connection(Fun) -> ai_db_store:dirty(aiwiki_store, Fun).
+run_transaction(Fun) -> ai_db_store:transaction(aiwiki_store, Fun).
+run_cache(Fun)-> ai_cache:run(chalk_cache,Fun).
 
 create() ->
     Node = node(),

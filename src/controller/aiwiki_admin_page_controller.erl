@@ -12,7 +12,6 @@ init(<<"edit.php">>,#{method := <<"GET">> } = Req,State) ->
     TopicID = proplists:get_value(topic_id,Page),
     Topics = aiwiki_topic_helper:select(TopicID),
     PageModel = aiwiki_helper:view_model(Page),
-    io:format("~p~n",[Topics]),
     Context = Form#{
                     <<"topics">> => Topics,
                     <<"page">> => PageModel
