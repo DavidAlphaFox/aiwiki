@@ -48,9 +48,10 @@ render_exception(_Handler,Reason,Req,_State) ->
       undefined ->
        #{ <<"is_dev">> => IsDev };
         _ ->
+            Reason0 = io_lib:format("~p~n",[Reason]), 
             #{
               <<"is_dev">> => IsDev,
-              <<"reason">> => Reason
+              <<"reason">> => Reason0
              }
     end,
     Body = ai_mustache:render(<<"error">>,Context),
