@@ -59,12 +59,7 @@ start() ->
                         ],
              to => <<"/admin/login.php">>
             },
-    Dispatch = cowboy_router:compile([Router]),
-    cowboy:start_clear(aiwiki_server,[{port, Port}],
-                      #{
-                        env => #{ dispatch => Dispatch, auth => Auth },
-                        middlewares => [cowboy_router,aiwiki_auth_handler,cowboy_handler]
-                      }).
+    aicow_server:start_page(aiwiki_server,Port,Router,aiwiki_render,Auth,undefined).
 
 
 stop() ->

@@ -22,5 +22,6 @@ start() ->
   ok = application:start(aidb),
   ok = application:start(aicache),
 	ok = application:start(aihtml),
+  ok = application:start(aicow),
   ok = application:start(aiwiki).
 
