@@ -64,9 +64,3 @@ exlink()->
                    }
               end,Exlinks).
 pages(PageIndex,PageCount)->
-    Pages = aiwiki_page_model:pagination(PageIndex,PageCount),
-    lists:map(fun(M) ->
-                      M0 = aiwiki_page_helper:view_model(M),
-                      Url = aiwiki_page_helper:url(M),
-                      M0#{<<"url">> => Url}
-              end,Pages).
