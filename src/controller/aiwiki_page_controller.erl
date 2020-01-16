@@ -4,28 +4,19 @@
 -include_lib("ailib/include/ai_url.hrl").
 
 init(Req,#{action := index} = State)->
-  QS = cowboy_req:parse_qs(Req),
-  PageIndex = proplists:get_value(<<"pageIndex">>,QS,0),
-  PageCount = proplists:get_value(<<"pageCount">>,QS,5),
-  PageIndex0 = ai_string:to_integer(PageIndex),
-  PageCount0 = ai_string:to_integer(PageCount),
-  Pages = aiwiki_page_model:pagination(PageIndex0,PageCount0),
-  Pages0 = lists:map(fun(M) -> 
-      M0 = aiwiki_page_helper:view_model(M),
-      Url = aiwiki_page_helper:url(M),
-      M0#{<<"url">> => Url}
-    end,Pages),
-  Topics = aiwiki_topic_helper:aside(undefined,undefined),
-  Exlinks = exlink(),
-  Pager = aiwiki_page_helper:pagination(PageIndex0,PageCount0,erlang:length(Pages0)),
-  aiwiki_view:render(<<"page/index">>,
-                     Req,State#{
-                                context => #{
-                                             <<"pages">> => Pages0,
-                                             <<"topics">> => Topics,
-                                             <<"pager">> => Pager,
-                                             <<"exlinks">> => Exlinks
-                                            }});
+    QS = cowboy_req:parse_qs(Req),
+    {PageIndex,PageCount} = aiwiki_pager_helper:index_and_count(QS),
+    Pages = pages(PageIndex,PageCount),
+    Topics = aiwiki_topic_helper:aside(undefined,undefined),
+    Exlinks = exlink(),
+    Pager = aiwiki_page_helper:pagination(PageIndex,PageCount,erlang:length(Pages)),
+    Context = #{
+                <<"pages">> => Pages,
+                <<"topics">> => Topics,
+                <<"pager">> => Pager,
+                <<"exlinks">> => Exlinks
+               },
+    {ok,<<"page/index">>,Req,State#{context => Context}};
  
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
@@ -72,3 +63,10 @@ exlink()->
                     <<"url">> => ai_url:build(Url2)
                    }
               end,Exlinks).
+pages(PageIndex,PageCount)->
+    Pages = aiwiki_page_model:pagination(PageIndex,PageCount),
+    lists:map(fun(M) ->
+                      M0 = aiwiki_page_helper:view_model(M),
+                      Url = aiwiki_page_helper:url(M),
+                      M0#{<<"url">> => Url}
+              end,Pages).

@@ -19,7 +19,7 @@ url(Host, Page) ->
     ai_url:build(R1).
 
 pagination(PageIndex, PageCount, Length) ->
-    aiwiki_helper:pagination(<<"/pages">>, PageIndex,PageCount, Length).
+    aiwiki_pager_helper:build(<<"/pages">>, PageIndex,PageCount, Length).
 
 view_model(Page) ->
     lists:foldl(
