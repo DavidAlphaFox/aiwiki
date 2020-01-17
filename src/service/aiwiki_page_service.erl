@@ -8,7 +8,7 @@ pages(PageIndex,PageCount)->
                       M0 = view_model(M),
                       Url = url(M),
                       M0#{<<"url">> => Url}
-              end,Pages)
+              end,Pages).
 
 pagination(PageIndex, PageCount, Length) ->
     aiwiki_pager_helper:build(<<"/pages">>, PageIndex,PageCount, Length).

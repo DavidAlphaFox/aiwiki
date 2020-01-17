@@ -52,22 +52,22 @@ wakeup(Item)-> Item.
 
 attributes()->
   Fields = fields(),
-  lists:map(fun(F)-> ai_db_schema:field_name(F) end,Fields).
+  lists:map(fun(F)-> ai_db_field:name(F) end,Fields).
 
 fields()->
     [
-     ai_db_schema:def_field(id,integer,[not_null, auto_increment, id]),
-     ai_db_schema:def_field(title,string,[not_null]),
-     ai_db_schema:def_field(intro,string,[not_null]),
-     ai_db_schema:def_field(content,staring,[not_null]),
-     ai_db_schema:def_field(published,boolean,[]),
-     ai_db_schema:def_field(published_at,datetime,[]),
-     ai_db_schema:def_field(topic_id,integer,[])
+     ai_db_field:define(id,integer,[not_null, auto_increment, id]),
+     ai_db_field:define(title,string,[not_null]),
+     ai_db_field:define(intro,string,[not_null]),
+     ai_db_field:define(content,staring,[not_null]),
+     ai_db_field:define(published,boolean,[]),
+     ai_db_field:define(published_at,datetime,[]),
+     ai_db_field:define(topic_id,integer,[])
     ].
 
 schema()->
     Fields = fields(),
-    ai_db_schema:def_schema(page,Fields).
+    ai_db_schema:define(page,Fields).
 
 proplists(Record)->
   [_ModelName|Values] = erlang:tuple_to_list(Record),

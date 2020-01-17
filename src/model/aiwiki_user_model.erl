@@ -71,13 +71,13 @@ wakeup(Fields)-> maps:to_list(Fields).
 
 attributes()->
   Fields = fields(),
-  lists:map(fun(F)-> ai_db_schema:field_name(F) end,Fields).
+  lists:map(fun(F)-> ai_db_field:name(F) end,Fields).
 
 fields()->
   [
-    ai_db_schema:def_field(email,string,[id,not_null]),
-    ai_db_schema:def_field(passwd,string,[not_null])
+    ai_db_field:define(email,string,[id,not_null]),
+    ai_db_field:define(passwd,string,[not_null])
   ].
 schema()->
   Fields = fields(),
-  ai_db_schema:def_schema(user,Fields).
+  ai_db_schema:define(user,Fields).
