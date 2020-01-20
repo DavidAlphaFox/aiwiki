@@ -19,9 +19,10 @@ aside(Idx,Title)->
   Topics = ai_db:find_all(topic),
   lists:map(
     fun(Topic)->
-        Topic0 = aiwiki_helper:view_model(Topic),
-        TopicIdx = proplists:get_value(id,Topic),
-        TopicTitle = proplists:get_value(title,Topic),
+        Fields = ai_db_model:fields(Topic),
+        Topic0 = aiwiki_helper:view_model(Fields),
+        TopicIdx = maps:get(id,Fields),
+        TopicTitle = maps:get(title,Fields),
         Topic1 = Topic0#{<<"url">> => url(TopicIdx,TopicTitle)},
         if
           (TopicIdx == Idx) orelse (TopicTitle == Title) ->

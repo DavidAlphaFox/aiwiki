@@ -4,11 +4,13 @@
 
 pages(PageIndex,PageCount)->
     Pages = aiwiki_page_model:pagination(PageIndex,PageCount),
-    lists:map(fun(M) ->
-                      M0 = view_model(M),
-                      Url = url(M),
-                      M0#{<<"url">> => Url}
-              end,Pages).
+    lists:map(
+      fun(M) ->
+              Page = ai_db_model:fields(M),
+              M0 = view_model(Page),
+              Url = url(Page),
+              M0#{<<"url">> => Url}
+      end,Pages).
 
 pagination(PageIndex, PageCount, Length) ->
     aiwiki_pager_helper:build(<<"/pages">>, PageIndex,PageCount, Length).
@@ -22,9 +24,8 @@ url(Host, Page) ->
 
 
 view_model(Page) ->
-
-    lists:foldl(
-      fun ({Key, Value}, Acc) ->
+    maps:fold(
+      fun (Key, Value, Acc) ->
               KeyBin = ai_string:to_string(Key),
               case Key of
                   published_at ->
@@ -35,8 +36,8 @@ view_model(Page) ->
       end,#{}, Page).
 
 url(Page) ->
-    Title = proplists:get_value(title, Page),
-    ID = proplists:get_value(id, Page),
+    Title = maps:get(title,Page),
+    ID = maps:get(id, Page),
     EncodeTitle = ai_url:urlencode(Title),
     EncodeID = ai_url:urlencode(ai_string:to_string(ID)),
     <<"/pages/", EncodeID/binary, "/", EncodeTitle/binary,".html">>.

@@ -6,7 +6,7 @@
 init(Req,#{action := index} = State)->
     QS = cowboy_req:parse_qs(Req),
     {PageIndex,PageCount} = aiwiki_pager_helper:index_and_count(QS),
-    Pages = aiwik_page_service:pages(PageIndex,PageCount),
+    Pages = aiwiki_page_service:pages(PageIndex,PageCount),
     Topics = aiwiki_topic_helper:aside(undefined,undefined),
     Exlinks = exlink(),
     Pager = aiwiki_page_service:pagination(PageIndex,PageCount,erlang:length(Pages)),

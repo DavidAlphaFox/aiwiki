@@ -1,5 +1,5 @@
 -module(aiwiki_page_model).
--export([wakeup/1,sleep/1,schema/0,attributes/0]).
+-export([schema/0,attributes/0]).
 -export([build/3]).
 -export([pagination/2,pagination/3,pagination/4]).
 
@@ -18,37 +18,17 @@ pagination(PageIndex,PageCount)->pagination(PageIndex,PageCount, undefined,true)
 pagination(PageIndex,PageCount,TopicID)->pagination(PageIndex,PageCount, TopicID,true).
 pagination(PageIndex,PageCount,TopicID,Published)->
   Offset = PageIndex * PageCount,
-  F = fun() ->  
-          Q =
-            case {TopicID,Published} of
-              {undefined,undefined} ->
-                qlc:q([P || P <- mnesia:table(page)]);
-              {undefined,_}->
-                qlc:q([P || P <- mnesia:table(page),
-                            erlang:element(6,P) == Published]);
-              _->
-                qlc:q([P || P <- mnesia:table(page),
-                            erlang:element(6,P) == Published,
-                            erlang:element(8,P) == TopicID])
-            end,
-          Q0 = qlc:keysort(7, Q, [{order, descending}]),
-          QC = qlc:cursor(Q0),
-          Answers =
-            if Offset == 0 -> qlc:next_answers(QC,PageCount);
-               true ->
-                qlc:next_answers(QC,Offset),
-                qlc:next_answers(QC,PageCount)
-            end,
-          qlc:delete_cursor(QC),
-          Answers
-      end,
-  case mnesia:transaction(F) of 
-    {atomic,Pages} -> lists:map(fun proplists/1,Pages);
-    {aborted,_Reason} -> []
-  end.
+  Cond =
+    case {TopicID,Published} of
+      {undefined,undefined} -> [];
+      {undefined,_}-> [{published,Published}];
+      _ -> [{'and',[
+                    {published,Published},
+                    {topic_id,TopicID}
+                   ]}]
+    end,
+  ai_db:find_by(page,Cond,PageCount,Offset).
 
-sleep(Item)-> Item.
-wakeup(Item)-> Item.
 
 attributes()->
   Fields = fields(),
@@ -68,8 +48,3 @@ fields()->
 schema()->
     Fields = fields(),
     ai_db_schema:define(page,Fields).
-
-proplists(Record)->
-  [_ModelName|Values] = erlang:tuple_to_list(Record),
-  Attrs = attributes(),
-  lists:zip(Attrs, Values).
