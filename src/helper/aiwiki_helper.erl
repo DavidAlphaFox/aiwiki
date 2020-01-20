@@ -7,9 +7,7 @@ site()->
   lists:foldl(
     fun(Conf,Acc) ->
         Fields = ai_db_model:fields(Conf),
-        Key = maps:get(key,Fields),
-        Value = maps:get(value,Fields),
-        Acc#{Key => Value}
+        maps:merge(Acc,Fields)
     end,#{},Site).
 
 view_model(Model)->

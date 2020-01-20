@@ -7,9 +7,10 @@ pages(PageIndex,PageCount)->
     lists:map(
       fun(M) ->
               Page = ai_db_model:fields(M),
-              M0 = view_model(Page),
+              PublishedAt = maps:get(published_at,Page),
+              PublishedAt0 = ai_iso8601:format(PublishedAt),
               Url = url(Page),
-              M0#{<<"url">> => Url}
+              Page#{url => Url,published_at => PublishedAt0}
       end,Pages).
 
 pagination(PageIndex, PageCount, Length) ->
@@ -21,19 +22,6 @@ url(Host, Page) ->
     R = ai_url:parse(Host),
     R1 = R#ai_url{path = Path},
     ai_url:build(R1).
-
-
-view_model(Page) ->
-    maps:fold(
-      fun (Key, Value, Acc) ->
-              KeyBin = ai_string:to_string(Key),
-              case Key of
-                  published_at ->
-                      PublishedAt = ai_iso8601:format(Value),
-                      Acc#{KeyBin => PublishedAt};
-                  _ -> Acc#{KeyBin => Value}
-              end
-      end,#{}, Page).
 
 url(Page) ->
     Title = maps:get(title,Page),

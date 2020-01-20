@@ -26,12 +26,12 @@ render(_Handler,Template,ContentType,Req,State)->
       _ ->
         Site = aiwiki_helper:site(),
         LayoutContext = Context#{
-                                 <<"yield">> => [fun yield/2,Template],
-                                 <<"site_title">> => fun site_title/2,
-                                 <<"site_intro">> => fun site_intro/2,
-                                 <<"site_keywords">> => fun site_keywords/2,
-                                 <<"site">> => Site,
-                                 <<"is_dev">> => IsDev
+                                 yield => [fun yield/2,Template],
+                                 site_title => fun site_title/2,
+                                 site_intro => fun site_intro/2,
+                                 site_keywords => fun site_keywords/2,
+                                 site => Site,
+                                 is_dev => IsDev
                                 },
         ai_mustache:render(Layout,LayoutContext)
         end,
@@ -46,12 +46,12 @@ render_exception(_Handler,Reason,Req,_State) ->
   Context =
     case  Reason of
       undefined ->
-       #{ <<"is_dev">> => IsDev };
+       #{ is_dev => IsDev };
         _ ->
             Reason0 = io_lib:format("~p~n",[Reason]), 
             #{
-              <<"is_dev">> => IsDev,
-              <<"reason">> => Reason0
+              is_dev => IsDev,
+              reason => Reason0
              }
     end,
     Body = ai_mustache:render(<<"error">>,Context),
@@ -66,7 +66,7 @@ reply(Status,Data,Format,Req)->
 yield(Template,Context)-> ai_mustache:render(Template,Context).
 
 site_title(Acc,Context)->
-  case  ai_maps:get([<<"site">>,<<"title">>],Context,undefined) of
+  case  ai_maps:get([site,title],Context,undefined) of
     undefined -> Acc;
     Title ->
       case erlang:byte_size(Acc) of
@@ -75,7 +75,7 @@ site_title(Acc,Context)->
       end
   end.
 site_intro(Acc,Context)->
-  case ai_maps:get([<<"site">>,<<"intro">>],Context,undefined) of
+  case ai_maps:get([site,intro],Context,undefined) of
     undefined -> Acc;
     Intro ->
       case erlang:byte_size(Acc) of
@@ -84,7 +84,7 @@ site_intro(Acc,Context)->
       end
   end.
 site_keywords(Acc,Context)->
-  case ai_maps:get([<<"site">>,<<"keywords">>],Context,undefined) of
+  case ai_maps:get([site,keywords],Context,undefined) of
     undefined -> Acc;
     Keywords ->
       case erlang:byte_size(Acc) of

@@ -5,13 +5,13 @@ select(Idx)->
   Topics = ai_db:find_all(topic),
   lists:map(
     fun(Topic)->
-        Topic0 = aiwiki_helper:view_model(Topic),
-        TopicIdx = proplists:get_value(id,Topic),
+        Topic0 = ai_db_model:fields(Topic),
+        TopicIdx = maps:get(id,Topic),
         if
           TopicIdx == Idx ->
-            Topic0#{<<"selected">> => true};
+            Topic0#{selected => true};
           true ->
-            Topic0#{<<"selected">> => false}
+            Topic0#{selected => false}
         end
     end,Topics).
 
@@ -19,16 +19,15 @@ aside(Idx,Title)->
   Topics = ai_db:find_all(topic),
   lists:map(
     fun(Topic)->
-        Fields = ai_db_model:fields(Topic),
-        Topic0 = aiwiki_helper:view_model(Fields),
-        TopicIdx = maps:get(id,Fields),
-        TopicTitle = maps:get(title,Fields),
-        Topic1 = Topic0#{<<"url">> => url(TopicIdx,TopicTitle)},
+        Topic0 = ai_db_model:fields(Topic),
+        TopicIdx = maps:get(id,Topic0),
+        TopicTitle = maps:get(title,Topic0),
+        Topic1 = Topic0#{url => url(TopicIdx,TopicTitle)},
         if
           (TopicIdx == Idx) orelse (TopicTitle == Title) ->
-            Topic1#{<<"selected">> => true};
+            Topic1#{selected => true};
           true ->
-            Topic1#{<<"selected">> => false}
+            Topic1#{selected => false}
         end
     end,Topics).
 

@@ -11,10 +11,10 @@ init(Req,#{action := index} = State)->
     Exlinks = exlink(),
     Pager = aiwiki_page_service:pagination(PageIndex,PageCount,erlang:length(Pages)),
     Context = #{
-                <<"pages">> => Pages,
-                <<"topics">> => Topics,
-                <<"pager">> => Pager,
-                <<"exlinks">> => Exlinks
+                pages => Pages,
+                topics => Topics,
+                pager => Pager,
+                exlinks => Exlinks
                },
     {ok,<<"page/index">>,Req,State#{context => Context}};
  

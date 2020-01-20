@@ -18,26 +18,26 @@ build(Path,PageIndex,PageCount,Size)->
     PageIndex > 0 ->
       if PageCount > Size ->
           [
-            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => true,<<"url">> => PrevUrl},
-            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => false}
+            #{title => <<"上一页"/utf8>>,enabled => true,url => PrevUrl},
+            #{title => <<"下一页"/utf8>>,enabled => false}
           ];
         true ->
           [
-            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => true,<<"url">> => PrevUrl},
-            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => true,<<"url">> => NextUrl}
+            #{title => <<"上一页"/utf8>>,enabled => true,url => PrevUrl},
+            #{title => <<"下一页"/utf8>>,enabled => true,url => NextUrl}
           ]
       end;
     true ->
       if 
         PageCount > Size ->
           [
-            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => false},
-            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => false}
+            #{title => <<"上一页"/utf8>>,enabled => false},
+            #{title => <<"下一页"/utf8>>,enabled => false}
           ];
         true ->
           [
-            #{<<"title">> => <<"上一页"/utf8>>,<<"enabled">> => false},
-            #{<<"title">> => <<"下一页"/utf8>>,<<"enabled">> => true,<<"url">> => NextUrl}
+            #{title => <<"上一页"/utf8>>,enabled => false},
+            #{title => <<"下一页"/utf8>>,enabled => true,url => NextUrl}
           ]
       end
   end.
