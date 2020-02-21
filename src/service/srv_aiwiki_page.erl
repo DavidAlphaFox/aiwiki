@@ -1,17 +1,17 @@
--module(aiwiki_page_service).
+-module(srv_aiwiki_page).
 -export([pages/2,url/2,pagination/3]).
 -include_lib("ailib/include/ai_url.hrl").
 
 pages(PageIndex,PageCount)->
-    Pages = aiwiki_page_model:pagination(PageIndex,PageCount),
-    lists:map(
-      fun(M) ->
-              Page = ai_db_model:fields(M),
-              PublishedAt = maps:get(published_at,Page),
-              PublishedAt0 = ai_iso8601:format(PublishedAt),
-              Url = url(Page),
-              Page#{url => Url,published_at => PublishedAt0}
-      end,Pages).
+  Pages = aiwiki_page_model:pagination(PageIndex,PageCount),
+  lists:map(
+    fun(M) ->
+        Page = ai_db_model:fields(M),
+        PublishedAt = maps:get(published_at,Page),
+        PublishedAt0 = ai_iso8601:format(PublishedAt),
+        Url = url(Page),
+        Page#{url => Url,published_at => PublishedAt0}
+    end,Pages).
 
 pagination(PageIndex, PageCount, Length) ->
     aiwiki_pager_helper:build(<<"/pages">>, PageIndex,PageCount, Length).

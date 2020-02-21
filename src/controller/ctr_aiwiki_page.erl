@@ -1,22 +1,22 @@
--module(aiwiki_page_controller).
+-module(ctr_aiwiki_page).
 -export([init/2,terminate/3]).
 
 -include_lib("ailib/include/ai_url.hrl").
 
 init(Req,#{action := index} = State)->
-    QS = cowboy_req:parse_qs(Req),
-    {PageIndex,PageCount} = aiwiki_pager_helper:index_and_count(QS),
-    Pages = aiwiki_page_service:pages(PageIndex,PageCount),
-    Topics = aiwiki_topic_helper:aside(undefined,undefined),
-    Exlinks = exlink(),
-    Pager = aiwiki_page_service:pagination(PageIndex,PageCount,erlang:length(Pages)),
-    Context = #{
-                pages => Pages,
-                topics => Topics,
-                pager => Pager,
-                exlinks => Exlinks
-               },
-    {ok,<<"page/index">>,Req,State#{context => Context}};
+  QS = cowboy_req:parse_qs(Req),
+  {PageIndex,PageCount} = util_aiwiki_pager:parse_pager(QS),
+  Pages = srv_aiwiki_page:pages(PageIndex,PageCount),
+  Topics = aiwiki_topic_helper:aside(undefined,undefined),
+  Exlinks = exlink(),
+  Pager = aiwiki_page_service:pagination(PageIndex,PageCount,erlang:length(Pages)),
+  Context = #{
+              pages => Pages,
+              topics => Topics,
+              pager => Pager,
+              exlinks => Exlinks
+             },
+  {ok,<<"page/index">>,Req,State#{context => Context}};
  
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),

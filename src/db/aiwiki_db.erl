@@ -1,6 +1,6 @@
 -module(aiwiki_db).
 
--export([create/0]).
+-export([create/0,id/0]).
 
 create() ->
     Node = node(),
@@ -27,3 +27,8 @@ create() ->
                          {disc_copies, [Node]}]),
     ok = mnesia:wait_for_tables([page, topic,user, site,exlink]
                                ,6000).
+id()->
+  case ai_id:next_id() of
+    {fail,_} -> id();
+    ID  -> ID
+  end.

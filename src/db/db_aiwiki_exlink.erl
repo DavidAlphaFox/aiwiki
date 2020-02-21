@@ -1,6 +1,5 @@
--module(aiwiki_exlink_model).
+-module(db_aiwiki_exlink).
 -export([sleep/1,wakeup/1,schema/0,attributes/0]).
-
 
 sleep(PropList)-> maps:from_list(PropList).
 wakeup(Fields)-> maps:to_list(Fields).
