@@ -7,8 +7,6 @@
 start(_Type, _Args) ->
   aiwiki_conf:init(),
   aiwiki_db:create(),
-  CacheSpec = aiwiki_cache:store(),
-  ai_cache:start_pool(redis,CacheSpec),
   Sup = aiwiki_sup:start_link(),
   aiwiki_server:start(),
   Sup.

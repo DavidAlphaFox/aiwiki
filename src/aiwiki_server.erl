@@ -20,7 +20,6 @@ router_list() ->
     ].
 
 start() ->
-  ai_mustache:bootstrap(),
   Port = aiwiki_conf:get_value(?SERVER_SECTION,?PORT,5000),
   RouterList = router_list(),
   RouterList0 =

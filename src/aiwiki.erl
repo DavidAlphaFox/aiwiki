@@ -14,11 +14,8 @@ start() ->
   ok = application:start(cowboy),
   ok = application:start(jiffy),
   ok = application:start(bcrypt),
-	ok = application:start(eredis),
   ok = application:start(ailib),
   ok = application:start(aiconf),
-  ok = application:start(aicache),
-	ok = application:start(aihtml),
   ok = application:start(aicow),
   ok = application:start(aiwiki).
 
