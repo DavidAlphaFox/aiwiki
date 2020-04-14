@@ -1,7 +1,8 @@
--module(aiwiki_page_model).
+-module(db_aiwiki_page).
 -export([schema/0,attributes/0]).
 -export([build/3]).
 -export([pagination/2,pagination/3,pagination/4]).
+
 
 -include_lib("stdlib/include/qlc.hrl").
 
