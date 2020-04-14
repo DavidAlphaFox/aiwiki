@@ -17,7 +17,7 @@ init(Req,#{action := index} = State)->
               exlinks => Exlinks
              },
   {ok,<<"page/index">>,Req,State#{context => Context}};
- 
+
 init(Req,#{action := show} = State)->
     PageID = cowboy_req:binding(id,Req),
     Title = cowboy_req:binding(title,Req),
