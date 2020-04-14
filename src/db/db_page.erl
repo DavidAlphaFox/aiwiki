@@ -23,26 +23,32 @@ select(PageIndex,PageCount)->select(PageIndex,PageCount, undefined,true).
 select(PageIndex,PageCount,Topic)->select(PageIndex,PageCount, Topic,true).
 select(PageIndex,PageCount,Topic,Published)->
   Offset = PageIndex * PageCount,
-  MatchHead =
-    case {Topic,Published} of
-      {undefined,undefined}-> #page{_ = '_'};
-      {undefined,_} -> #page{_ = '_',published = Published};
-      _ -> #page{ _ = '_',published = Published, topic = Topic}
-    end,
-  MatchSpec = [{MatchHead,[],['$_']}],
+  Order = fun(A,B)-> A#page.published_at > B#page.published_at end,
   Query =
-    case PageCount of
-      0 -> fun () ->  mnesia:select(page, MatchSpec) end;
-      _ ->
-        fun () ->
-            case mnesia:select(page, MatchSpec, Offset + PageCount, read) of
-              {ManyItems, _Cont} when length(ManyItems) >= Offset ->
-                lists:sublist(ManyItems, Offset + 1, PageCount);
-              {_ManyItems, _Cont} -> [];
-              '$end_of_table' -> []
-            end
-        end
-    end,
+    fun() ->
+        Q = case {Topic,Published} of
+              {undefined,undefined} ->
+                qlc:q([E|| E <- mnesia:table(page)]);
+              {undefined,_}->
+                qlc:q([E || E <- mnesia:table(page), E#page.published == Published]);
+              _->
+                qlc:q([E || E <- mnesia:table(page),
+                            E#page.published == Published,
+                            E#page.topic == Topic
+                      ])
+              end,
+        Q0 = qlc:sort(Q,[{order,Order}]),
+        QC = qlc:cursor(Q0),
+        Answers =
+          if
+            Offset == 0 -> qlc:next_answers(QC,PageCount);
+            true ->
+              qlc:next_answers(QC,Offset),
+              qlc:next_answers(QC,PageCount)
+          end,
+        qlc:delete_cursor(QC),
+        Answers
+      end,
   mnesia:transaction(Query).
 
 count(_Topic,undefined)->
