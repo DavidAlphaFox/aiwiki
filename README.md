@@ -1,12 +1,11 @@
 ## aiwiki
 
-用Erlang开发的博客，为了提高自己使用Erlang开发Web的能力。
+使用Erlang和React进行开发的个人博客，配合React的SSR的nextjs进行服务端渲染
 
 ### 技术
 
 - cowboy
-- mustache
-- stimulus.js
-- quill.js
 - tailwind CSS
+- react
+- nextjs
 
