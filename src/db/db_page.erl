@@ -1,6 +1,6 @@
 -module(db_page).
 
--export([new/3,new/4]).
+-export([new/3,new/4,to_json/1]).
 -export([
          select/2,
          select/3,
@@ -25,6 +25,22 @@ new(Title,Intro,Content,Topic)->
      published = false,
      topic = Topic
     }.
+to_json(Item)->
+  M = #{
+        id => Item#page.id,
+        title => Item#page.title,
+        intro => Item#page.intro,
+        content => Item#page.content,
+        published => Item#page.published,
+        topic => Item#page.topic
+       },
+  if
+    Item#page.published_at == undefined -> M;
+    true ->
+      M#{
+         publishedAt => ai_iso8601:format(Item#page.published_at)
+        }
+  end.
 
 select(PageIndex,PageCount)->select(PageIndex,PageCount, undefined,true).
 select(PageIndex,PageCount,Topic)->select(PageIndex,PageCount, Topic,true).
