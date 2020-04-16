@@ -1,0 +1,35 @@
+.content {
+  h1,h2,h3,h4,h5,h6 {
+    @apply text-gray-900  my-4 font-semibold;
+  }
+
+  h2 {
+    @apply text-xl border-b border-gray-400;
+  }
+
+  a {
+    @apply text-teal-500;
+  }
+
+  p {
+    @apply my-4;
+  }
+
+  pre {
+    @apply overflow-auto rounded-lg border-l-8 border-blue-500 bg-gray-400;
+  }
+
+  
+  ul {
+    @apply my-4 ml-4;
+    li {
+      list-style: disc;
+    }
+  }
+  ol {
+    @apply my-4 ml-4;
+    li {
+      list-style: decimal;
+    }
+  }
+}

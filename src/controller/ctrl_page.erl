@@ -60,7 +60,7 @@ handle_action(#{method := Method} = Req,State)->
   handle_action(Method0,Req,State).
 
 handle_action('GET',Req,#{row := Row} = State)->
-  {jiffy:encode(db_page:to_json(#{data => Row})),Req,State};
+  {jiffy:encode(#{data => db_page:to_json(Row)}),Req,State};
 handle_action('GET',Req,State) ->
   Qs = cowboy_req:parse_qs(Req),
   {PageIndex,PageCount} = aiwiki_helper:parse_pager(Qs),

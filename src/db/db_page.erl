@@ -27,7 +27,7 @@ new(Title,Intro,Content,Topic)->
     }.
 to_json(Item)->
   M = #{
-        id => Item#page.id,
+        id => ai_string:to_string(Item#page.id),
         title => Item#page.title,
         intro => Item#page.intro,
         content => Item#page.content,
