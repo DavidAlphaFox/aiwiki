@@ -19,8 +19,8 @@ get_section(Section,Default)-> ai_conf:section(aiwiki,Section,Default).
 sections()-> ai_conf:sections(aiwiki).
 
 init() ->
-    Conf = get_config_file(),
-    ai_conf:load_conf(aiwiki,[Conf]).
+  Conf = get_config_file(),
+  ai_conf:load_conf(aiwiki,[Conf]).
     
 env()-> 
   case os:getenv(?APP_ENV) of

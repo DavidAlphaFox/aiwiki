@@ -18,20 +18,14 @@ create() ->
                        {index, [title]},
                        {disc_copies, [Node]}
                       ]),
-    %%mnesia:create_table(topic,
-    %%                    [{attributes, aiwiki_topic_model:attributes()},
-    %%                     {index, [title]}, {disc_copies, [Node]}]),
-    %%mnesia:create_table(user,
-    %%                    [{attributes, aiwiki_user_model:attributes()},
-    %%                     {disc_copies, [Node]}]),
-    %%mnesia:create_table(site,
-    %%                    [{attributes, aiwiki_site_model:attributes()},
-    %%                     {disc_copies, [Node]}]),
-    %%mnesia:create_table(exlink,
-    %%                    [{attributes, aiwiki_site_model:attributes()},
-    %%                     {disc_copies, [Node]}]),
-    %%ok = mnesia:wait_for_tables([page, topic,user, site,exlink],6000).
-  ok = mnesia:wait_for_tables([page],6000).
+  mnesia:create_table(topic,
+                        [{attributes,record_info(fields,topic)},
+                         {index, [title]}, {disc_copies, [Node]}]),
+   
+  mnesia:create_table(site,
+                      [{attributes, record_info(fields,site)},
+                       {disc_copies, [Node]}]),
+  ok = mnesia:wait_for_tables([page,topic,site],6000).
 
 id()-> id(ai_id:next_id()).
 id({fail,_}) -> id();

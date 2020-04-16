@@ -7,3 +7,13 @@
               published_at:: tuple(),
               topic:: integer()
              }).
+
+-record(topic,{
+                id :: integer(),
+                title :: binary(),
+                intro :: binary()
+              }).
+-record(site,{
+              key :: string(),
+              value :: term()
+             }).

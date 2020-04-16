@@ -1,8 +1,15 @@
 -module(db_page).
 
 -export([new/3,new/4]).
--export([select/2,select/3,select/4,count/2]).
--export([fetch/1]).
+-export([
+         select/2,
+         select/3,
+         select/4,
+         count/2,
+         fetch/1,
+         save/1
+        ]).
+
 
 -include_lib("stdlib/include/qlc.hrl").
 -include("include/model.hrl").
@@ -78,3 +85,7 @@ fetch(ID)->
           mnesia:select(page, [{MatchHead, Guard, Result}])
       end,  
 mnesia:transaction(F).
+
+save(Page)->
+  F = fun() -> mnesia:write(Page) end,
+  mnesia:transaction(F).
