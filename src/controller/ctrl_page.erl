@@ -1,4 +1,4 @@
--module(ctr_page).
+-module(ctrl_page).
 -export([init/2]).
 -export([
          content_types_accepted/2,
@@ -39,7 +39,7 @@ resource_exists(#{method := <<"GET">>} = Req,State) ->
   case cowboy_req:binding(id,Req) of
     undefined -> {true,Req,State};
     ID ->
-      ID0 = ai_string:to_interger(ID),
+      ID0 = ai_string:to_integer(ID),
       case db_page:fetch(ID0) of
         {atomic,[Row]} -> {true,Req,State#{row => Row}};
         _ -> {false,Req,State}
@@ -60,7 +60,7 @@ handle_action(#{method := Method} = Req,State)->
   handle_action(Method0,Req,State).
 
 handle_action('GET',Req,#{row := Row} = State)->
-  {jiffy:encode(db_page:to_json(Row)),Req,State};
+  {jiffy:encode(db_page:to_json(#{data => Row})),Req,State};
 handle_action('GET',Req,State) ->
   Qs = cowboy_req:parse_qs(Req),
   {PageIndex,PageCount} = aiwiki_helper:parse_pager(Qs),
@@ -70,4 +70,4 @@ handle_action('GET',Req,State) ->
       Topic0 -> ai_string:to_integer(Topic0)
     end,
   {atomic,Rows} = db_page:select(PageIndex,PageCount,Topic),
-  {jiffy:encode(lists:map(fun db_page:to_json/1,Rows)),Req,State}.
+  {jiffy:encode(#{data => lists:map(fun db_page:to_json/1,Rows)}),Req,State}.

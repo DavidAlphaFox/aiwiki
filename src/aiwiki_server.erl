@@ -11,7 +11,7 @@ router_list() ->
      {"/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
 
      {"/topics/:id/:title",aiwiki_topic_controller,#{}},
-     {"/api/pages/[:id]",ctr_page,#{}},
+     {"/api/pages/[:id]",ctrl_page,#{}},
 
      {"/admin/login.php",aiwiki_login_controller,#{layout => null}},
      {"/admin/page/:action",aiwiki_admin_page_controller,
