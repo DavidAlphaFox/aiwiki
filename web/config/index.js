@@ -3,5 +3,5 @@ const serverHost = () => {
 }
 
 export {
-  serverHost,
+  serverHost
 };

@@ -1,7 +1,10 @@
+import React from 'react';
+
 export default ({ children }) => {
   return (
-    <div className="bg-white antialiased h-screen">
-      { children }
-    </div>
-  )
-}
+    <React.Fragment>
+
+      { React.Children.toArray(children) }
+    </React.Fragment>
+  );
+};
