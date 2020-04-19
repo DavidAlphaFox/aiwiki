@@ -1,0 +1,19 @@
+@media (min-width: 768px){
+  .topic-item {
+    &:hover > a:after {
+      width: 100%;
+    }
+  }
+  .topic-item-selected {
+    & > a:after {
+      width: 100%;
+    }
+  }
+  .topic-item-link:after{
+    width: 0;
+    content: "";
+    display: block;
+    transition: all 0.3s ease 0s;
+    @apply border-b-2 border-solid border-teal-500;
+  }
+}

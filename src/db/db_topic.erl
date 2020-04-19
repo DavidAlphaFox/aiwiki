@@ -2,7 +2,8 @@
 -export([new/2]).
 -export([
          select/0,
-         save/1
+         save/1,
+         to_json/1
         ]).
 -include("include/model.hrl").
 
@@ -21,3 +22,10 @@ select()->
 save(Topic)->
   F = fun() -> mnesia:write(Topic) end,
   mnesia:transaction(F).
+
+to_json(Item)->
+  #{
+    id => ai_string:to_string(Item#topic.id),
+    title => ai_string:to_string(Item#topic.title),
+    intro => ai_string:to_string(Item#topic.intro)
+   }.
