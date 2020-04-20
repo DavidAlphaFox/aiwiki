@@ -35,17 +35,7 @@ allow_missing_post(Req,State)->{false,Req,State}.
 
 resource_exists(#{method := <<"POST">>} = Req,State)-> {true,Req,State};
 resource_exists(#{method := <<"PUT">>} = Req,State)-> {false,Req,State};
-resource_exists(#{method := <<"GET">>} = Req,State) ->
-  case cowboy_req:binding(id,Req) of
-    undefined -> {true,Req,State};
-    ID ->
-      ID0 = ai_string:to_integer(ID),
-      case db_page:fetch(ID0) of
-        {atomic,[Row]} -> {true,Req,State#{row => Row}};
-        _ -> {false,Req,State}
-      end
-  end.
-
+resource_exists(#{method := <<"GET">>} = Req,State) -> {true,Req,State}.
 
 malformed_request(#{method := Method} = Req,State)->
   case {Method, cowboy_req:has_body(Req)} of
@@ -59,4 +49,6 @@ handle_action(#{method := Method} = Req,State)->
   Method0 = erlang:binary_to_atom(Method,utf8),
   handle_action(Method0,Req,State).
 
-handle_action('GET',Req,State)-> {"",Req,State}.
+handle_action('GET',Req,State) ->
+  {atomic,Rows} = db_topic:select(),
+  {jiffy:encode(#{data => lists:map(fun db_topic:to_json/1,Rows)}),Req,State}.
