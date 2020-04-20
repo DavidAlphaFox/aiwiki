@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import * as R from 'ramda';
 import {
   sitePath,
   headerPath,
@@ -7,22 +8,13 @@ import {
 const fetchSite = () =>{
   return fetch(sitePath)
     .then(res => res.json())
-    .then((payload) => {
-      return {
-        brand: payload.brand,
-        footer: payload.footer,
-      };
-    })
+    .then(R.identity)
     .catch(() => null);
 };
 const fetchHeader = () => {
   return fetch(headerPath)
     .then(res => res.json())
-    .then((payload) => {
-      return {
-        header: payload.data
-      };
-    })
+    .then(R.identity)
     .catch(() => null);
 };
 

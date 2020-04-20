@@ -62,4 +62,23 @@ handle_action('GET',<<"site">>,Req,State)->
         maps:merge(Ctx,db_site:to_json(Footer));
       _ -> Ctx
     end,
-  {jiffy:encode(Ctx0),Req,State}.
+  {jiffy:encode(Ctx0),Req,State};
+handle_action('GET',<<"header">>,Req,State) ->
+  Ctx =
+    case db_site:fetch(header) of
+      {atomic,[Header]} -> db_site:to_json(Header);
+      _ -> #{}
+    end,
+  Ctx0 =
+    case db_site:fetch(keywords) of
+      {atomic,[Keywords]} ->
+        maps:merge(Ctx,db_site:to_json(Keywords));
+      _-> Ctx
+    end,
+  Ctx1 =
+    case db_site:fetch(intro) of
+      {atomic,[Intro]}->
+        maps:merge(Ctx0,db_site:to_json(Intro));
+      _ -> Ctx0
+    end,
+  {jiffy:encode(Ctx1),Req,State}.

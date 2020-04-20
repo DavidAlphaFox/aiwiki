@@ -20,18 +20,15 @@ fetch(links)->
           end
       end,
   mnesia:transaction(F);
-fetch(footer) ->
+fetch(Key) ->
+  KeyBin = ai_string:to_string(Key),
   F = fun() ->
-          MatchHead = #site{key = <<"footer">>, _ = '_'},
-          mnesia:select(site,[{MatchHead,[],['$_']}])
-      end,
-  mnesia:transaction(F);
-fetch(brand)->
-  F = fun() ->
-          MatchHead = #site{key = <<"brand">>, _ = '_'},
+          MatchHead = #site{key = KeyBin, _ = '_'},
           mnesia:select(site,[{MatchHead,[],['$_']}])
       end,
   mnesia:transaction(F).
+
+
 to_json(Item)->
   #{
     Item#site.key => Item#site.value
