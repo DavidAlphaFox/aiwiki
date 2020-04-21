@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import Topic from '../components/Topic';
 import PageIndex from '../components/PageIndex';
+import Pager from '../components/Pager';
 import {
   fetchIndexPage,
 } from '../api/server';
@@ -18,6 +19,14 @@ function Index(props){
       <div className="md:flex md:pt-4 md:justify-center">
         <div className="pt-4 px-8 w-full h-full md:max-w-xl2">
           <PageIndex pages={pages} />
+          <div className="mt-4 md:mx-4 flex justify-center">
+            <Pager
+              index={index}
+              size={size}
+              total={total}
+              url="/"
+            />
+          </div>
         </div>
         <aside className="pt-4 w-full md:mx-8 md:max-w-xs">
           <Topic topics={topics} />

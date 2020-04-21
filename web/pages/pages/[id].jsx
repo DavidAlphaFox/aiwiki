@@ -14,6 +14,7 @@ function Page({data}) {
           <div className="mt-4 mx-4 md:mx-64 content">
             {renderHTML(data.content)}
           </div>
+
         </div>
       </Layout>
   );
