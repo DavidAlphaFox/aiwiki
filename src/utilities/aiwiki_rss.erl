@@ -10,6 +10,10 @@ build(Site,Content)->
   ai_string:to_string(xmerl:export([Rss],xmerl_xml)).
 
 rss(Site,Content)->
+  Namespace = #xmlNamespace{
+                 default = [],
+                 nodes = [{"atom",'http://www.w3.org/2005/Atom'}]
+                },
   Attributes = [
                 #xmlAttribute{name = version, value = "2.0"},
                 #xmlAttribute{name = 'xmlns:atom',
@@ -18,6 +22,7 @@ rss(Site,Content)->
                              }],
   Channel = channel(Site,Content),
   #xmlElement{name = rss,
+              namespace = Namespace,
               attributes = Attributes,
               content = [Channel]
              }.

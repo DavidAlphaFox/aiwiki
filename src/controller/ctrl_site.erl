@@ -51,17 +51,7 @@ handle_action(#{method := Method} = Req,State)->
   handle_action(Method0,Type,Req,State).
 
 handle_action('GET',<<"site">>,Req,State)->
-  Ctx =
-    case db_site:fetch(brand) of
-      {atomic,[Brand]} -> db_site:to_json(Brand);
-      _ -> #{}
-    end,
-  Ctx0 =
-    case db_site:fetch(footer) of
-      {atomic,[Footer]}->
-        maps:merge(Ctx,db_site:to_json(Footer));
-      _ -> Ctx
-    end,
+
   {jiffy:encode(Ctx0),Req,State};
 handle_action('GET',<<"header">>,Req,State) ->
   Ctx =
