@@ -5,6 +5,7 @@
          to_json/1
         ]).
 
+-include_lib("stdlib/include/qlc.hrl").
 -include("include/model.hrl").
 
 save(Site)->
@@ -31,9 +32,11 @@ fetch(Keys) ->
   Keys0 = lists:map(fun ai_string:to_string/1,Keys),
   Query =
     fun() ->
-        qlc:q([E || E <- mnesia:table(site),
-                   lists:member(E#site.key,Keys0)])
-    end
+        Q = qlc:q([E || E <- mnesia:table(site),
+                        lists:member(E#site.key,Keys0)]),
+        qlc:e(Q)
+    end,
+  mnesia:transaction(Query).
 
 to_json(Item)->
   #{
