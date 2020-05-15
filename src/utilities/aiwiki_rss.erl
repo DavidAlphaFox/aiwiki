@@ -12,7 +12,7 @@ build(Site,Content)->
 rss(Site,Content)->
   Namespace =
     #xmlNamespace{default = [],
-                  nodes = [{"atom",'http://www.w3.org/2005/Atom'}]},
+                  nodes = [{"atom","http://www.w3.org/2005/Atom"}]},
   Attributes =
     [#xmlAttribute{name = version, value = "2.0"},
      #xmlAttribute{name = 'xmlns:atom',
