@@ -9,11 +9,11 @@ fetch(rss) -> to_map([host,brand,intro]).
 
 to_map(Keys)->
   case db_site:fetch(Keys) of
-    {atomic,[Site]} ->
+    {atomic,Sites} ->
       lists:foldl(
         fun(I,Acc) ->
             Key = erlang:binary_to_existing_atom(I#site.key, utf8),
             Acc#{Key => I#site.value}
-        end, #{},Site);
+        end, #{},Sites);
     _ -> #{}
   end.

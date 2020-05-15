@@ -55,4 +55,11 @@ handle_action('GET',<<"site">>,Req,State)->
   {jiffy:encode(Ctx),Req,State};
 handle_action('GET',<<"header">>,Req,State) ->
   Ctx = srv_site:fetch(header),
+  {jiffy:encode(Ctx),Req,State};
+handle_action('GET',<<"exlinks">>,Req,State) ->
+  Ctx =
+    case db_site:fetch(exlinks) of
+      {atomic,[Exlinks]} -> db_site:to_map(Exlinks);
+      _ -> #{}
+    end,
   {jiffy:encode(Ctx),Req,State}.

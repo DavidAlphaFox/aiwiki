@@ -10,16 +10,15 @@ build(Site,Content)->
   ai_string:to_string(xmerl:export([Rss],xmerl_xml)).
 
 rss(Site,Content)->
-  Namespace = #xmlNamespace{
-                 default = [],
-                 nodes = [{"atom",'http://www.w3.org/2005/Atom'}]
-                },
-  Attributes = [
-                #xmlAttribute{name = version, value = "2.0"},
-                #xmlAttribute{name = 'xmlns:atom',
-                              nsinfo = {"xmlns","atom"},
-                              value = "http://www.w3.org/2005/Atom"
-                             }],
+  Namespace =
+    #xmlNamespace{default = [],
+                  nodes = [{"atom",'http://www.w3.org/2005/Atom'}]},
+  Attributes =
+    [#xmlAttribute{name = version, value = "2.0"},
+     #xmlAttribute{name = 'xmlns:atom',
+                   nsinfo = {"xmlns","atom"},
+                   value = "http://www.w3.org/2005/Atom"
+                  }],
   Channel = channel(Site,Content),
   #xmlElement{name = rss,
               namespace = Namespace,
@@ -44,21 +43,13 @@ title(Brand) ->
     }.
 host(undefined)-> #xmlElement{name = link};
 host(Host) ->
-  #xmlElement{
-     name = link,
-     content = [
-                #xmlText{ value = Host }
-               ]
-    }.
+  #xmlElement{name = link,
+              content = [#xmlText{ value = Host }]}.
 
 intro(undefined) -> #xmlElement{name = description};
 intro(Intro) ->
-  #xmlElement{
-     name = description,
-     content = [
-                #xmlText{ value = Intro }
-               ]
-    }.
+  #xmlElement{name = description,
+              content = [#xmlText{ value = Intro }]}.
 item(_Host,[]) -> [];
 item(Host,Items) ->
   Host0 = ai_url:parse(Host),
@@ -70,8 +61,6 @@ item(Host,Items) ->
         Brand = title(I#page.title),
         Link = host(ai_url:build(Host1)),
         Desc = intro(I#page.intro),
-        #xmlElement{
-           name = item,
-           content = [Brand,Link,Desc]
-          }
+        #xmlElement{name = item,
+           content = [Brand,Link,Desc]}
     end,Items).

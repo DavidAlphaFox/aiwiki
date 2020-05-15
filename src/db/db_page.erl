@@ -49,17 +49,18 @@ select(PageIndex,PageCount,Topic,Published)->
   Order = fun(A,B)-> A#page.published_at > B#page.published_at end,
   Query =
     fun() ->
-        Q = case {Topic,Published} of
-              {undefined,undefined} ->
-                qlc:q([E|| E <- mnesia:table(page)]);
-              {undefined,_}->
-                qlc:q([E || E <- mnesia:table(page), E#page.published == Published]);
-              _->
-                qlc:q([E || E <- mnesia:table(page),
-                            E#page.published == Published,
-                            E#page.topic == Topic
-                      ])
-              end,
+        Q =
+          case {Topic,Published} of
+            {undefined,undefined} ->
+              qlc:q([E|| E <- mnesia:table(page)]);
+            {undefined,_}->
+              qlc:q([E || E <- mnesia:table(page), E#page.published == Published]);
+            _->
+              qlc:q([E || E <- mnesia:table(page),
+                          E#page.published == Published,
+                          E#page.topic == Topic
+                    ])
+          end,
         Q0 = qlc:sort(Q,[{order,Order}]),
         QC = qlc:cursor(Q0),
         Answers =

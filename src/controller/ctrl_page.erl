@@ -46,7 +46,6 @@ resource_exists(#{method := <<"GET">>} = Req,State) ->
       end
   end.
 
-
 malformed_request(#{method := Method} = Req,State)->
   case {Method, cowboy_req:has_body(Req)} of
     {<<"GET">>,true} -> {true,Req,State};
