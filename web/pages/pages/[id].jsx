@@ -8,15 +8,14 @@ function Page({data}) {
   if(data === undefined) return null;
   
   return (
-      <Layout>
-        <div className="pt-8">
-          <h1 className="text-center font-bold text-2xl mx-2">{data.title}</h1>
-          <div className="mt-4 mx-4 md:mx-64 content">
-            {renderHTML(data.content)}
-          </div>
-
+    <Layout>
+      <div className="pt-8">
+        <h1 className="text-center font-bold text-2xl mx-2">{data.title}</h1>
+        <div className="mt-4 mx-4 md:mx-64 content">
+          {renderHTML(data.content)}
         </div>
-      </Layout>
+      </div>
+    </Layout>
   );
 }
 
