@@ -11,10 +11,9 @@ build_index(Site,Content)->
     #xmlNamespace{default = "http://www.sitemaps.org/schemas/sitemap/0.9",
                   nodes = []},
   Attributes =
-    [#xmlAttribute{
-        name = xmlns,
-        value = "http://www.sitemaps.org/schemas/sitemap/0.9"
-       }],
+    [#xmlAttribute{name = xmlns,
+                   value = "http://www.sitemaps.org/schemas/sitemap/0.9"}],
+
   IndexContent = build_index_content(Site,Content),
   Sitemap = #xmlElement{name = sitemapindex,
                         namespace = Namespace,
