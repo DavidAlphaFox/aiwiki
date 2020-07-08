@@ -40,8 +40,7 @@ function Pager(props) {
     if(havingPrev){
       return (
         <Link href={prevUrl}>
-          <a href={prevUrl}
-             className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-teal-500 hover:text-teal-700"
+          <a className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-teal-500 hover:text-teal-700"
           >
             上一页
           </a>
@@ -58,8 +57,7 @@ function Pager(props) {
     if(havingNext){
       return (
         <Link href={nextUrl}>
-          <a href={nextUrl}
-             className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-teal-500 hover:text-teal-700"
+          <a className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-teal-500 hover:text-teal-700"
           >
             下一页
           </a>
