@@ -32,3 +32,4 @@ assets/node_modules
 assets/dist
 assets/yarn-error.log
 .DS_Store
+MnesiaCore.*
