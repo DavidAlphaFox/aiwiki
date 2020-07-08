@@ -13,32 +13,29 @@ save(Site)->
   mnesia:transaction(F).
 
 fetch(links)->
-  F = fun() ->
-          MatchHead = #site{key = <<"exlinks">>, _ = '_'},
-          case mnesia:select(site,[{MatchHead,[],['$_']}]) of
-            [] -> [#site{key = <<"exlinks">>, value = #{}}];
-            Records -> Records
-          end
-      end,
-  mnesia:transaction(F);
+  mnesia:transaction(
+    fun() ->
+        MatchHead = #site{key = <<"exlinks">>, _ = '_'},
+        case mnesia:select(site,[{MatchHead,[],['$_']}]) of
+          [] -> [#site{key = <<"exlinks">>, value = #{}}];
+          Records -> Records
+        end
+    end);
+
 fetch(Key) when erlang:is_atom(Key)->
   KeyBin = ai_string:to_string(Key),
-  F = fun() ->
-          MatchHead = #site{key = KeyBin, _ = '_'},
-          mnesia:select(site,[{MatchHead,[],['$_']}])
-      end,
-  mnesia:transaction(F);
+  mnesia:transaction(
+    fun() ->
+        MatchHead = #site{key = KeyBin, _ = '_'},
+        mnesia:select(site,[{MatchHead,[],['$_']}])
+    end);
 fetch(Keys) ->
   Keys0 = lists:map(fun ai_string:to_string/1,Keys),
-  Query =
+  mnesia:transaction(
     fun() ->
         Q = qlc:q([E || E <- mnesia:table(site),
                         lists:member(E#site.key,Keys0)]),
         qlc:e(Q)
-    end,
-  mnesia:transaction(Query).
+    end).
 
-to_json(Item)->
-  #{
-    Item#site.key => Item#site.value
-   }.
+to_json(Item)-> #{Item#site.key => Item#site.value}.

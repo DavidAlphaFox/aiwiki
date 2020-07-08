@@ -7,8 +7,8 @@
 router_list() ->
     [
      {"/rss.xml",ctrl_rss,#{}},
-     {"/:title/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
-     {"/sitemap.xml",aiwiki_sitemap_controller,#{layout => null}},
+     {"/:title/sitemap.xml",ctrl_sitemap,#{layout => null}},
+     {"/sitemap.xml",ctrl_sitemap,#{layout => null}},
      {"/api/pages/[:id]",ctrl_page,#{}},
      {"/api/sites/[:id]",ctrl_site,#{}},
      {"/api/topics",ctrl_topic,#{}}

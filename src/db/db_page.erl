@@ -49,18 +49,18 @@ select(PageIndex,PageCount,Topic,Published)->
   Order = fun(A,B)-> A#page.published_at > B#page.published_at end,
   Query =
     fun() ->
-        Q =
-          case {Topic,Published} of
-            {undefined,undefined} ->
-              qlc:q([E|| E <- mnesia:table(page)]);
-            {undefined,_}->
-              qlc:q([E || E <- mnesia:table(page), E#page.published == Published]);
-            _->
-              qlc:q([E || E <- mnesia:table(page),
-                          E#page.published == Published,
-                          E#page.topic == Topic
-                    ])
-          end,
+        Q = case {Topic,Published} of
+              {undefined,undefined} ->
+                qlc:q([E|| E <- mnesia:table(page)]);
+              {undefined,_}->
+                qlc:q([E || E <- mnesia:table(page),
+                            E#page.published == Published]);
+              _->
+                qlc:q([E || E <- mnesia:table(page),
+                            E#page.published == Published,
+                            E#page.topic == Topic
+                      ])
+            end,
         Q0 = qlc:sort(Q,[{order,Order}]),
         QC = qlc:cursor(Q0),
         Answers =
@@ -89,20 +89,18 @@ count(Topic,Published)->
                           topic = Topic, _ = '_'},
         [{MatchHead,[],['$1']}]
     end,
-  Query =
-    fun () ->
-        erlang:length(mnesia:select(page, MatchSpec))
-    end,
-  mnesia:transaction(Query).
+  mnesia:transaction(
+    fun () -> erlang:length(mnesia:select(page, MatchSpec))
+    end).
+
 fetch(ID)->
-  F = fun() ->
-          MatchHead = #page{id = '$1',_ = '_' },
-          Guard = [{'==', '$1', ID}],
-          Result = ['$_'],
-          mnesia:select(page, [{MatchHead, Guard, Result}])
-      end,  
-mnesia:transaction(F).
+  mnesia:transaction(
+    fun() ->
+        MatchHead = #page{id = '$1',_ = '_' },
+        Guard = [{'==', '$1', ID}],
+        Result = ['$_'],
+        mnesia:select(page, [{MatchHead, Guard, Result}])
+    end).
 
 save(Page)->
-  F = fun() -> mnesia:write(Page) end,
-  mnesia:transaction(F).
+  mnesia:transaction(fun() -> mnesia:write(Page) end).

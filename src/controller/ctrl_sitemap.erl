@@ -1,22 +1,21 @@
--module(aiwiki_sitemap_controller).
+-module(ctrl_sitemap).
 -export([init/2]).
+
 -include_lib("ailib/include/ai_url.hrl").
+-include("include/model.hrl").
 
 init(Req,State)->
     Which = cowboy_req:binding(title,Req),
     sitemap(Which,Req,State).
 
 sitemap(undefined,Req,State)->
-    HostConf = ai_db:fetch(site,<<"host">>),
-    Host = proplists:get_value(value,HostConf),
-    {LastMod,Pages} = page(Host),
-    Topic = topic(Host),
-    aiwiki_view:render(<<"xml/sitemap">>,<<"application/xml">>,
-                       Req,State#{context =>
-                                      #{
-                                        <<"items">> => [Topic|Pages],
-                                        <<"last_mod">> => LastMod
-                                       }});
+  Site = srv_site:fetch(sitemap),
+  {LastMod,Total} = page(),
+  Body = aiwiki_sitemap:build_index(Site, #{total => Total,
+                                            lastmod => LastMod}),
+  Req0 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/xml">>},
+                          Body, Req),
+  {ok,Req0,State};
 sitemap(<<"page">>,Req,State) ->
     QS = cowboy_req:parse_qs(Req),
     HostConf = ai_db:fetch(site,<<"host">>),
@@ -57,31 +56,16 @@ page(Host,Index)->
               Url = aiwiki_page_helper:url(Host,P),
               #{<<"url">> => Url}
       end,Pages).
-page(Host)->
-    PageTotal = ai_db:count_by(page,[{published,true}]),
-    Url = ai_url:parse(Host),
-    if
-        PageTotal == 0 -> undefined;
-        true ->
-            [Last] = aiwiki_page_model:pagination(0,1),
-            LastMod = ai_iso8601:format(proplists:get_value(published_at,Last)),
-            SitemapCount = erlang:round(math:ceil(PageTotal / 100)) - 1,
-            Items = lists:map(
-                      fun(I) ->
-                              IndexBin = ai_string:to_string(I),
-                              Query = [
-                                      {<<"index">>,IndexBin}
-                                     ],
-                              Url0 = Url#ai_url{path = <<"/page/sitemap.xml">>,qs = Query},
-                              #{
-                                <<"url">> =>  ai_url:build(Url0)
-                               }
-                      end,lists:seq(0,SitemapCount)),
-            {LastMod,Items}
+page()->
+  {atomic,PageTotal} = db_page:count(undefined,true),
+  if
+    PageTotal == 0 ->  {calendar:universal_time(),PageTotal};
+    true ->
+      {atomic,[Last]} = db_page:select(0,1),
+      Count = erlang:round(math:ceil(PageTotal / 100)) - 1,
+      {Last#page.published_at,Count}
     end.
 topic(Host) ->
     Url = ai_url:parse(Host),
     Url0 = Url#ai_url{path = <<"/topic/sitemap.xml">>},
-    #{
-      <<"url">> => ai_url:build(Url0)
-     }.
+    #{<<"url">> => ai_url:build(Url0)}.

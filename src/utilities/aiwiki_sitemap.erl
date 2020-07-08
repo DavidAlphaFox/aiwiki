@@ -7,9 +7,6 @@
 -export([build_index/2,build_urlset/2]).
 
 build_index(Site,Content)->
-  SitemapIndex = sitemapindex(Site,Content),
-  ai_string:to_string(xmerl:export([SitemapIndex], xmerl_xml)).
-sitemapindex(Site,Content)->
   Namespace =
     #xmlNamespace{default = "http://www.sitemaps.org/schemas/sitemap/0.9",
                   nodes = []},
@@ -18,32 +15,36 @@ sitemapindex(Site,Content)->
         name = xmlns,
         value = "http://www.sitemaps.org/schemas/sitemap/0.9"
        }],
-  Sitemap = sitemap(Site,Content),
-  #xmlElement{name = sitemapindex,
-              namespace = Namespace,
-              attributes = Attributes,
-              content = Sitemap}.
-sitemap(Site,Content) ->
+  IndexContent = build_index_content(Site,Content),
+  Sitemap = #xmlElement{name = sitemapindex,
+                        namespace = Namespace,
+                        attributes = Attributes,
+                        content = IndexContent},
+  ai_string:to_string(xmerl:export([Sitemap], xmerl_xml)).
+
+build_index_content(Site,Content) ->
   Host = maps:get(host,Site),
-  {{Y,M,D},_} = calendar:universal_time(),
+  {{Y,M,D},_} = maps:get(lastmod,Content),
+  Total = maps:get(total, Content),
   Now0 = io_lib:format("~4.10.0B-~2.10.0B-~2.10.0B",[Y,M,D]),
   Host0 = ai_url:parse(Host),
   Time = #xmlElement{name = lastmod,
                      content = [#xmlText{value = Now0}]},
-  Pages = lists:map(
-    fun(I)->
-        Index = ai_string:to_string(I),
-        Path = <<"/sitemap/pages">>,
-        Host1 = Host0#ai_url{path = Path,qs = [{index,Index}]},
-        Loc = #xmlElement{name = loc,
-                          content = [#xmlText{value = ai_url:build(Host1)}]},
-        #xmlElement{name = sitemap,
-                    content = [Loc,Time]}
-    end,Content),
-  TagHost = Host0#ai_url{ path = <<"/sitemap/tags">>},
+  Pages =
+    lists:map(
+      fun(I)->
+          Index = ai_string:to_string(I),
+          Path = <<"/pages/sitemap.xml">>,
+          Host1 = Host0#ai_url{path = Path,qs = [{index,Index}]},
+          Loc = #xmlElement{name = loc,
+                            content = [#xmlText{value = ai_url:build(Host1)}]},
+          #xmlElement{name = sitemap,content = [Loc,Time]}
+      end,lists:seq(0,Total)),
+  TagHost = Host0#ai_url{ path = <<"/topics/sitemap.xml">>},
   TagLoc = #xmlElement{name = loc,
                        content = [#xmlText{value = ai_url:build(TagHost)}]},
   [#xmlElement{name = sitemap,content = [TagLoc,Time]}|Pages].
+
 build_urlset(Site,Content)->
   UrlSets = urlset(Site,Content),
   ai_string:to_string(xmerl:export([UrlSets],xmerl_xml)).

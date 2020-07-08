@@ -5,7 +5,9 @@
 
 fetch(site)-> to_map([brand,footer]);
 fetch(header) -> to_map([header,keywords,intro]);
-fetch(rss) -> to_map([host,brand,intro]).
+fetch(rss) -> to_map([host,brand,intro]);
+fetch(sitemap) -> to_map([host]).
+
 
 to_map(Keys)->
   case db_site:fetch(Keys) of
