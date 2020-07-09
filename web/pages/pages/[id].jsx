@@ -18,7 +18,6 @@ function Page({data}) {
     </Layout>
   );
 }
-
 export async function getServerSideProps(context) {
   // Fetch data from external API
   const {
@@ -34,6 +33,5 @@ export async function getServerSideProps(context) {
   context.res.end();
   return { props: {} };
 }
-
 
 export default Page;
