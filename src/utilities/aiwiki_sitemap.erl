@@ -66,7 +66,7 @@ urlset(Site,Content)->
       fun(I)->
           Path = maps:get(path,I),
           Priority = maps:get(priority,I,"1.0"),
-          ChangeFreq = maps:get(changefreq,I,"daliy"),
+          ChangeFreq = maps:get(changefreq,I,"monthly"),
           Host1 = Host0#ai_url{path = Path},
           Loc = #xmlElement{name = loc,
                             content = [#xmlText{value = ai_url:build(Host1)}]},

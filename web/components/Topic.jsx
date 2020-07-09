@@ -1,45 +1,39 @@
 import React from 'react';
+import Link from 'next/link';
 import * as R from 'ramda';
-const allTopic = {
-  title: '全部',
-};
-const topicUrl = (topic) => {
-  if(topic.id === undefined) {
-    return '/';
-  }
-  return `/topics/${topic.id}`;
-}
+
 function Topic(props){
   const {
     topics,
     selected,
   } = props;
 
-  const renderTopics = R.map((i) => {
-    if(selected === i.id){
+  const renderTopics = R.map((topic) => {
+    if(selected === topic.id){
       return (
         <li
-          key={i.title}
+          key={topic.title}
           className="mx-4 my-2 topic-item-selected"
         >
-          <a href={topicUrl(i)} className="topic-item-link">
-            <span className="px-4 text-md">
-              {i.title}
-            </span>
-          </a>
-        </li>
-      );
+          <Link href="/topics/[id]" as={`/topics/${topic.id}`}>
+            <a className="topic-item-link">
+              <span className="px-4 text-md">{topic.title}</span>
+            </a>
+          </Link>
+        </li>);
     }
     return (
       <li
-        key={i.title}
+        key={topic.title}
         className="mx-4 my-2 topic-item"
       >
-        <a  href={topicUrl(i)} className="topic-item-link" >
-          <span className="px-4 text-md text-gray-800 hover:text-teal-500">
-            {i.title}
-          </span>
-        </a>
+        <Link href="/topics/[id]" as={`/topics/${topic.id}`}>
+          <a className="topic-item-link" >
+            <span className="px-4 text-md text-gray-800 hover:text-teal-500">
+              {topic.title}
+            </span>
+          </a>
+        </Link>
       </li>
     )
   });
@@ -50,10 +44,7 @@ function Topic(props){
         <span className="text-lg font-bold">分类</span>
       </div>
       <ul className="pb-4 pt-4 md:bg-white">
-        {R.pipe(
-          R.prepend(allTopic),
-          renderTopics,
-        )(topics)}
+        {renderTopics(topics)}
       </ul>
     </div>
   );

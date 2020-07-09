@@ -16,19 +16,17 @@ sitemap(undefined,Req,State)->
   Req0 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/xml">>},
                           Body, Req),
   {ok,Req0,State};
-sitemap(<<"page">>,Req,State) ->
-    QS = cowboy_req:parse_qs(Req),
-    HostConf = ai_db:fetch(site,<<"host">>),
-    Host = proplists:get_value(value,HostConf),
-    Index = proplists:get_value(<<"index">>,QS),
-    Index0 = ai_string:to_integer(Index),
-    Items = page(Host,Index0),
-    aiwiki_view:render(<<"xml/urlset">>,<<"application/xml">>,
-                       Req,State#{context =>
-                                      #{
-                                        <<"items">> => Items,
-                                        <<"freq">> => <<"monthly">>
-                                       }});
+sitemap(<<"pages">>,Req,State) ->
+  Site = srv_site:fetch(sitemap),
+  QS = cowboy_req:parse_qs(Req),
+  Index = proplists:get_value(<<"index">>,QS),
+  Index0 = ai_string:to_integer(Index),
+  Pages = page(Index0),
+  Body = aiwiki_sitemap:build_urlset(Site,Pages),
+  Req0 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/xml">>},
+                          Body, Req),
+    {ok,Req0,State};
+  
 sitemap(<<"topic">>,Req,State) ->
     Topics = ai_db:find_all(topic),
     HostConf = ai_db:fetch(site,<<"host">>),
@@ -49,13 +47,14 @@ sitemap(<<"topic">>,Req,State) ->
                                         <<"freq">> => <<"daily">>
                                        }}).
 
-page(Host,Index)->
-    Pages = aiwiki_page_model:pagination(Index,100),
-    lists:map(
-      fun(P)->
-              Url = aiwiki_page_helper:url(Host,P),
-              #{<<"url">> => Url}
-      end,Pages).
+page(Index)->
+  {atomic,Pages} = db_page:select(Index,100),
+  lists:map(
+    fun(Page)->
+        ID = Page#page.id,
+        ID0 = ai_string:to_string(ID),
+        #{path => <<"/pages/",ID0/binary>>}
+    end,Pages).
 page()->
   {atomic,PageTotal} = db_page:count(undefined,true),
   if
