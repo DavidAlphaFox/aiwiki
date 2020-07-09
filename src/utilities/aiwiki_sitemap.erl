@@ -49,16 +49,6 @@ build_urlset(Site,Content)->
   ai_string:to_string(xmerl:export([UrlSets],xmerl_xml)).
 
 urlset(Site,Content)->
-  Namespace =
-    #xmlNamespace{default = "http://www.sitemaps.org/schemas/sitemap/0.9",
-                 nodes = [{"xsi","http://www.w3.org/2001/XMLSchema-instance"}]},
-    Attributes =
-    [#xmlAttribute{name = xmlns,
-                   value = "http://www.sitemaps.org/schemas/sitemap/0.9"},
-     #xmlAttribute{name = 'xmlns:xsi',
-                   value = "http://www.w3.org/2001/XMLSchema-instance"},
-     #xmlAttribute{name = 'xsi:schemaLocation',
-                   value = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"}],
   Host = maps:get(host,Site),
   Host0 = ai_url:parse(Host),
   UrlSet =
@@ -78,6 +68,17 @@ urlset(Site,Content)->
                       content = [Loc,PriorityElem,ChangeFreqElem]}
       end,Content),
   #xmlElement{name = urlset,
-              namespace = Namespace,
-              attributes = Attributes,
+              namespace = namespace(),
+              attributes = attributes(),
               content = UrlSet}.
+
+namespace() ->
+  #xmlNamespace{default = "http://www.sitemaps.org/schemas/sitemap/0.9",
+                nodes = [{"xsi","http://www.w3.org/2001/XMLSchema-instance"}]}.
+attributes() ->
+  [#xmlAttribute{name = xmlns,
+                 value = "http://www.sitemaps.org/schemas/sitemap/0.9"},
+   #xmlAttribute{name = 'xmlns:xsi',
+                 value = "http://www.w3.org/2001/XMLSchema-instance"},
+   #xmlAttribute{name = 'xsi:schemaLocation',
+                 value = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"}].

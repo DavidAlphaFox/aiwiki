@@ -25,27 +25,15 @@ sitemap(<<"pages">>,Req,State) ->
   Body = aiwiki_sitemap:build_urlset(Site,Pages),
   Req0 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/xml">>},
                           Body, Req),
-    {ok,Req0,State};
+  {ok,Req0,State};
   
-sitemap(<<"topic">>,Req,State) ->
-    Topics = ai_db:find_all(topic),
-    HostConf = ai_db:fetch(site,<<"host">>),
-    Host = proplists:get_value(value,HostConf),
-    Url = ai_url:parse(Host),
-    Items = lists:map(
-      fun(Topic)->
-              TopicIdx = proplists:get_value(id,Topic),
-              TopicTitle = proplists:get_value(title,Topic),
-              TopicPath = aiwiki_topic_helper:url(TopicIdx,TopicTitle),
-              Url0 = Url#ai_url{path = TopicPath},
-              #{<<"url">> => ai_url:build(Url0)}
-      end,Topics),
-    aiwiki_view:render(<<"xml/urlset">>,<<"application/xml">>,
-                       Req,State#{context =>
-                                      #{
-                                        <<"items">> => Items,
-                                        <<"freq">> => <<"daily">>
-                                       }}).
+sitemap(<<"topics">>,Req,State) ->
+  Site = srv_site:fetch(sitemap),
+  Topics = topic(),
+  Body = aiwiki_sitemap:build_urlset(Site,Topics),
+  Req0 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/xml">>},
+                          Body, Req),
+  {ok,Req0,State}.
 
 page(Index)->
   {atomic,Pages} = db_page:select(Index,100),
@@ -64,7 +52,13 @@ page()->
       Count = erlang:round(math:ceil(PageTotal / 100)) - 1,
       {Last#page.published_at,Count}
     end.
-topic(Host) ->
-    Url = ai_url:parse(Host),
-    Url0 = Url#ai_url{path = <<"/topic/sitemap.xml">>},
-    #{<<"url">> => ai_url:build(Url0)}.
+
+topic() ->
+  {atomic,Topics} = db_topic:select(),
+  lists:map(
+    fun(Topic)->
+        ID = Topic#topic.id,
+        ID0 = ai_string:to_string(ID),
+        #{path => <<"/topics/",ID0/binary>>,
+          changefreq => <<"daily">>}
+    end,Topics).
