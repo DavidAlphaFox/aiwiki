@@ -1,10 +1,12 @@
+import Head from 'next/head';
 import Layout from '../components/Layout';
 import Topic from '../components/Topic';
 import PageIndex from '../components/PageIndex';
 import Pager from '../components/Pager';
 import {
   fetchIndexPage,
-} from '../api/server';
+  fetchSite,
+} from '../api';
 function Index(props){
   const {
     index,
@@ -12,10 +14,13 @@ function Index(props){
     total,
     pages,
     topics,
+    brand = 'AiWiki',
   } = props;
-  
   return (
     <Layout>
+      <Head>
+        <title>{brand}</title>
+      </Head>
       <div className="md:flex md:pt-4 md:justify-center">
         <div className="pt-4 px-8 w-full h-full md:max-w-xl2">
           <PageIndex pages={pages} />
@@ -37,8 +42,12 @@ function Index(props){
 }
 
 export async function getServerSideProps(context) {
-  const result = await fetchIndexPage(context.query);
-  return { props: result };
+  const page = await fetchIndexPage(context.query);
+  const site = await fetchSite();
+  return { props:{
+    ...page,
+    ...site
+  }};
 }
 
 export default Index;

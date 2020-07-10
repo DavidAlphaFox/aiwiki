@@ -3,8 +3,8 @@
 
 -export([fetch/1]).
 
-fetch(site)-> to_map([brand,footer]);
-fetch(header) -> to_map([header,keywords,intro]);
+fetch(site)-> to_map([brand,footer,keywords,intro]);
+fetch(header) -> to_map([header]);
 fetch(rss) -> to_map([host,brand,intro]);
 fetch(sitemap) -> to_map([host]).
 

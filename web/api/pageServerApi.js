@@ -33,10 +33,17 @@ const fetchIndexPage = (query) => {
                  };
                })
                .catch(() => defaultIndexPage);
+};
 
-
+const fetchPage = (id)=> {
+  const url = `${pagePath}/${id}`;
+  return fetch(url)
+    .then(res => res.json())
+    .then(R.prop('data'))
+    .catch(() => null);
 };
 
 export {
   fetchIndexPage,
+  fetchPage,
 };

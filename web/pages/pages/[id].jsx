@@ -2,17 +2,34 @@ import fetch from 'node-fetch';
 import renderHTML from 'react-render-html';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Head from 'next/head';
+
+import {
+  fetchSite,
+  fetchPage,
+} from '../../api';
+
 import Layout from '../../components/Layout';
 
-function Page({data}) {
-  if(data === undefined) return null;
-  
+
+function Page(props) {
+  const {
+    title = null,
+    content = null,
+    brand = 'AiWiki',
+  } = props;
+  if(content == null && title == null) return null;
   return (
     <Layout>
+      <Head>
+        <title>
+          {`${title}-${brand}`}
+        </title>
+      </Head>
       <div className="pt-8">
-        <h1 className="text-center font-bold text-2xl mx-2">{data.title}</h1>
+        <h1 className="text-center font-bold text-2xl mx-2">{title}</h1>
         <div className="mt-4 mx-4 md:mx-64 content">
-          {renderHTML(data.content)}
+          {renderHTML(content)}
         </div>
       </div>
     </Layout>
@@ -24,14 +41,17 @@ export async function getServerSideProps(context) {
     res,
     params,
   } = context;
-  const remoteRes = await fetch(`http://localhost:5000/api/pages/${params.id}`);
-  if(remoteRes.status === 200){
-    const data = await remoteRes.json();
-    return { props: data };
+  const page = await fetchPage(params.id);
+  if(page == null || page == undefined) {
+    context.res.writeHead(404);
+    context.res.end();
+    return { props: {} };
   }
-  context.res.writeHead(404);
-  context.res.end();
-  return { props: {} };
+  const site = await fetchSite();
+  return { props: {
+    ...page,
+    ...site
+  }};
 }
 
 export default Page;
