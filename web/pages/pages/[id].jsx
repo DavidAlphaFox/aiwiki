@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
-import renderHTML from 'react-render-html';
+import parse from 'html-react-parser';
+import * as R from 'ramda';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -7,16 +8,18 @@ import Head from 'next/head';
 import {
   fetchSite,
   fetchPage,
+  fetchSidebar,
 } from '../../api';
 
 import Layout from '../../components/Layout';
-
+import NoSSR from '../../components/NoSSR';
 
 function Page(props) {
   const {
     title = null,
     content = null,
     brand = 'AiWiki',
+    sidebar = null
   } = props;
   if(content == null && title == null) return null;
   return (
@@ -26,10 +29,21 @@ function Page(props) {
           {`${title}-${brand}`}
         </title>
       </Head>
-      <div className="pt-8">
-        <h1 className="text-center font-bold text-2xl mx-2">{title}</h1>
-        <div className="mt-4 mx-4 md:mx-64 content">
-          {renderHTML(content)}
+      <div className="pt-8 flex flex-wrap">
+        <div className="w-full md:w-3/4 px-4">
+          <h1 className="text-center font-bold text-2xl mx-2">{title}</h1>
+          <div className="mt-4 content">
+            {parse(content)}
+          </div>
+        </div>
+        <div className="w-full md:w-1/4 px-4">
+          <div>
+            {R.ifElse(
+              R.equals(null),
+              R.always(''),
+              payload => parse(payload),
+            )(sidebar)}
+          </div>
         </div>
       </div>
     </Layout>
@@ -48,9 +62,11 @@ export async function getServerSideProps(context) {
     return { props: {} };
   }
   const site = await fetchSite();
+  const sidebar = await fetchSidebar();
   return { props: {
     ...page,
-    ...site
+    ...site,
+    ...sidebar
   }};
 }
 

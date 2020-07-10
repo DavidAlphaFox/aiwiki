@@ -1,6 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import renderHTML from 'react-render-html';
+import parse from 'html-react-parser';
 import App from 'next/app';
 import Head from 'next/head';
 
@@ -21,8 +21,8 @@ const footer = R.pipe(
   R.prop('footer'),
   R.ifElse(
     R.equals(undefined),
-    R.always(null),
-    renderHTML
+    R.always(''),
+    footer => parse(footer)
   ));
 
 class AiwikiApp extends App {

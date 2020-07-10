@@ -1,5 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import renderHTML from 'react-render-html';
+import parse from 'html-react-parser';
 import {
   fetchHeader,
 } from '../api';
@@ -17,7 +17,7 @@ class AiwikiDocument extends Document {
   }
   renderHeader() {
     if(this.props.header === undefined) return null;
-    return renderHTML(this.props.header);
+    return parse(this.props.header);
   }
   render() {
     return (
