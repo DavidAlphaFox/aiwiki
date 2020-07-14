@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import * as R from 'ramda';
+import moment from 'moment';
 
 function PageIndex(props){
   const {
@@ -11,11 +12,16 @@ function PageIndex(props){
     return (
       <li className="mt-6" key={p.id}>
         <div className="text-left">
+          <div className="flex items-end mb-4">
           <Link href="/pages/[id]" as={url}>
             <a target="_blank">
-              <h2 className="mb-4 text-lg font-bold"> {p.title }</h2>
+              <h2 className="text-xl font-bold"> {p.title }</h2>
             </a>
           </Link>
+          <span className="mx-4 font-xs">
+            {moment(p.publishedAt).format("YYYY-MM-DD")}
+          </span>
+          </div>
           <div className="text-gray-600">
             { p.intro }
             <Link href="/pages/[id]" as={url}>

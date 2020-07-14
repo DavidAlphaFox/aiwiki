@@ -17,29 +17,23 @@
 new(Title,Intro,Content) -> new(Title,Intro,Content,undefined).
 
 new(Title,Intro,Content,Topic)->
-  #page{
-     id = aiwiki_db:id(),
-     title = Title,
-     intro = Intro,
-     content = Content,
-     published = false,
-     topic = Topic
-    }.
+  #page{id = aiwiki_db:id(),
+        title = Title,
+        intro = Intro,
+        content = Content,
+        published = false,
+        topic = Topic}.
 to_json(Item)->
-  M = #{
-        id => ai_string:to_string(Item#page.id),
+  M = #{id => ai_string:to_string(Item#page.id),
         title => Item#page.title,
         intro => Item#page.intro,
         content => Item#page.content,
         published => Item#page.published,
-        topic => Item#page.topic
-       },
+        topic => Item#page.topic},
   if
     Item#page.published_at == undefined -> M;
     true ->
-      M#{
-         publishedAt => ai_iso8601:format(Item#page.published_at)
-        }
+      M#{publishedAt => ai_iso8601:format(Item#page.published_at)}
   end.
 
 select(PageIndex,PageCount)->select(PageIndex,PageCount, undefined,true).
