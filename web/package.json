@@ -8,6 +8,7 @@
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "autoprefixer": "^9.7.4",
+    "axios": "^0.19.2",
     "clsx": "^1.1.0",
     "html-react-parser": "^0.13.0",
     "js-cookie": "^2.2.1",
@@ -22,6 +23,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-select": "^3.1.0",
+    "rxjs": "^6.6.0",
     "tailwindcss": "^1.2.0",
     "url-parse": "^1.4.7"
   }
