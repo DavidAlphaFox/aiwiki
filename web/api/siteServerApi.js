@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import {
   sitePath,
   headerPath,
+  sidebarPath,
 } from './serverUrl';
 
 const fetchSite = () =>{
@@ -18,7 +19,15 @@ const fetchHeader = () => {
     .catch(() => null);
 };
 
+const fetchSidebar = () => {
+  return fetch(sidebarPath)
+    .then(res => res.json())
+    .then(R.identity)
+    .catch(() => null);
+};
+
 export {
   fetchSite,
   fetchHeader,
+  fetchSidebar,
 };

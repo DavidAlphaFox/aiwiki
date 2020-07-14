@@ -4,7 +4,8 @@ import Topic from '../../components/Topic';
 import PageIndex from '../../components/PageIndex';
 import {
   fetchIndexPage,
-} from '../../api/server';
+  fetchSite,
+} from '../../api';
 
 function TopicIndex(props){
   const {
@@ -56,9 +57,11 @@ export async function getServerSideProps(context) {
     ...query,
     topic: params.id,
   };
-  const result = await fetchIndexPage(apiQuery);
+  const page = await fetchIndexPage(apiQuery);
+  const site = await fetchSite();
   return { props: {
-    ...result,
+    ...page,
+    ...site,
     topic: params.id,
   }};
 }

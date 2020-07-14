@@ -1,18 +1,49 @@
 import fetch from 'node-fetch';
-import renderHTML from 'react-render-html';
+import parse from 'html-react-parser';
+import * as R from 'ramda';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Layout from '../../components/Layout';
+import Head from 'next/head';
 
-function Page({data}) {
-  if(data === undefined) return null;
-  
+import {
+  fetchSite,
+  fetchPage,
+  fetchSidebar,
+} from '../../api';
+
+import Layout from '../../components/Layout';
+import NoSSR from '../../components/NoSSR';
+
+function Page(props) {
+  const {
+    title = null,
+    content = null,
+    brand = 'AiWiki',
+    sidebar = null
+  } = props;
+  if(content == null && title == null) return null;
   return (
     <Layout>
-      <div className="pt-8">
-        <h1 className="text-center font-bold text-2xl mx-2">{data.title}</h1>
-        <div className="mt-4 mx-4 md:mx-64 content">
-          {renderHTML(data.content)}
+      <Head>
+        <title>
+          {`${title}-${brand}`}
+        </title>
+      </Head>
+      <div className="pt-8 flex flex-wrap">
+        <div className="w-full md:w-3/4 px-4">
+          <h1 className="text-center font-bold text-2xl mx-2">{title}</h1>
+          <div className="mt-4 content">
+            {parse(content)}
+          </div>
+        </div>
+        <div className="w-full md:w-1/4 px-4">
+          <div>
+            {R.ifElse(
+              R.equals(null),
+              R.always(''),
+              payload => parse(payload),
+            )(sidebar)}
+          </div>
         </div>
       </div>
     </Layout>
@@ -24,14 +55,19 @@ export async function getServerSideProps(context) {
     res,
     params,
   } = context;
-  const remoteRes = await fetch(`http://localhost:5000/api/pages/${params.id}`);
-  if(remoteRes.status === 200){
-    const data = await remoteRes.json();
-    return { props: data };
+  const page = await fetchPage(params.id);
+  if(page == null || page == undefined) {
+    context.res.writeHead(404);
+    context.res.end();
+    return { props: {} };
   }
-  context.res.writeHead(404);
-  context.res.end();
-  return { props: {} };
+  const site = await fetchSite();
+  const sidebar = await fetchSidebar();
+  return { props: {
+    ...page,
+    ...site,
+    ...sidebar
+  }};
 }
 
 export default Page;

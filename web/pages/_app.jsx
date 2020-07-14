@@ -1,11 +1,13 @@
 import React from 'react';
 import * as R from 'ramda';
-import renderHTML from 'react-render-html';
+import parse from 'html-react-parser';
 import App from 'next/app';
+import Head from 'next/head';
+
 import '../css/tailwind.css';
 import {
   fetchSite,
-} from '../api/server';
+} from '../api';
 
 const brand = R.pipe(
   R.prop('brand'),
@@ -19,28 +21,44 @@ const footer = R.pipe(
   R.prop('footer'),
   R.ifElse(
     R.equals(undefined),
-    R.always(null),
-    renderHTML
+    R.always(''),
+    footer => parse(footer)
   ));
 
 class AiwikiApp extends App {
 
   static async getInitialProps(ctx) {
     const appProps = await App.getInitialProps(ctx)
-    const res = await fetchSite();
-    if (res === null){
-      return appProps;
-    }
+    const site = await fetchSite();
     return {
       ...appProps,
-      ...res,
+      ...site,
     };
+  }
+
+  renderKeywords() {
+    if(this.props.keywords === undefined) return null;
+    return (<meta name="keywords" content={this.props.keywords} />);
+  }
+
+  renderIntro() {
+    if(this.props.intro === undefined) return null;
+    return (<meta name="description" content={this.props.intro} />);
   }
   
   render() {
     const { Component, pageProps } = this.props;
     return (
       <React.Fragment>
+        <Head>
+          <meta charSet="utf-8" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
+          <meta name="HandheldFriendly" content="True" />
+          <meta name="MobileOptimized" content="320" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+          {this.renderKeywords()}
+          {this.renderIntro()}
+        </Head>
         <header className="border-b border-teal-200 flex justify-between">
           <div className="text-left py-1 px-2">
             <a href="/">
@@ -55,6 +73,7 @@ class AiwikiApp extends App {
         </header>
         <Component {...pageProps} />
         {footer(this.props)}
+      
       </React.Fragment>
     );
   }

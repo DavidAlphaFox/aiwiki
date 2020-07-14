@@ -59,7 +59,14 @@ handle_action('GET',<<"header">>,Req,State) ->
 handle_action('GET',<<"exlinks">>,Req,State) ->
   Ctx =
     case db_site:fetch(exlinks) of
-      {atomic,[Exlinks]} -> db_site:to_map(Exlinks);
+      {atomic,[Exlinks]} -> db_site:to_json(Exlinks);
+      _ -> #{}
+    end,
+  {jiffy:encode(Ctx),Req,State};
+handle_action('GET',<<"sidebar">>,Req,State) ->
+  Ctx =
+    case db_site:fetch(sidebar) of
+      {atomic,[Sidebar]} -> db_site:to_json(Sidebar);
       _ -> #{}
     end,
   {jiffy:encode(Ctx),Req,State}.
