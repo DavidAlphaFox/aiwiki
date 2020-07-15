@@ -3,8 +3,9 @@ import * as R from 'ramda';
 import parse from 'html-react-parser';
 import App from 'next/app';
 import Head from 'next/head';
-
 import '../css/tailwind.css';
+import 'braft-editor/dist/index.css'
+
 import {
   fetchSite,
 } from '../api';

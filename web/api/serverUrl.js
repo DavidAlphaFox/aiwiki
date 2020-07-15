@@ -6,7 +6,7 @@ const sitePath = serverHost('/api/sites/site');
 const headerPath = serverHost('/api/sites/header');
 const sidebarPath = serverHost('/api/sites/sidebar');
 const authPath = apiHost('/api/auth');
-
+const pageAdminPath = apiHost('/api/pages');
 export {
   pagePath,
   topicPath,
@@ -14,4 +14,5 @@ export {
   headerPath,
   sidebarPath,
   authPath,
+  pageAdminPath,
 };

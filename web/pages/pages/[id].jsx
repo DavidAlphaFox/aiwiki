@@ -12,7 +12,6 @@ import {
 } from '../../api';
 
 import Layout from '../../components/Layout';
-import NoSSR from '../../components/NoSSR';
 
 function Page(props) {
   const {
