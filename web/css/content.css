@@ -8,7 +8,7 @@
   }
 
   a {
-    @apply text-teal-500;
+    @apply text-indigo-500;
   }
 
   p {
@@ -16,7 +16,7 @@
   }
 
   pre {
-    @apply overflow-auto rounded-lg border-l-8 border-blue-500 bg-gray-400;
+    @apply overflow-auto rounded-lg border-l-8 border-teal-400 bg-gray-400;
   }
 
   

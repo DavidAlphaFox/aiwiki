@@ -31,7 +31,7 @@ function Login() {
             <span className="text-xl">登录</span>
           </div>
           <div className="mb-4 px-8">
-            <label className="block text-gray-700 text-sm font-bold mb-2" for="email">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               邮箱
             </label>
             <input
@@ -43,7 +43,7 @@ function Login() {
             />
           </div>
           <div className="mb-4 px-8">
-            <label className="block text-gray-700 text-sm font-bold mb-2" for="password" >
+            <label className="block text-gray-700 text-sm font-bold mb-2" >
               密码
             </label>
             <input
@@ -57,7 +57,7 @@ function Login() {
 
           <div>
             <button
-              className="bg-teal-500 hover:bg-teal-700 w-full text-white font-bold py-2"
+              className="bg-indigo-500 hover:bg-indigo-700 w-full text-white font-bold py-2"
             >
               登录
             </button>

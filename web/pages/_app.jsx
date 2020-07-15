@@ -50,7 +50,10 @@ class AiwikiApp extends App {
     const { Component, pageProps,router } = this.props;
 
     if(router.pathname.startsWith('/admin')) {
-      return (<Component {...pageProps} />);
+      return (
+        <React.Fragment>
+          <Component {...pageProps} />
+        </React.Fragment>);
     }
 
 
@@ -65,15 +68,15 @@ class AiwikiApp extends App {
           {this.renderKeywords()}
           {this.renderIntro()}
         </Head>
-        <header className="border-b border-teal-200 flex justify-between">
+        <header className="border-b border-indigo-200 flex justify-between">
           <div className="text-left py-1 px-2">
             <a href="/">
-              <span className="text-teal-500 text-xl">{brand(this.props)}</span>
+              <span className="text-indigo-500 text-xl">{brand(this.props)}</span>
             </a>
           </div>
           <div className="text-left py-1 px-2">
             <a href="/rss.xml">
-              <span className="text-teal-500 text-xl">RSS</span>
+              <span className="text-indigo-500 text-xl">RSS</span>
             </a>
           </div>
         </header>

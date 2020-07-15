@@ -25,7 +25,7 @@ function PageIndex(props){
           <div className="text-gray-600">
             { p.intro }
             <Link href="/pages/[id]" as={url}>
-              <a className="text-teal-500" target="_blank">
+              <a className="text-indigo-500" target="_blank">
                 阅读更多...
               </a>
             </Link>

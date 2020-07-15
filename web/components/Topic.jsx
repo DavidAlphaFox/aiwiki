@@ -29,7 +29,7 @@ function Topic(props){
       >
         <Link href="/topics/[id]" as={`/topics/${topic.id}`}>
           <a className="topic-item-link" >
-            <span className="px-4 text-md text-gray-800 hover:text-teal-500">
+            <span className="px-4 text-md text-gray-800 hover:text-indigo-500">
               {topic.title}
             </span>
           </a>
@@ -40,7 +40,7 @@ function Topic(props){
   
   return (
     <div className="w-full">
-      <div className="px-4 py-2 border-b border-teal-200 md:border-none md:text-center">
+      <div className="px-4 py-2 border-b border-indigo-200 md:border-none md:text-center">
         <span className="text-lg font-bold">分类</span>
       </div>
       <ul className="pb-4 pt-4 md:bg-white">
