@@ -83,9 +83,7 @@ handle_action('GET',Req,State) ->
     end,
   {atomic,Rows} = db_page:select(PageIndex,PageCount,Topic),
   {atomic,Total} = db_page:count(Topic,true),
-  {jiffy:encode(#{
-                  data => lists:map(fun db_page:to_json/1,Rows),
+  {jiffy:encode(#{data => lists:map(fun(Row) ->  db_page:to_json(Row,index) end,Rows),
                   index => PageIndex,
                   size => PageCount,
-                  total => Total
-                 }),Req,State}.
+                  total => Total}),Req,State}.

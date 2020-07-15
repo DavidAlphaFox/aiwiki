@@ -1,8 +1,7 @@
 -module(db_page).
 
--export([new/3,new/4,to_json/1]).
--export([
-         select/2,
+-export([new/3,new/4,to_json/1,to_json/2]).
+-export([select/2,
          select/3,
          select/4,
          count/2,
@@ -23,6 +22,12 @@ new(Title,Intro,Content,Topic)->
         content = Content,
         published = false,
         topic = Topic}.
+to_json(Item,admin)->
+  Map = to_json(Item),
+  maps:without([intro,content], Map);
+to_json(Item,index)->
+  Map = to_json(Item),
+  maps:remove(content, Map).
 to_json(Item)->
   M = #{id => ai_string:to_string(Item#page.id),
         title => Item#page.title,
