@@ -25,6 +25,6 @@ load(Filename,Key)->
   {ok,Binary} = file:read_file(Filename),
   mnesia:transaction(
     fun()->
-        Site = #site{key = Key,value = Binary},
+        Site = #site{key = ai_string:to_string(Key),value = Binary},
         mnesia:write(Site)
     end).
