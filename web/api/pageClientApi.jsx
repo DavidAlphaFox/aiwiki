@@ -2,6 +2,7 @@ import {doRequest} from './clientBaseApi';
 
 import {
   pageAdminPath,
+  topicAdminPath,
 } from './serverUrl';
 
 
@@ -13,6 +14,15 @@ const fetchPageAdmin = (id) => doRequest({
   }
 });
 
+const fetchTopicAdmin = () => doRequest({
+  method: 'GET',
+  url: topicAdminPath,
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
+
 export {
   fetchPageAdmin,
+  fetchTopicAdmin,
 };

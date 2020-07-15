@@ -7,6 +7,7 @@ const headerPath = serverHost('/api/sites/header');
 const sidebarPath = serverHost('/api/sites/sidebar');
 const authPath = apiHost('/api/auth');
 const pageAdminPath = apiHost('/api/pages');
+const topicAdminPath = apiHost('/api/topics');
 export {
   pagePath,
   topicPath,
@@ -15,4 +16,5 @@ export {
   sidebarPath,
   authPath,
   pageAdminPath,
+  topicAdminPath
 };

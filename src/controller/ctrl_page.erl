@@ -53,13 +53,16 @@ resource_exists(#{method := <<"GET">>} = Req,State) ->
   end.
 
 malformed_request(#{method := Method} = Req,State)->
-  case {Method, cowboy_req:has_body(Req)} of
-    {<<"OPTIONS">>,true} -> {true,Req,State};
-    {<<"OPTIONS">>,false} -> {false,Req,State};
-    {<<"GET">>,true} -> {true,Req,State};
-    {<<"GET">>,false} -> {false,Req,State};
-    {_,false} -> {true,Req,State};
-    {_,true} -> {false,Req,State}
+  NotRequireBody = lists:member(Method, [<<"GET">>,<<"OPTIONS">>]),
+  case cowboy_req:has_body(Req) of
+    true ->
+      if NotRequireBody == true -> {true,Req,State};
+         true -> {false,Req,State}
+      end;
+    false ->
+      if NotRequireBody == true -> {false,Req,State};
+         true -> {true,Req,State}
+      end
   end.
 
 handle_action(#{method := Method} = Req,State)->
