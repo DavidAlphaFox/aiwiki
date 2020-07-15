@@ -25,6 +25,13 @@ const footer = R.pipe(
     R.always(''),
     footer => parse(footer)
   ));
+const scripts = R.pipe(
+  R.prop('scripts'),
+  R.ifElse(
+    R.equals(undefined),
+    R.always(''),
+    scripts => parse(scripts)
+  ));
 
 class AiwikiApp extends App {
 
@@ -83,7 +90,7 @@ class AiwikiApp extends App {
         </header>
         <Component {...pageProps} />
         {footer(this.props)}
-      
+        {scripts(this.props)}
       </React.Fragment>
     );
   }
