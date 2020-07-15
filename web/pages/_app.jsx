@@ -47,7 +47,13 @@ class AiwikiApp extends App {
   }
   
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps,router } = this.props;
+
+    if(router.pathname.startsWith('/admin')) {
+      return (<Component {...pageProps} />);
+    }
+
+
     return (
       <React.Fragment>
         <Head>

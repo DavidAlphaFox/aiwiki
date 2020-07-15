@@ -27,26 +27,6 @@ class AuthToken {
 }
 
 
-function login(inputs: LoginInputs): Promise<string | void> {
-  const data = new URLSearchParams(inputs);
-  const config: AxiosRequestConfig = {
-    baseURL: "http://localhost:1323",
-  };
-  const res: any = await axios.post("/api/login", data, config).catch(catchAxiosError);
-  if (res.error) {
-    return res.error;
-  } else if (!res.data || !res.data.token) {
-    return "Something went wrong!";
-  }
-  const { token } = res.data;
-
-  // store the token into cookies
-  Cookie.set(COOKIES.authToken, token);
-  await Router.push("/dashboard");
-}
-
-
 export {
-  AuthToken,
-  
+	AuthToken,
 };
