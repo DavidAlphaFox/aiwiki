@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from "next/router";
+import Router,{useRouter} from "next/router";
 import Cookie from "js-cookie";
 import {
   actionReducer,
@@ -9,17 +9,26 @@ import {
 import {
   auth,
 } from '../../api';
-
+import {
+  COOKIE_NAME,
+} from '../../services/authService';
 function Login() {
-  
+  const router = useRouter();
+  const {redirect = undefined} = router.query;
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
   const handleAuth = React.useCallback((e) => {
     e.preventDefault();
-    auth().subscribe(
-      (data) => {
-        Cookie.set('aiwiki.authToken', data.token);
-        Router.push("/admin/dashboard");
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    auth({email,password}).subscribe(
+      (res) => {
+        Cookie.set(COOKIE_NAME, res.data.token);
+        if(redirect == undefined){
+          Router.push("/admin/dashboard");
+        }else {
+          Router.push(decodeURIComponent(redirect));
+        }
       },
       (err) => { console.log(err) })
   },[]);

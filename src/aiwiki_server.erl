@@ -11,7 +11,8 @@ router_list() ->
      {"/sitemap.xml",ctrl_sitemap,#{layout => null}},
      {"/api/pages/[:id]",ctrl_page,#{}},
      {"/api/sites/[:id]",ctrl_site,#{}},
-     {"/api/topics",ctrl_topic,#{}}
+     {"/api/topics",ctrl_topic,#{}},
+     {"/api/auth",ctrl_auth,#{}}
     ].
 
 start() ->

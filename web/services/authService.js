@@ -1,9 +1,12 @@
 
 import jwtDecode from "jwt-decode";
 
+const COOKIE_NAME = 'aiwiki.authToken';
+
 class AuthToken {
   constructor(token) {
     this.decodedToken = { email: "", exp: 0 };
+    this.token = token;
     try {
       if (token) this.decodedToken = jwtDecode(token);
     } catch (e) {}
@@ -14,11 +17,11 @@ class AuthToken {
   }
 
   isExpired() {
-    return new Date() > this.expiresAt;
+    return new Date() > this.expiresAt();
   }
 
   isAuthenticated() {
-    return !this.isExpired;
+    return !this.isExpired();
   }
 
   authorizationString() {
@@ -27,6 +30,8 @@ class AuthToken {
 }
 
 
+
 export {
-	AuthToken,
+  COOKIE_NAME,
+  AuthToken,
 };

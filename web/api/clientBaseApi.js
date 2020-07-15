@@ -2,6 +2,9 @@ import axios from 'axios';
 import Cookie from 'js-cookie'
 import { Subject } from 'rxjs';
 import * as RxOp from 'rxjs/operators';
+import {
+  COOKIE_NAME,
+} from '../services/authService';
 
 const makeAxiosInstance = (axiosConfig) => {
   const instance = axios.create();
@@ -10,7 +13,7 @@ const makeAxiosInstance = (axiosConfig) => {
       return config;
     }
     const headers = config.headers || {};
-    const token = Cookie.get('aiwiki.authToken');
+    const token = Cookie.get(COOKIE_NAME);
     if (token !== undefined && token !== null) {
       headers['Authorization'] = 'Bearer ' + token;
     }
