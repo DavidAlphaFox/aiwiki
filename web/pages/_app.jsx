@@ -71,12 +71,12 @@ class AiwikiApp extends App {
         <header className="border-b border-indigo-200 flex justify-between">
           <div className="text-left py-1 px-2">
             <a href="/">
-              <span className="text-indigo-500 text-xl">{brand(this.props)}</span>
+              <span className="primary-color text-xl">{brand(this.props)}</span>
             </a>
           </div>
           <div className="text-left py-1 px-2">
             <a href="/rss.xml">
-              <span className="text-indigo-500 text-xl">RSS</span>
+              <span className="primary-color text-xl">RSS</span>
             </a>
           </div>
         </header>

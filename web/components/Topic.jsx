@@ -29,7 +29,7 @@ function Topic(props){
       >
         <Link href="/topics/[id]" as={`/topics/${topic.id}`}>
           <a className="topic-item-link" >
-            <span className="px-4 text-md text-gray-800 hover:text-indigo-500">
+            <span className="px-4 text-md hover:primary-color">
               {topic.title}
             </span>
           </a>

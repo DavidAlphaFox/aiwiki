@@ -1,0 +1,21 @@
+.primary-color {
+  @apply text-indigo-500;
+}
+.hover\:primary-color:hover{
+  @apply text-indigo-700;
+}
+
+.primary-bg-color {
+  @apply bg-indigo-500;
+}
+.hover\:primary-bg-color:hover{
+  @apply bg-indigo-700;
+}
+
+.disabled-color {
+  @apply text-gray-500;
+}
+
+.label-color {
+  @apply text-gray-700;
+}

@@ -22,10 +22,10 @@ function PageIndex(props){
             {moment(p.publishedAt).format("YYYY-MM-DD")}
           </span>
           </div>
-          <div className="text-gray-600">
+          <div className="label-color">
             { p.intro }
             <Link href="/pages/[id]" as={url}>
-              <a className="text-indigo-500" target="_blank">
+              <a className="mx-4 primary-color" target="_blank">
                 阅读更多...
               </a>
             </Link>

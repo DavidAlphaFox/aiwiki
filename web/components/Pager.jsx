@@ -40,7 +40,7 @@ function Pager(props) {
     if(havingPrev){
       return (
         <Link href={prevUrl}>
-          <a className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-indigo-500 hover:text-indigo-700"
+          <a className="w-32 font-bold py-2 mx-2 text-center focus:outline-none primary-color hover:primary-color"
           >
             上一页
           </a>
@@ -48,7 +48,7 @@ function Pager(props) {
       );
     }
     return (
-      <div className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-gray-500">
+      <div className="w-32 font-bold py-2 mx-2 text-center focus:outline-none disabled-color">
         <span>上一页</span>
       </div>
     )
@@ -57,7 +57,8 @@ function Pager(props) {
     if(havingNext){
       return (
         <Link href={nextUrl}>
-          <a className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-indigo-500 hover:text-indigo-700"
+          <a
+            className="w-32 font-bold py-2 mx-2 text-center focus:outline-none primary-color hover:primary-color"
           >
             下一页
           </a>
@@ -65,7 +66,7 @@ function Pager(props) {
       );
     }
     return (
-      <div className="w-32 font-bold py-2 mx-2 text-center focus:outline-none text-gray-500">
+      <div className="w-32 font-bold py-2 mx-2 text-center focus:outline-none disabled-color">
         <span>下一页</span>
       </div>
     )
