@@ -1,9 +1,9 @@
-const serverHost = () => {
- return 'http://localhost:5000';
+const serverHost = (path) => {
+ return `http://localhost:5000${path}`;
 }
 
-const apiHost = () => {
-  return 'https://www.ttalk.im';
+const apiHost = (path) => {
+  return path;
 }
 
 export {

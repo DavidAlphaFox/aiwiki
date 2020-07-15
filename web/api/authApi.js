@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
+import {doRequest} from './clientBaseApi';
+
 import {
   authPath,
 } from './serverUrl';

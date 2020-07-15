@@ -35,7 +35,7 @@ function Login() {
               邮箱
             </label>
             <input
-              className="border rounded shadow w-full py-2 px-3 label-color focus:shadow-outline"
+              className="border rounded shadow w-full py-2 px-3 label-color"
               name="email"
               type="text"
               placeholder="邮箱"
@@ -47,7 +47,7 @@ function Login() {
               密码
             </label>
             <input
-              className="border shadow rounded w-full py-2 px-3 label-color mb-3 focus:shadow-outline"
+              className="border shadow rounded w-full py-2 px-3 label-color mb-3"
               name="password"
               type="password"
               placeholder="******************"

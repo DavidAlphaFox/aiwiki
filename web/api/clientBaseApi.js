@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Cookie from 'js-cookie'l
+import Cookie from 'js-cookie'
 import { Subject } from 'rxjs';
 import * as RxOp from 'rxjs/operators';
 
