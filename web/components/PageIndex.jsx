@@ -12,15 +12,15 @@ function PageIndex(props){
     return (
       <li className="mt-6" key={p.id}>
         <div className="text-left">
-          <div className="flex items-end mb-4">
-          <Link href="/pages/[id]" as={url}>
-            <a target="_blank">
-              <h2 className="text-xl font-bold"> {p.title }</h2>
-            </a>
-          </Link>
-          <span className="mx-4 font-xs">
-            {moment(p.publishedAt).format("YYYY-MM-DD")}
-          </span>
+          <div className="flex flex-col md:flex-row items-end mb-4">
+            <Link href="/pages/[id]" as={url}>
+              <a target="_blank">
+                <h2 className="text-xl font-bold"> {p.title }</h2>
+              </a>
+            </Link>
+            <span className="mx-4 font-xs">
+              {moment(p.publishedAt).format("YYYY-MM-DD")}
+            </span>
           </div>
           <div className="label-color">
             { p.intro }
