@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import NoSSR from '../../../components/NoSSR';
-
+import privateRoute from '../../../components/PrivateRoute';
 const PageEditor = React.lazy(() => import('../../../components/PageEditor'));
 
 function Page() {
@@ -17,4 +17,4 @@ function Page() {
   );
 };
 
-export default Page;
+export default privateRoute(Page);
