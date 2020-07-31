@@ -4,12 +4,11 @@
 -export([select/1,create/3,auth/2]).
 
 select(Email) ->
-  MatchSpec = {{user,'$1','_'},
-               [{'==','$1',Email}],
+  Email0 = ai_string:to_string(Email),
+  MatchSpec = {#user{email = Email0, _ = '_'},
+               [{'==','$1',Email0}],
                ['$_']},
-  Fun = fun()->
-            mnesia:select(user,[MatchSpec])
-        end,
+  Fun = fun()-> mnesia:select(user,[MatchSpec]) end,
   case mnesia:transaction(Fun) of
     {atomic,[]} -> not_found;
     {atomic,[User]} -> User;
@@ -17,18 +16,24 @@ select(Email) ->
   end.
 
 create(Email,Nick,Password)->
+
+  Email0 = ai_string:to_string(Email),
+  Nick0 = ai_string:to_string(Nick),
+
   {ok,Salt} = bcrypt:gen_salt(),
   {ok,Digest} = bcrypt:hashpw(Password,Salt),
+
   Fun = fun() ->
-            case mnesia:read(user,Email,read) of
+            case mnesia:read(user,Email0,read) of
               [] ->
-                mnesia:write(user,#user{
-                                     email = Email,
-                                     nick = Nick,
-                                     pwd = erlang:list_to_binary(Digest)},write);
+                Record = #user{email = Email0,
+                               nick = Nick0,
+                               pwd = erlang:list_to_binary(Digest)},
+                mnesia:write(user,Record,write);
               _-> mnesia:abort(already_exist)
           end
         end,
+
   case mnesia:transaction(Fun) of
     {atomic,ok} -> ok;
     {aborted,Reason} -> Reason
