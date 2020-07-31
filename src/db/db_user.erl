@@ -1,7 +1,7 @@
 -module(db_user).
 -include("include/model.hrl").
 
--export([select/1,create/3]).
+-export([select/1,create/3,auth/2]).
 
 select(Email) ->
   MatchSpec = {{user,'$1','_'},
@@ -32,4 +32,21 @@ create(Email,Nick,Password)->
   case mnesia:transaction(Fun) of
     {atomic,ok} -> ok;
     {aborted,Reason} -> Reason
+  end.
+
+auth(Email,Password)->
+  case select(Email) of
+    not_found -> false;
+    User -> verify(Password,User)
+  end.
+
+verify(Password,Record)->
+  Digest = Record#user.pwd,
+  case bcrypt:hashpw(Password, Digest) of
+    {ok,Hash} ->
+      case erlang:list_to_binary(Hash)  of
+        Digest -> Record;
+        _-> false
+      end;
+    {error,_Reason} -> false
   end.
