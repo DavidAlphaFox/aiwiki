@@ -10,6 +10,6 @@ dep_cowboy_commit = 2.7.0
 dep_bcrypt_commit = 1.1.1
 
 dep_aiconf = git https://github.com/DavidAlphaFox/aiconf.git v0.1.7
-dep_aicow = git https://github.com/DavidAlphaFox/aicow.git v0.1.6
+dep_aicow = git https://github.com/DavidAlphaFox/aicow.git v0.1.8
 
 include erlang.mk

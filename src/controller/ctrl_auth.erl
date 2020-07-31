@@ -30,6 +30,7 @@ content_types_provided(Req,State)->
 
 allow_missing_post(Req,State)->{false,Req,State}.
 options(Req, State) ->
+
   % cors
   Req1 = cowboy_req:set_resp_header(
            <<"access-control-allow-methods">>, <<"PUT,OPTIONS">>, Req),

@@ -17,9 +17,8 @@ router_list() ->
 
 start() ->
   Port = aiwiki_conf:get_value(?SERVER_SECTION,?PORT,5000),
-  RouterList = router_list(),
-  aicow_server:start(aiwiki_server,Port,RouterList,#{}).
-
-
+  Router = aicow_server:router(router_list()),
+  cowboy:start_clear(aiwiki_server,[{port, Port}],
+                     #{env => #{dispatch => Router}}).
 stop() ->
   cowboy:stop_listener(aiwiki_server).
