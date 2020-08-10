@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import {
   pagePath,
   topicPath,
-} from './serverUrl';
+} from './base'
 
 const defaultIndexPage = {
   pages: [],

@@ -2,7 +2,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import parse from 'html-react-parser';
 import {
   fetchHeader,
-} from '../api';
+} from '../api/server';
 class AiwikiDocument extends Document {
     static async getInitialProps(ctx) {
     const appProps = await Document.getInitialProps(ctx);

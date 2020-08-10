@@ -3,8 +3,11 @@ import Cookie from 'js-cookie'
 import { Subject } from 'rxjs';
 import * as RxOp from 'rxjs/operators';
 import {
+  apiHost,
+} from '../../config';
+import {
   COOKIE_NAME,
-} from '../services/authService';
+} from '../../services/authService';
 
 const makeAxiosInstance = (axiosConfig) => {
   const instance = axios.create();
@@ -49,7 +52,15 @@ const doRequest = (axiosConfig, processor = defaultPipe) => {
   return response$;
 };
 
+
+const authPath = apiHost('/api/auth');
+const pageAdminPath = apiHost('/api/pages');
+const topicAdminPath = apiHost('/api/topics');
+
 export {
   defaultPipe,
   doRequest,
+  authPath,
+  pageAdminPath,
+  topicAdminPath,
 };

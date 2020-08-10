@@ -1,8 +1,7 @@
-import {doRequest} from './clientBaseApi';
-
 import {
+  doRequest,
   authPath,
-} from './serverUrl';
+} from './base.js';
 
 const auth = data =>  doRequest({
   method: 'PUT',

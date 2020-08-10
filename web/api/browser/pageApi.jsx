@@ -1,9 +1,8 @@
-import {doRequest} from './clientBaseApi';
-
 import {
+  doRequest,
   pageAdminPath,
   topicAdminPath,
-} from './serverUrl';
+} from './base';
 
 
 const fetchPageAdmin = (id) => doRequest({

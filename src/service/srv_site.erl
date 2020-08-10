@@ -4,7 +4,7 @@
 -export([fetch/1]).
 -export([load/2]).
 
-fetch(site)-> to_map([brand,footer,keywords,intro,scripts]);
+fetch(site)-> to_map([brand,footer,keywords,intro,scripts,host]);
 fetch(header) -> to_map([header]);
 fetch(rss) -> to_map([host,brand,intro]);
 fetch(sitemap) -> to_map([host]).

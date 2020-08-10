@@ -5,7 +5,7 @@ import PageIndex from '../../components/PageIndex';
 import {
   fetchIndexPage,
   fetchSite,
-} from '../../api';
+} from '../../api/server';
 
 function TopicIndex(props){
   const {

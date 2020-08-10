@@ -9,7 +9,7 @@ import {
   fetchSite,
   fetchPage,
   fetchSidebar,
-} from '../../api';
+} from '../../api/server';
 
 import Layout from '../../components/Layout';
 

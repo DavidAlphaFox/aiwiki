@@ -4,7 +4,7 @@ import {
   sitePath,
   headerPath,
   sidebarPath,
-} from './serverUrl';
+} from './base';
 
 const fetchSite = () =>{
   return fetch(sitePath)

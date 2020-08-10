@@ -6,7 +6,7 @@ import Pager from '../components/Pager';
 import {
   fetchIndexPage,
   fetchSite,
-} from '../api';
+} from '../api/server';
 function Index(props){
   const {
     index,

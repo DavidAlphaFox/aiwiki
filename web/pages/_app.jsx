@@ -8,7 +8,7 @@ import 'braft-editor/dist/index.css'
 
 import {
   fetchSite,
-} from '../api';
+} from '../api/server';
 
 const brand = R.pipe(
   R.prop('brand'),
