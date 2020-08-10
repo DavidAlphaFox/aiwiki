@@ -7,7 +7,7 @@ import BraftEditor from 'braft-editor'
 import {
   fetchPageAdmin,
   fetchTopicAdmin,
-} from '../api';
+} from '../api/browser';
 
 function PageEditor(props){
   const { id } = props;

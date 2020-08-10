@@ -8,7 +8,7 @@ import {
 } from '../../functional';
 import {
   auth,
-} from '../../api/client';
+} from '../../api/browser';
 import {
   COOKIE_NAME,
 } from '../../services/authService';
