@@ -12,11 +12,12 @@ import {
 const makeAxiosInstance = (axiosConfig) => {
   const instance = axios.create();
   instance.interceptors.request.use(function (config){
-    if(config.url.startsWith('http://') || config.url.startsWith('https://')){
+    /*if(config.url.startsWith('http://') || config.url.startsWith('https://')){
       return config;
-    }
+    }*/
     const headers = config.headers || {};
     const token = Cookie.get(COOKIE_NAME);
+    console.log(token);
     if (token !== undefined && token !== null) {
       headers['Authorization'] = 'Bearer ' + token;
     }

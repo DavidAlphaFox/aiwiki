@@ -1,4 +1,6 @@
 -module(ctrl_page).
+-include("model.hrl").
+
 -export([init/2]).
 -export([content_types_accepted/2,
          content_types_provided/2,
@@ -10,13 +12,22 @@
          options/2]).
 -export([handle_action/2]).
 
-
 init(Req, State) -> {cowboy_rest, Req, State}.
 
 allowed_methods(Req,State)->
   {[<<"GET">>,<<"POST">>,<<"PUT">>,<<"OPTIONS">>],Req,State}.
 
-forbidden(Req,State)-> {false,Req,State}.
+forbidden(Req,State)->
+  Method = cowboy_req:method(Req),
+  case srv_token:get_token(Req) of
+    undefined ->
+      case lists:member(Method, [<<"GET">>,<<"OPTIONS">>]) of
+        true -> {false,Req,State};
+        false -> {true,Req,State}
+      end;
+    Token -> {false,Req,State#{token => Token}}
+  end.
+
 
 content_types_accepted(Req,State)->
   {[
@@ -41,7 +52,16 @@ resource_exists(#{method := <<"GET">>} = Req,State) ->
     ID ->
       ID0 = ai_string:to_integer(ID),
       case db_page:fetch(ID0) of
-        {atomic,[Row]} -> {true,Req,State#{row => Row}};
+        {atomic,[Row]} ->
+          if
+            Row#page.published == true ->
+              {true,Req,State#{row => Row}};
+            true ->
+              case maps:get(token,State,undefined) of
+                undefined -> {false,Req,State};
+                _ -> {true,Req,State#{row => Row}}
+              end
+          end;  
         _ -> {false,Req,State}
       end
   end.

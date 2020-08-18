@@ -26,7 +26,7 @@ algorithm(JWT)->  proplists:get_value(?ALGORITHM,JWT).
 expiration(JWT)-> proplists:get_value(?EXPIRATION,JWT).
 
 get_token(Req) ->
-  case aicow_token:get(Req, <<"_session">>) of
+  case aicow_token:get(Req, [{param,<<"_session">>}]) of
     undefined -> undefined;
     Token ->
       JWT = jwt(),

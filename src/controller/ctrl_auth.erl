@@ -54,12 +54,15 @@ handle_action(#{method := Method} = Req,State)->
   handle_action(Method0,Req0,State).
 
 handle_action('PUT',Req,State)->
-  Req0 = aicow_rest:allow_cors(Req, undefined),
-  try
-    {ok,Token} =
-      srv_token:create([{<<"email">>,<<"david.alpha.fox@gmail.com">>}]),
-    aicow_rest:json(true,#{data =>#{token => Token}}, Req0, State)
-  catch
-    _:_:Stack ->
-      io:format("~p~n",[Stack])
+  {ok,Form,Req0} = aicow_body:read(json,Req),
+  Req1 = aicow_rest:allow_cors(Req0, undefined),
+  Email = maps:get(<<"email">>, Form),
+  Pwd = maps:get(<<"password">>,Form),
+  case db_user:auth(Email, Pwd) of
+    false ->
+      aicow_rest:json(true,#{error => true}, Req1, State);
+    _ ->
+      {ok,Token} =
+        srv_token:create([{<<"email">>,Email}]),
+      aicow_rest:json(true,#{data => #{token => Token}}, Req1, State)
   end.

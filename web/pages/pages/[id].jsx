@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
+import Error from 'next/error';
 
 import {
   fetchSite,
@@ -15,24 +16,26 @@ import Layout from '../../components/Layout';
 
 function Page(props) {
   const {
-    title = null,
-    content = null,
+    page,
     brand = 'AiWiki',
     sidebar = null
   } = props;
-  if(content == null && title == null) return null;
+  if(page == null || page == undefined)  {
+    return (<Error statusCode={404} />);
+  }
+
   return (
     <Layout>
       <Head>
         <title>
-          {`${title}-${brand}`}
+          {`${page.title}-${brand}`}
         </title>
       </Head>
       <div className="pt-8 flex flex-wrap">
         <div className="w-full md:w-3/4 px-4">
-          <h1 className="text-center font-bold text-2xl mx-2">{title}</h1>
+          <h1 className="text-center font-bold text-2xl mx-2">{page.title}</h1>
           <div className="mt-4 content">
-            {parse(content)}
+            {parse(page.content)}
           </div>
         </div>
         <div className="w-full md:w-1/4 px-4">
@@ -55,15 +58,10 @@ export async function getServerSideProps(context) {
     params,
   } = context;
   const page = await fetchPage(params.id);
-  if(page == null || page == undefined) {
-    context.res.writeHead(404);
-    context.res.end();
-    return { props: {} };
-  }
   const site = await fetchSite();
   const sidebar = await fetchSidebar();
   return { props: {
-    ...page,
+    page,
     ...site,
     ...sidebar
   }};
