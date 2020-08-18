@@ -54,6 +54,12 @@ handle_action(#{method := Method} = Req,State)->
   handle_action(Method0,Req0,State).
 
 handle_action('PUT',Req,State)->
-  {ok,Token} =
-    srv_token:create([{<<"email">>,<<"david.alpha.fox@gmail.com">>}]),
-  aicow_rest:json(true,#{data =>#{token => Token}}, Req, State).
+  Req0 = aicow_rest:allow_cors(Req, undefined),
+  try
+    {ok,Token} =
+      srv_token:create([{<<"email">>,<<"david.alpha.fox@gmail.com">>}]),
+    aicow_rest:json(true,#{data =>#{token => Token}}, Req0, State)
+  catch
+    _:_:Stack ->
+      io:format("~p~n",[Stack])
+  end.

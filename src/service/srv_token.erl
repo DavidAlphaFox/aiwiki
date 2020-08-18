@@ -18,7 +18,7 @@ create(Claims)->
   Secret = secret(JWT),
   Algo = algorithm(JWT),
   Exp = expiration(JWT),
-  aicow_jwt_handler:create_token(Claims,Secret,Algo,Exp).
+  aicow_token:new(Claims,Secret,Algo,Exp).
 
 jwt()-> aiwiki_conf:get_section(?JWT).
 secret(JWT)-> proplists:get_value(?SECRET,JWT).
@@ -26,18 +26,18 @@ algorithm(JWT)->  proplists:get_value(?ALGORITHM,JWT).
 expiration(JWT)-> proplists:get_value(?EXPIRATION,JWT).
 
 get_token(Req) ->
-  case aicow_jwt_handler:get_token(Req, <<"_session">>) of
+  case aicow_token:get(Req, <<"_session">>) of
     undefined -> undefined;
     Token ->
       JWT = jwt(),
       Secret = secret(JWT),
-      aicow_jwt_handler:verify_token(Token,Secret)
+      aicow_token:verify(Token,Secret)
   end.
 
 has(Token)->
     JWT = jwt(),
     Secret = secret(JWT),
-    case aicow_jwt_handler:verify_token(Token,Secret) of
+    case aicow_token:verify(Token,Secret) of
         undefined -> false;
         _ -> true
     end.
