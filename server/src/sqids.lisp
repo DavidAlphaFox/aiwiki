@@ -689,8 +689,8 @@
                (subseq alphabet offset)
                (subseq alphabet 0 offset)))
           (nalphabet (reverse a))
-          
-          )
+          (ids '()))
+
 
     ))
 
