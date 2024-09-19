@@ -690,9 +690,11 @@
                (subseq alphabet 0 offset)))
           (nalphabet (reverse a))
           (ids '()))
-
-
-    ))
+    (loop with code = (subseq s 1)
+      while (> (length code) 0)
+      do (let ((separator (aref nalphabet 0)))
+      ))
+    ids))
 
 (defclass sqids ()
   ((alphabet
