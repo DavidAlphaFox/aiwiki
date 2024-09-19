@@ -66,31 +66,44 @@
                  (code (char-code (aref alphabet pos))))
            (setq offset
              (+ offset code i)))
-      finally (return (rem (+ incr offset) al))
-    )))
+      finally (return (rem (+ incr offset) al)))))
 
-(defun encode (numbers incr alphabet)
+
+(defun do-encode (numbers incr alphabet min-length)
   (when (> incr (length alphabet))
     (error (make-condition 'max-regenerate-id)))
   (let* ((offset (calculate-offset numbers incr alphabet))
-          (hl (subseq alphabet offset))
-          (tl (subseq alphabet 0 offset))
-          (a (concatenate 'string hl tl))
+          (a (concatenate 'string
+               (subseq alphabet offset)
+               (subseq alphabet 0 offset)))
           (prefix (aref a 0))
-          (nalphabet (reverse a)))
-    (loop
-      with nl = (length numbers)
-      and ids = (list prefix)
+          (nalphabet (reverse a))
+          (ids (list prefix)))
+
+    (loop with nl = (length numbers)
       and nlast = (- (length numbers) 1)
       for i from 0 to nlast
       do (let ((separator (aref nalphabet 0))
                (nalphabet-with-separator (subseq nalphabet 1)))
            (if (< i nlast)
              (progn
-               (setq ids (nconc ids
-                           (coerce (to-id (nth i numbers) nalphabet-with-separator) 'list)
-                           (list separator)))
+               (setq ids
+                 (concatenate 'string ids
+                   (to-id (nth i numbers) nalphabet-with-separator)
+                   (list separator) 'string))
                (setq nalphabet (shuffle nalphabet)))
              (setq ids
-               (nconc ids (coerce (to-id (nth i numbers) nalphabet-with-separator) 'list)))))
-      finally (return ids))))
+               (concatenate 'string ids
+                 (to-id (nth i numbers) nalphabet-with-separator))))))
+
+    (when (< (length ids) min-length)
+      (let ((separator (aref nalphabet 0))
+            (fill-size (- min-length (length ids) 1)))
+        (setq nalphabet (shuffle nalphabet))
+        (setq ids
+          (concatenate 'string ids (list separator)
+            (subseq nalphabet 0 (min fill-size (length nalphabet)))))))
+    ids))
+
+;; (do-encode '(111) 0 "fwjBhEY2uczNPDiloxmvISCrytaJO4d71T0W3qnMZbXVHg6eR8sAQ5KkpLUGF9" 10)
+;; "LKEpHOn63V"
