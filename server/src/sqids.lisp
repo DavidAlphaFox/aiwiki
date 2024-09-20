@@ -689,12 +689,27 @@
                (subseq alphabet offset)
                (subseq alphabet 0 offset)))
           (nalphabet (reverse a))
-          (ids '()))
+          (numbers '()))
     (loop with code = (subseq s 1)
       while (> (length code) 0)
-      do (let ((separator (aref nalphabet 0)))
-      ))
-    ids))
+      do (let* ((separator (aref nalphabet 0))
+                (nalphabet-with-separator (subseq nalphabet 1))
+                (offset (position separator code)))
+           (cond
+             ((null offset)
+               (progn
+                 (setq numbers
+                   (nconc numbers (list (to-number code nalphabet-with-separator))))
+                 (return nil)))
+             ((> offset 0)
+               (let ((chunk (subseq code 0 offset))
+                      (remain (subseq code (+ offset 1))))
+                 (setq code remain)
+                 (setq numbers
+                   (nconc numbers (list (to-number chunk nalphabet-with-separator))))
+                 (shuffle nalphabet)))
+             (t (return nil)))))
+    numbers))
 
 (defclass sqids ()
   ((alphabet
@@ -726,5 +741,10 @@
       (shuffle (copy-seq (alphabet instance)))
       (min-length instance))))
 
+(defmethod decode (ids (instance sqids))
+  (do-decode ids
+    (shuffle (copy-seq (alphabet instance)))))
+
 ;; (defparameter s (make-instance 'sqids :min-length 10))
 ;; (encode '(111) s)
+;; (decode (encode '(111) s) s)
